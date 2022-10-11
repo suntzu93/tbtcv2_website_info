@@ -1,0 +1,19 @@
+.about{
+    float: right;
+    margin-right: 20px;
+}
+
+.about_content{
+    box-shadow: rgb(20 20 20 / 20%) 0px 4px 8px;
+    box-sizing: border-box;
+    text-indent: initial;
+    border-spacing: 2px;
+    border-color: grey;
+    padding:50px;
+    text-align: left;
+    font-family: "Work Sans",sans-serif;
+}
+
+.about_content h3{
+    font-weight:bold;
+}

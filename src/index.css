@@ -1,0 +1,13 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@300;400;700;900&family=Work+Sans:wght@400;500;700;800&display=swap');
+
+body {
+  margin: 0;
+  font-family: "Work Sans",sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: rgb(250, 250, 250);
+}
+
+code {
+  font-family: "Work Sans",sans-serif;
+}

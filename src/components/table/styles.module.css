@@ -1,0 +1,107 @@
+.table {
+  border-collapse: collapse;
+  width: 100%;
+  background-color: #fff;
+  border-radius: 15px;
+  font-family: 'Work Sans', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+}
+
+.table th {
+  display: table-cell;
+  vertical-align: inherit;
+  font-weight: bold;
+  padding-bottom: 10px;
+  padding-top: 20px;
+  font-family: 'Work Sans', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  font-size: 1rem;
+
+}
+
+.table td {
+  border-bottom: 1px solid rgb(245, 245, 245);
+  font-family: 'Work Sans', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.table .selected{
+  background:aliceblue;
+}
+
+.nodata{
+  padding-top: 30px;
+  padding-bottom: 10px;
+  background-color: #fff;
+}
+
+.link{
+  color: "#7850cd";
+  underline: none;
+}
+
+.table .proportion{
+  color: gray;
+  font-size: 0.9em;
+}
+
+
+
+.pagination {
+  margin: 30px 35px 0;
+  text-align: right;
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  font-family: 'Work Sans', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  background-color: #fff;
+  border-radius: 15px;
+  font-family: 'Work Sans', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+th {
+  display: table-cell;
+  vertical-align: inherit;
+  font-weight: bold;
+  padding-bottom: 10px;
+  padding-top: 20px;
+}
+
+td {
+  border-bottom: 1px solid rgb(245, 245, 245);
+}
+
+th,td {
+  text-align: left;
+  padding-left: 20px;
+}
+
+.action_header div{
+  width: 75%;
+  float: right;
+}
+
+.poi_style{
+  color: gray;
+  font-size: 0.9em;
+}
+
+.dialog{
+  font-family: "Work Sans",sans-serif;
+    -webkit-font-smoothing: antialiased;
+}
+
+.poi_form{
+  width:500px;
+}
