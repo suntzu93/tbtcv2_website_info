@@ -42,7 +42,7 @@ const DepositPage = ({network}) => {
       <ApolloProvider client={Data.client}>
         <div className={styles.table_content}>
           <DepositTable
-            columns={Data.allocation_columns}
+            columns={Data.deposit_columns}
             data={pageData.rowData}
             isLoading={pageData.isLoading}
             network={network}

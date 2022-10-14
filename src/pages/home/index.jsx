@@ -18,6 +18,13 @@ const HomePage = () => {
   const [tab, setTab] = React.useState("1");
   const [anchorEl, setAnchorEl] = useState(null);
   useEffect(() => {
+
+    const localNetwork = localStorage.getItem("network");
+    if (localNetwork != null)
+      setNetwork(localNetwork);
+    else 
+      localStorage.setItem("network","mainnet");
+
     if (window.location.pathname.startsWith("/subgraphs")) {
       setTab("redeems");
     } else if (window.location.pathname.startsWith("/about")) {
@@ -25,6 +32,7 @@ const HomePage = () => {
     } else {
       setTab("deposits");
     }
+
   }, [network]);
 
   const reload = () => {
@@ -36,7 +44,7 @@ const HomePage = () => {
     return (
       <div>
         <DepositPage
-          network={network}
+          network={localStorage.getItem("network")}
         />
       </div>
     );
@@ -46,7 +54,7 @@ const HomePage = () => {
     return (
       <div>
         <SubgraphPage
-          network={network}
+          network={localStorage.getItem("network")}
         />
       </div>
     )

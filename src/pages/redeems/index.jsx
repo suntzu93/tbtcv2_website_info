@@ -39,7 +39,7 @@ const RedeemsPage = ({ network }) => {
       <ApolloProvider client={Data.client}>
         <div className={styles.table_content}>
           <SubgraphTable
-            columns={Data.subgraphs_columns}
+            columns={Data.redeem_columns}
             data={pageData.rowData}
             isLoading={pageData.isLoading}
             network={network}

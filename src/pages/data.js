@@ -1,170 +1,70 @@
 import { gql, ApolloClient, InMemoryCache } from '@apollo/client';
 import * as Const from '../utils/Cons';
 import moment from 'moment';
+import MockDeposits from "../assets/mock_deposit.json"
+import MockRedeems from "../assets/mock_redeem.json"
+import { SATOSHI_BITCOIN } from "../utils/Cons";
 
 export var client = new ApolloClient({
-  uri: Const.MAINNET_API_GRAPH,
+  uri: Const.MAINNET_API,
   cache: new InMemoryCache()
 });
 
-const allocationsQuery = `
-  query IndexerAllocations($id: String){
-    indexer(first: 1000,id: $id){
-      allocations(where:{status: Active}){
-        id,
-        allocatedTokens,
-        createdAt
-        subgraphDeployment{
-          deniedAt,
-          ipfsHash,
-          stakedTokens,
-          signalledTokens,
-          network{
-            id
-          }
-          versions{
-            subgraph{
-              displayName
-            }
-          }
-        }
-      }
-    }
+const queryDeposits = `
+  query Depists($id: String){
   }
 `;
 
-const queryIndexer = `
-  query OperatorIndexer($id: String){
-      indexers(first: 1000) {
-        id
-        account {
-          operators(where: {id : $id}) {
-            id
-          }
-        }
-      }
-  }
-`
-const querySubgraphs = `
-query QuerySubgraphs($first: Int,$skip:Int, $orderBy: BigInt, $orderDirection: String){
-  subgraphs(first: $first, skip: $skip,where:{active:true}, orderBy: $orderBy , orderDirection: $orderDirection){
-        id,
-        displayName,
-        currentVersion{
-          id,
-          subgraphDeployment{
-            deniedAt,
-            ipfsHash,
-            stakedTokens,
-            signalledTokens,
-            createdAt,
-            network{
-              id
-            }
-          }
-        }
-  }
+const queryRedeems = `
+query Redeems($first: Int,$skip:Int, $orderBy: BigInt, $orderDirection: String){
+
 }
 `;
 
-export const allocation_columns = [
+export const deposit_columns = [
   {
-    header: "Name",
-    accessor: "originalName",
+    header: "Updated",
+    accessor: "updateTime",
     numeric: false,
   },
   {
-    header: "Subgraph",
-    accessor: "ipfsHash",
+    header: "Depositor",
+    accessor: "depositor",
     numeric: false,
   },
   {
-    header: "Network",
-    accessor: "network",
+    header: "Amount",
+    accessor: "amount",
     numeric: false,
   },
   {
-    header: "Allocated",
-    accessor: "allocatedTokens",
-    numeric: false,
-  },
-  {
-    header: "Current Signalled",
-    accessor: "signalledTokens",
-    numeric: false,
-  },
-  {
-    header: "Proportion",
-    accessor: "proportion",
-    numeric: true,
-  },
-  {
-    header: "Allocate ID",
-    accessor: "allocateId",
-    numeric: false,
-  },
-  {
-    header: "Active Duration",
-    accessor: "activeDuration",
-    numeric: true,
-  }
-];
-
-
-export const actions_columns = [
-  {
-    header: "Subgraph",
-    accessor: "ipfsHash",
-  },
-  {
-    header: "Allocated",
-    accessor: "allocatedTokensFormat",
-  },
-  {
-    header: "Allocate ID",
-    accessor: "allocateId",
-  },
-  {
-    header: "POI",
-    accessor: "poiFormat",
-  },
-  {
-    header: "Status",
+    header: "Current State",
     accessor: "status",
+    numeric: false,
   }
 ];
 
 
-export const subgraphs_columns = [
+export const redeem_columns = [
   {
-    header: "Name",
-    accessor: "originalName",
+    header: "Updated",
+    accessor: "updateTime",
     numeric: false,
   },
   {
-    header: "Subgraph",
-    accessor: "ipfsHash",
+    header: "Redeemer",
+    accessor: "redeemer",
     numeric: false,
   },
   {
-    header: "Network",
-    accessor: "network",
+    header: "Amount",
+    accessor: "amount",
     numeric: false,
   },
   {
-    header: "Current Signalled",
-    accessor: "signalledTokens",
-    numeric: true,
-  },
-  {
-    header: "Proportion",
-    accessor: "proportion",
-    numeric: true,
-  },
-  {
-    header: "Create time",
-    accessor: "createdAt",
-    numeric: true,
+    header: "Current State",
+    accessor: "status",
+    numeric: false,
   }
 ];
 
@@ -197,8 +97,13 @@ const COUNT_FORMATS =
     }
   ];
 
+
+export const formatSatoshi = (data) => {
+  return parseFloat(data / Const.SATOSHI_BITCOIN).toFixed(2);
+};
+
 export const formatGwei = (value) => {
-  return value / Const.DECIMAL
+  return parseFloat(value / Const.DECIMAL_ETH).toFixed(2);
 }
 
 export const formatNumberDecimal = (value) => {
@@ -206,7 +111,7 @@ export const formatNumberDecimal = (value) => {
 }
 
 export const formatNumber = (value) => {
-  let newValue = value / Const.DECIMAL;
+  let newValue = value / Const.DECIMAL_ETH;
   const format = COUNT_FORMATS.find(format => (newValue < format.limit));
   newValue = (1000 * newValue / format.limit);
   newValue = Math.round(newValue * 10) / 10;
@@ -215,152 +120,142 @@ export const formatNumber = (value) => {
 
 function calculateDuationActive(date) {
   const day = date.days();
-  const hours = date.hours();
-  const minutes = date.minutes();
-  return `${day < 10 ? "0" + day : day}d ${hours < 10 ? "0" + hours : hours}h ${minutes < 10 ? "0" + minutes : minutes}m`;
-}
+  const month = date.months();
+  const year = date.years();
+  const hour = date.hours();
+  const minute = date.minutes();
+  const second = date.seconds();
 
-function formatDate(date) {
-  return new Date(date).toLocaleString(
-    "en-US",
-    {
-      month: "short",
-      day: "2-digit",
-      year: "numeric",
-      hour: "2-digit",
-      minute: "2-digit"
+  if (year > 0) {
+    if (year == 1) {
+      return year + " year ago";
+    } else {
+      return year + " years ago";
     }
-  );
-}
-
-function removeDupplicateIpfs(arr, index) {
-  const unique = arr
-    .map(e => e[index])
-    // store the keys of the unique objects
-    .map((e, i, final) => final.indexOf(e) === i && i)
-    // eliminate the dead keys & store unique objects
-    .filter(e => arr[e]).map(e => arr[e]);
-
-  return unique;
-}
-
-export const formatRowData = (rawData) =>
-  rawData.map((item) => ({
-    allocateId: item.id,
-    allocatedTokens: item.allocatedTokens,
-    originalName: item.subgraphDeployment.versions[0].subgraph.displayName,
-    ipfsHash: item.subgraphDeployment.ipfsHash,
-    stakedTokens: item.subgraphDeployment.stakedTokens,
-    signalledTokens: item.subgraphDeployment.signalledTokens,
-    proportion: item.subgraphDeployment.signalledTokens == "0" ? "0" : item.subgraphDeployment.stakedTokens == "0" ? "0" :
-      parseFloat((item.subgraphDeployment.signalledTokens / item.subgraphDeployment.stakedTokens * 100).toFixed(4)),
-    activeDuration: calculateDuationActive(moment.duration(moment(new Date().getTime()).diff(moment(item.createdAt * 1000)))),
-    createdAt: item.createdAt * 1000,
-    network: item.subgraphDeployment.network == null ? "mainnet" : item.subgraphDeployment.network?.id,
-    deniedAt: item.subgraphDeployment.deniedAt
-  }));
-
-
-export const formatSubgraphData = (subgraphs) =>
-  subgraphs.map((item) => ({
-    ipfsHash: item.currentVersion.subgraphDeployment.ipfsHash,
-    stakedTokens: item.currentVersion.subgraphDeployment.stakedTokens,
-    signalledTokens: new Number(formatGwei(item.currentVersion.subgraphDeployment.signalledTokens)),
-    signalledTokensFormat: formatNumber(item.currentVersion.subgraphDeployment.signalledTokens),
-    proportion: item.currentVersion.subgraphDeployment.signalledTokens == "0" ? "0" : item.currentVersion.subgraphDeployment.stakedTokens == "0" ? "0" :
-      parseFloat((item.currentVersion.subgraphDeployment.signalledTokens / item.currentVersion.subgraphDeployment.stakedTokens * 100).toFixed(4)),
-    createdAt: formatDate(item.currentVersion.subgraphDeployment.createdAt * 1000),
-    network: item.currentVersion.subgraphDeployment.network == null ? "mainnet" : item.currentVersion.subgraphDeployment.network?.id,
-    originalName: item.displayName,
-    currentVersionId: item.currentVersion.id,
-    subgraphId: item.id,
-    deniedAt: item.currentVersion.subgraphDeployment.deniedAt
-  }));
-
-
-export const formatActions = (actions) =>
-  actions.map((item) => ({
-    id: item.id,
-    poiFormat: item.poi == "NULL" ? "..." : formatString(item.poi),
-    poiFull: item.poi,
-    allocateId: formatString(item.allocateId),
-    allocateIdFull: item.allocateId,
-    allocatedTokens: item.allocatedTokens,
-    allocatedTokensFormat: new Intl.NumberFormat().format(item.allocatedTokens),
-    ipfsHash: formatString(item.ipfsHash),
-    ipfsHashFull: item.ipfsHash,
-    status: item.status
-  }));
-
-const switchNetworkClient = (network) => {
-  if (network === Const.NETWORK_MAINNET) {
-    if (client.uri !== Const.MAINNET_API_GRAPH) {
-      client = new ApolloClient({
-        uri: Const.MAINNET_API_GRAPH,
-        cache: new InMemoryCache()
-      });
+  } else if (month > 0) {
+    if (month == 1) {
+      return month + " month ago";
+    } else {
+      return month + " months ago";
+    }
+  } else if (day > 0) {
+    if (day == 1) {
+      return day + " day ago";
+    } else {
+      return day + " days ago";
+    }
+  } else if (hour > 0) {
+    if (hour == 1) {
+      return hour + " hour ago";
+    } else {
+      return hour + " hours ago";
+    }
+  } else if (minute > 0) {
+    if (minute == 1) {
+      return minute + " minute ago";
+    } else {
+      return minute + " minutes ago";
     }
   } else {
-    if (client.uri !== Const.TESTNET_API_GRAPH) {
-      client = new ApolloClient({
-        uri: Const.TESTNET_API_GRAPH,
-        cache: new InMemoryCache()
-      });
+    if (second == 1) {
+      return second + " second ago";
+    } else {
+      return second + " seconds ago";
     }
   }
 }
 
-const getIndexerAddr = async (network, account) => {
-  const emptyData = "";
-  try {
-    switchNetworkClient(network);
-    const data = await client.query({
-      query: gql(queryIndexer),
-      variables: {
-        id: account.toLowerCase()
-      }
-    });
+export const calculateTimeMoment = (timestamp) => {
+  return calculateDuationActive(
+    moment.duration(
+      moment(new Date().getTime()).diff(moment(timestamp))
+    )
+  )
+};
 
-    const indexers = data.data.indexers;
-    var indexerAddress = "";
-    indexers.forEach((indexer) => {
-      const operators = indexer.account.operators;
-      if (operators.length != 0) {
-        operators.forEach((operator) => {
-          const operatorId = operator.id;
-          if (operator.id.toLowerCase() === account.toLowerCase()) {
-            indexerAddress = indexer.id;
+const calculateTreasuryFee = (treasuryFee) => (
+   1 / treasuryFee * 100
+)
+const calculateTxMaxFee = (txMaxFee) => (
+  txMaxFee / Const.SATOSHI_BITCOIN
+)
 
-          }
-        })
-      }
-    })
 
-    return indexerAddress
-  } catch (e) {
-    console.log("error to fetch data " + e);
-    return emptyData;
+export const formatDepositsData = (rawData) =>
+  rawData.map((item) => ({
+    id: item.id,
+    status: item.status,
+    depositor: item.depositor,
+    amount: item.amount,
+    walletPubKeyHash: item.walletPubKeyHash,
+    fundingTxHash: item.fundingTxHash,
+    fundingOutputIndex: item.fundingOutputIndex,
+    blindingFactor: item.blindingFactor,
+    refundPubKeyHash: item.refundPubKeyHash,
+    refundLocktime: item.refundLocktime,
+    vault: item.vault,
+    depositTimestamp: item.depositTimestamp,
+    updateTime: item.updateTimestamp,
+    transactions: item.transactions
+  }));
+
+
+export const formatRedeems = (rawData) =>
+  rawData.map((item) => ({
+    id: item.id,
+    status: item.status,
+    redeemer: item.redeemer,
+    amount: item.amount,
+    walletPubKeyHash: item.walletPubKeyHash,
+    redeemerOutputScript: item.redeemerOutputScript,
+    redemptionTxHash: item.redemptionTxHash,
+    treasuryFee: calculateTreasuryFee(item.treasuryFee),
+    txMaxFee: calculateTxMaxFee(item.txMaxFee),
+    completedTxHash: item.completedTxHash,
+    redemptionTimestamp: item.redemptionTimestamp,
+    updateTime: item.updateTimestamp,
+    transactions: item.transactions
+  }));
+
+
+const switchNetworkClient = (network) => {
+  if (network === Const.NETWORK_MAINNET) {
+    if (client.uri !== Const.MAINNET_API) {
+      client = new ApolloClient({
+        uri: Const.MAINNET_API,
+        cache: new InMemoryCache()
+      });
+    }
+  } else {
+    if (client.uri !== Const.TESTNET_API) {
+      client = new ApolloClient({
+        uri: Const.TESTNET_API,
+        cache: new InMemoryCache()
+      });
+    }
   }
 }
 
 export const getDeposits = async (network) => {
   const emptyData = JSON.parse(`[]`);
   try {
-    switchNetworkClient(network);
-    const indexerAddress = "0x4167eb613d784c910f5dc0f3f0515d61ec6ec8df";
-    if (indexerAddress.length > 0) {
-      const data = await client.query({
-        query: gql(allocationsQuery),
-        variables: {
-          id: indexerAddress.toLowerCase()
-        }
-      });
-      if (data.data.indexer.allocations == undefined || data.data.indexer.allocations == 'undefined') {
-        return emptyData;
-      }
-      return formatRowData(data.data.indexer.allocations);
-    }
-    return emptyData;
+    // switchNetworkClient(network);
+    // const indexerAddress = "0x4167eb613d784c910f5dc0f3f0515d61ec6ec8df";
+    // if (indexerAddress.length > 0) {
+    //   const data = await client.query({
+    //     query: gql(allocationsQuery),
+    //     variables: {
+    //       id: indexerAddress.toLowerCase()
+    //     }
+    //   });
+    //   if (data.data.indexer.allocations == undefined || data.data.indexer.allocations == 'undefined') {
+    //     return emptyData;
+    //   }
+    const mockData = MockDeposits;
+
+    return formatDepositsData(mockData);
+    // }
+
   } catch (e) {
     // console.log("error to fetch data " + e);
     return emptyData;
@@ -368,25 +263,27 @@ export const getDeposits = async (network) => {
 };
 
 export const getRedeems = async (network, page) => {
+  // const emptyData = JSON.parse(`[]`);
+  // try {
+  //   switchNetworkClient(network);
+  //   const skip = page - 1;
+  //   const data = await client.query({
+  //     query: gql(querySubgraphs),
+  //     variables: {
+  //       first: 1000,
+  //       skip: 0,
+  //       orderBy: 'signalAmount',
+  //       orderDirection: "desc"
+  //     }
+  //   });
+  //   const formatSubgraphs = formatSubgraphData(data.data.subgraphs);
+  //   const formatSubgraphDupplicate = removeDupplicateIpfs(formatSubgraphs,"ipfsHash");
+  //   return formatSubgraphDupplicate;
+  // } catch (e) {
+  //   console.log("error to fetch data " + e);
+  //   return emptyData;
+  // }
+  const mockData = MockRedeems;
 
-  const emptyData = JSON.parse(`[]`);
-  try {
-    switchNetworkClient(network);
-    const skip = page - 1;
-    const data = await client.query({
-      query: gql(querySubgraphs),
-      variables: {
-        first: 1000,
-        skip: 0,
-        orderBy: 'signalAmount',
-        orderDirection: "desc"
-      }
-    });
-    const formatSubgraphs = formatSubgraphData(data.data.subgraphs);
-    const formatSubgraphDupplicate = removeDupplicateIpfs(formatSubgraphs,"ipfsHash");
-    return formatSubgraphDupplicate;
-  } catch (e) {
-    console.log("error to fetch data " + e);
-    return emptyData;
-  }
+  return formatRedeems(mockData);
 };

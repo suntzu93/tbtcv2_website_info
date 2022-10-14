@@ -25,6 +25,8 @@
   border-bottom: 1px solid rgb(245, 245, 245);
   font-family: 'Work Sans', sans-serif;
   -webkit-font-smoothing: antialiased;
+  font-weight: 500;
+  font-size: 1rem;
 }
 
 .table .selected{
@@ -47,8 +49,6 @@
   font-size: 0.9em;
 }
 
-
-
 .pagination {
   margin: 30px 35px 0;
   text-align: right;
@@ -60,48 +60,55 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-table {
-  border-collapse: collapse;
-  width: 100%;
-  background-color: #fff;
-  border-radius: 15px;
+.rowSeleted{
+  background:antiquewhite;
+}
+
+.td_selected {
+  width: 0;
+}
+
+.container_detail{
+  margin:0;
+  background:floralwhite;
+}
+.detail_item{
+  display: flex;
+  margin: 0;
+}
+
+.timeline{
+  width: 50%;
+}
+
+.bySpan{
+  padding-left: 10px;
+  padding-right: 10px;
+  font-size: 0.8rem;
+  color: gray;
+}
+
+.span_note{
+  font-size: 0.8rem;
+}
+
+.by_link{
+  color: "#7850cd";
+  underline: none;
+  font-size: 0.8rem;
+}
+
+.table_detail{
   font-family: 'Work Sans', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  border: 0 !important;
+    border-spacing: 0 !important;
+    
 }
 
-th {
-  display: table-cell;
-  vertical-align: inherit;
-  font-weight: bold;
-  padding-bottom: 10px;
-  padding-top: 20px;
-}
-
-td {
-  border-bottom: 1px solid rgb(245, 245, 245);
-}
-
-th,td {
-  text-align: left;
-  padding-left: 20px;
-}
-
-.action_header div{
-  width: 75%;
-  float: right;
-}
-
-.poi_style{
-  color: gray;
-  font-size: 0.9em;
-}
-
-.dialog{
-  font-family: "Work Sans",sans-serif;
-    -webkit-font-smoothing: antialiased;
-}
-
-.poi_form{
-  width:500px;
+.table_detail td {
+  border-bottom: 0px;
+  font-size: 1rem;
+  font-weight: 500;
 }
