@@ -8,10 +8,12 @@ import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
 import Button from '@mui/material/Button';
 import { browserHistory } from 'react-router';
-import { ReactComponent as Logo } from '../../logo.svg';
+// import Logo from '../../tbtc_logo.png'
 import styles from './styles.module.css'
 import SubgraphPage from "../redeems/index";
 import DepositPage from "../deposit/index"
+import { ReactComponent as Logo } from "../../logo.svg";
+
 const HomePage = () => {
 
   const [network, setNetwork] = useState("mainnet");
@@ -97,7 +99,9 @@ const HomePage = () => {
       <Box sx={{ width: "100%", typography: "body" }}>
         <TabContext value={tab}>
           <Box sx={{ borderBottom: 1, borderColor: "divider", textAlign: "left", marginLeft: "20px", paddingTop: "20px" }}>
+            <div style={{width: "fit-content",float:"left"}}>
             <a href="/"><Logo height={60} /></a>
+            </div>
             <TabList onChange={handleChange} aria-label="" sx={{ display: "inline-block", paddingLeft: "20px" }} >
               <Tab sx={{ fontFamily: "\"Work Sans\",sans-serif" }} label="Deposits" value="deposits" />
               <Tab sx={{ fontFamily: "\"Work Sans\",sans-serif" }} label="Redeems" value="redeems" />

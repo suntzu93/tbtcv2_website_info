@@ -8,6 +8,10 @@ body {
   background: rgb(250, 250, 250);
 }
 
+button:focus {
+  outline: none;
+}
+
 code {
   font-family: "Work Sans",sans-serif;
 }
