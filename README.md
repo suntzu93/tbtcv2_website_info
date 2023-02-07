@@ -6,7 +6,11 @@ Provide insight into the workings of the tBTC systems - deposits, redemptions, w
 
 ```bash
 git clone https://github.com/suntzu93/tbtcv2_website_info.git
-npm install
+cd tbtcv2_website_info
+npm install --force
+npm install -g serve
+npm install -g yarn
+yarn add graphql
 
 npm run-script prod
 
