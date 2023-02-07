@@ -99,7 +99,7 @@ const HomePage = () => {
 
         const handleChangeSearchInput = (event) => {
             setSearchInput(event.target.value);
-            if (event.target.value.trim().length == 0){
+            if (event.target.value.trim().length == 0) {
                 setIsSearch(false)
             }
         };
@@ -209,8 +209,11 @@ const HomePage = () => {
                     <TabPanel value="about">{about()}</TabPanel>
                 </TabContext>
                 <div className={styles.div_bottom}>
-                    The Graph (Mainnet : <a href={Const.MAINNET_API}>suntzu93/threshold-tbtc</a> - Testnet : <a
-                    href={Const.TESTNET_API}>suntzu93/tbtcv2</a>)
+                    <a target="_blank" href={"https://github.com/suntzu93/threshold-tBTC"}>[Subgraph code] - </a>
+                    <a target="_blank" href={"https://github.com/suntzu93/tbtcv2_website_info"}>[Website code] </a>
+                    API (Mainnet : <a target="_blank" href={Const.MAINNET_API}>suntzu93/threshold-tbtc</a> -
+                    Testnet : <a target="_blank"
+                                 href={Const.TESTNET_API}>suntzu93/tbtcv2</a>)
                 </div>
             </Box>
 
