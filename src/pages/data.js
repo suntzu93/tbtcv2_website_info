@@ -272,6 +272,16 @@ function calculateDuationActive(date) {
   }
 }
 
+export function formatDate(date) {
+  return new Date(date).toLocaleString("en-US", {
+    month: "short",
+    day: "2-digit",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+}
+
 export const calculateTimeMoment = (timestamp) => {
   return formatTimestampToText(
     moment.duration(
@@ -287,6 +297,15 @@ const calculateTxMaxFee = (txMaxFee) => (
   txMaxFee / Const.SATOSHI_BITCOIN
 )
 
+function convertToLittleEndian(hex) {
+  hex = hex.replace("0x", "");
+  hex = hex.padStart(8, "0");
+  let littleEndianHex = "";
+  for (let i = hex.length - 2; i >= 0; i -= 2) {
+    littleEndianHex += hex.slice(i, i + 2);
+  }
+  return "0x" + littleEndianHex;
+}
 
 export const formatDepositsData = (rawData) =>
   rawData.map((item) => ({
@@ -302,7 +321,7 @@ export const formatDepositsData = (rawData) =>
     fundingOutputIndex: item.fundingOutputIndex,
     blindingFactor: item.blindingFactor,
     refundPubKeyHash: item.refundPubKeyHash,
-    refundLocktime: item.refundLocktime,
+    refundLocktime: formatDate(parseInt(convertToLittleEndian(item.refundLocktime), 16) * 1000),
     vault: item.vault,
     depositTimestamp: item.depositTimestamp * 1000,
     updateTime: item.updateTimestamp * 1000,
