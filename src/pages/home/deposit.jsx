@@ -5,7 +5,7 @@ import { ApolloProvider } from '@apollo/client';
 import styles from './styles.module.css'
 import * as Const from '../../utils/Cons';
 
-const DepositPage = ({network}) => {
+const DepositPage = ({network, isSearch , searchInput}) => {
   const [pageData, setPageData] = useState({
     rowData: [],
     isLoading: false,
@@ -20,7 +20,7 @@ const DepositPage = ({network}) => {
       isLoading: true,
     }));
 
-    Data.getDeposits(network).then((info) => {
+    Data.getDeposits(network,isSearch,searchInput).then((info) => {
       const totalPassengers = info.length;
       setPageData({
         isLoading: false,
@@ -29,14 +29,14 @@ const DepositPage = ({network}) => {
       });
     });
 
-  },[network]);
+  },[network,isSearch]);
 
 
   return (
     <div>
 
-      <div className={styles.allocation_header}>
-        <h3>All Deposits</h3>
+      <div className={styles.deposit_header}>
+        <h3>All Deposits <span>({network})</span></h3> 
         <span>{pageData.totalPassengers} deposits</span>
       </div>
       <ApolloProvider client={Data.client}>

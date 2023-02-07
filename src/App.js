@@ -1,11 +1,26 @@
 import "./App.css";
 import HomePage from "./pages/home";
+
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+
+const theme = createTheme({
+    typography: {
+        allVariants: {
+            fontSize:"0.875rem",
+            "-webkit-font-smoothing":"antialiased",
+            "-moz-osx-font-smoothing":"grayscale"
+        },
+    },
+});
+
+
 function App() {
   return (
-    <div className="App">
-      <HomePage />
-    </div>
+    <ThemeProvider theme={theme}>
+        <HomePage />
+    </ThemeProvider>
   );
 }
+
 
 export default App;

@@ -1,5 +1,5 @@
-export const MAINNET_API = "";
-export const TESTNET_API = "";
+export const MAINNET_API = "https://api.thegraph.com/subgraphs/name/suntzu93/threshold-tbtc";
+export const TESTNET_API = "https://api.thegraph.com/subgraphs/name/suntzu93/tbtcv2";
 
 export const DECIMAL_ETH = 1000000000000000000;
 export const SATOSHI_BITCOIN = 100000000;

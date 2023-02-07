@@ -26,7 +26,7 @@
   font-family: 'Work Sans', sans-serif;
   -webkit-font-smoothing: antialiased;
   font-weight: 500;
-  font-size: 1rem;
+  font-size: 0.875rem;
 }
 
 .table .selected{
@@ -93,8 +93,7 @@
 }
 
 .by_link{
-  color: "#7850cd";
-  underline: none;
+  color:"#7850cd";
   font-size: 0.8rem;
 }
 
@@ -109,6 +108,6 @@
 
 .table_detail td {
   border-bottom: 0px;
-  font-size: 1rem;
+  font-size: 0.875rem;
   font-weight: 500;
 }

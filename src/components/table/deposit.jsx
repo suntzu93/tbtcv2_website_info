@@ -30,7 +30,7 @@ import * as Const from '../../utils/Cons';
 import * as Utils from '../../utils/utils';
 import TransactionTimeline from './timeline'
 
-export const DepositTable = ({ columns, data, isLoading }) => {
+export const DepositTable = ({ columns, data, isLoading, network }) => {
   const columnData = useMemo(() => columns, [columns]);
   const rowData = useMemo(() => data, [data]);
 
@@ -95,9 +95,9 @@ export const DepositTable = ({ columns, data, isLoading }) => {
               align={'left'}
               sortDirection={orderBy === headCell.accessor ? order : false}
             >
-              {headCell.accessor == "updateTime" || headCell.accessor == "amount" || headCell.accessor == "status" ? (
+              {headCell.accessor == "updateTime" || headCell.accessor == "amount" || headCell.accessor == "actualAmountReceived" || headCell.accessor == "status" ? (
                 <TableSortLabel
-                  direction={orderBy === headCell.accessor ? order : 'asc'}
+                  direction={orderBy === headCell.accessor ? order : 'desc'}
                   onClick={createSortHandler(headCell.accessor)}
                 >
                   {headCell.header}
@@ -118,7 +118,7 @@ export const DepositTable = ({ columns, data, isLoading }) => {
     rowCount: PropTypes.number.isRequired,
   };
 
-  const [order, setOrder] = React.useState('asc');
+  const [order, setOrder] = React.useState('desc');
   const [orderBy, setOrderBy] = React.useState('updateTime');
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(100);
@@ -171,15 +171,24 @@ export const DepositTable = ({ columns, data, isLoading }) => {
             <Link
               target="_blank"
               underline="hover"
-              href="#"
+              href={Utils.getEtherAddressLink() + row.depositor}
               className={styles.link}
             >
               {Data.formatString(row.depositor)}
             </Link>
             <ShareLink />
+            <Tooltip title="Copied">
+              <Copy
+                  style={{ cursor: "pointer" }}
+                  onClick={(e) => copyToClipBoard(row.depositor)}
+              />
+            </Tooltip>
           </TableCell>
           <TableCell align="left">
             {Data.formatSatoshi(row.amount)}
+          </TableCell>
+          <TableCell align="left">
+            {Data.formatGwei(row.actualAmountReceived)}
           </TableCell>
           <TableCell align="left">
             {row.status}
@@ -191,7 +200,7 @@ export const DepositTable = ({ columns, data, isLoading }) => {
               <Box sx={{ margin: 1 }}>
                 <div className={styles.detail_item}>
 
-                  <TransactionTimeline className={styles.timeline} transactions={row.transactions} />
+                  <TransactionTimeline className={styles.timeline} transactions={row.transactions} network={network} />
                   <div className={styles.timeline}>
                     <Table
                       className={styles.table_detail}
@@ -201,12 +210,16 @@ export const DepositTable = ({ columns, data, isLoading }) => {
                     >
                       <TableBody>
                         <TableRow>
+                          <TableCell>Deposit key</TableCell>
+                          <TableCell>{row.id}</TableCell>
+                        </TableRow>
+                        <TableRow>
                           <TableCell>Wallet Pub KeyHash</TableCell>
                           <TableCell>{row.walletPubKeyHash}</TableCell>
                         </TableRow>
                         <TableRow>
                           <TableCell>Funding TxHash </TableCell>
-                          <TableCell>{Data.formatString(row.walletPubKeyHash)}</TableCell>
+                          <TableCell>{row.fundingTxHash}</TableCell>
                         </TableRow>
                         <TableRow>
                           <TableCell>Funding Output Index</TableCell>
@@ -226,22 +239,17 @@ export const DepositTable = ({ columns, data, isLoading }) => {
                         </TableRow>
                         <TableRow>
                           <TableCell>Vault</TableCell>
-
                           <TableCell>
                             <Link
                               target="_blank"
                               underline="hover"
-                              href="#"
+                              href={Utils.getEtherAddressLink() + row.vault}
                               className={styles.link}
                             >
                               {Data.formatString(row.vault)}
                             </Link>
                             <ShareLink />
                           </TableCell>
-                        </TableRow>
-                        <TableRow>
-                          <TableCell>Deposit Timestamp</TableCell>
-                          <TableCell>{Data.calculateTimeMoment(row.depositTimestamp)}</TableCell>
                         </TableRow>
                       </TableBody>
                     </Table>

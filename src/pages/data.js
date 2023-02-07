@@ -10,14 +10,95 @@ export var client = new ApolloClient({
   cache: new InMemoryCache()
 });
 
+const queryDepositsSearch = `
+  query Deposit($user: String){
+    deposits(first: 1000,where:{user :$user},orderBy: updateTimestamp,orderDirection: desc) {
+      id
+      status
+      user{
+        id
+      }
+      amount
+      newDebt
+      actualAmountReceived
+      treasuryFee
+      walletPubKeyHash
+      fundingTxHash
+      fundingOutputIndex
+      blindingFactor
+      refundPubKeyHash
+      refundLocktime
+      vault
+      depositTimestamp
+      updateTimestamp
+      transactions(orderBy: timestamp,orderDirection:desc){
+        timestamp
+        txHash
+        from
+        to
+        description
+      }
+    }
+  }
+`;
+
 const queryDeposits = `
-  query Depists($id: String){
+  query {
+    deposits(first: 1000,orderBy: updateTimestamp,orderDirection: desc) {
+      id
+      status
+      user{
+        id
+      }
+      amount
+      newDebt
+      actualAmountReceived
+      treasuryFee
+      walletPubKeyHash
+      fundingTxHash
+      fundingOutputIndex
+      blindingFactor
+      refundPubKeyHash
+      refundLocktime
+      vault
+      depositTimestamp
+      updateTimestamp
+      transactions(orderBy: timestamp,orderDirection:desc){
+        timestamp
+        txHash
+        from
+        to
+        description
+      }
+    }
   }
 `;
 
 const queryRedeems = `
-query Redeems($first: Int,$skip:Int, $orderBy: BigInt, $orderDirection: String){
-
+query {
+  redemptions{
+    id,
+    status,
+    user{
+      id
+    },
+    amount,
+    walletPubKeyHash,
+    redeemerOutputScript,
+    redemptionTxHash,
+    treasuryFee,
+    txMaxFee,
+    completedTxHash
+    redemptionTimestamp
+    updateTimestamp
+    transactions(orderBy: timestamp,orderDirection:desc){
+      timestamp
+      txHash
+      from
+      to
+      description
+    }
+  }
 }
 `;
 
@@ -33,8 +114,13 @@ export const deposit_columns = [
     numeric: false,
   },
   {
-    header: "Amount",
+    header: "Amount request",
     accessor: "amount",
+    numeric: false,
+  },
+  {
+    header: "Amount received",
+    accessor: "actualAmountReceived",
     numeric: false,
   },
   {
@@ -99,16 +185,20 @@ const COUNT_FORMATS =
 
 
 export const formatSatoshi = (data) => {
-  return parseFloat(data / Const.SATOSHI_BITCOIN).toFixed(2);
+  return data / Const.SATOSHI_BITCOIN;
 };
 
 export const formatGwei = (value) => {
-  return parseFloat(value / Const.DECIMAL_ETH).toFixed(2);
-}
+  return parseFloat(value / Const.DECIMAL_ETH).toFixed(7);
+};
 
-export const formatNumberDecimal = (value) => {
+export const formatWeiDecimal = (value) => {
   return new Intl.NumberFormat().format(formatGwei(value));
-}
+};
+
+export const formatNumberToDecimal = (value) => {
+  return new Intl.NumberFormat().format(value);
+};
 
 export const formatNumber = (value) => {
   let newValue = value / Const.DECIMAL_ETH;
@@ -116,6 +206,23 @@ export const formatNumber = (value) => {
   newValue = (1000 * newValue / format.limit);
   newValue = Math.round(newValue * 10) / 10;
   return (newValue + format.letter);
+}
+
+function formatTimestampToText(date) {
+  const month = date.months();
+  let day = date.days();
+  const hours = date.hours();
+  const minutes = date.minutes();
+  if (month > 0) {
+    day = day + month * 30;
+  }
+  if (day > 0) {
+    return `${day < 10 ? "0" + day : day}d ${hours < 10 ? "0" + hours : hours}h ago`;
+  }else{
+    return `${hours < 10 ? "0" + hours : hours}h ${
+      minutes < 10 ? "0" + minutes : minutes
+    }m ago`;
+  }
 }
 
 function calculateDuationActive(date) {
@@ -166,7 +273,7 @@ function calculateDuationActive(date) {
 }
 
 export const calculateTimeMoment = (timestamp) => {
-  return calculateDuationActive(
+  return formatTimestampToText(
     moment.duration(
       moment(new Date().getTime()).diff(moment(timestamp))
     )
@@ -174,7 +281,7 @@ export const calculateTimeMoment = (timestamp) => {
 };
 
 const calculateTreasuryFee = (treasuryFee) => (
-   1 / treasuryFee * 100
+  1 / treasuryFee * 100
 )
 const calculateTxMaxFee = (txMaxFee) => (
   txMaxFee / Const.SATOSHI_BITCOIN
@@ -185,8 +292,11 @@ export const formatDepositsData = (rawData) =>
   rawData.map((item) => ({
     id: item.id,
     status: item.status,
-    depositor: item.depositor,
-    amount: item.amount,
+    depositor: item.user.id,
+    amount: parseFloat(item.amount),
+    newDebt: parseFloat(item.newDebt),
+    actualAmountReceived: parseFloat(item.actualAmountReceived),
+    treasuryFee: parseFloat(item.treasuryFee),
     walletPubKeyHash: item.walletPubKeyHash,
     fundingTxHash: item.fundingTxHash,
     fundingOutputIndex: item.fundingOutputIndex,
@@ -194,8 +304,8 @@ export const formatDepositsData = (rawData) =>
     refundPubKeyHash: item.refundPubKeyHash,
     refundLocktime: item.refundLocktime,
     vault: item.vault,
-    depositTimestamp: item.depositTimestamp,
-    updateTime: item.updateTimestamp,
+    depositTimestamp: item.depositTimestamp * 1000,
+    updateTime: item.updateTimestamp * 1000,
     transactions: item.transactions
   }));
 
@@ -204,16 +314,16 @@ export const formatRedeems = (rawData) =>
   rawData.map((item) => ({
     id: item.id,
     status: item.status,
-    redeemer: item.redeemer,
-    amount: item.amount,
+    redeemer: item.user.id,
+    amount: parseFloat(item.amount),
     walletPubKeyHash: item.walletPubKeyHash,
     redeemerOutputScript: item.redeemerOutputScript,
     redemptionTxHash: item.redemptionTxHash,
     treasuryFee: calculateTreasuryFee(item.treasuryFee),
     txMaxFee: calculateTxMaxFee(item.txMaxFee),
     completedTxHash: item.completedTxHash,
-    redemptionTimestamp: item.redemptionTimestamp,
-    updateTime: item.updateTimestamp,
+    redemptionTimestamp: item.redemptionTimestamp * 1000,
+    updateTime: item.updateTimestamp * 1000,
     transactions: item.transactions
   }));
 
@@ -236,54 +346,41 @@ const switchNetworkClient = (network) => {
   }
 }
 
-export const getDeposits = async (network) => {
+export const getDeposits = async (network,isSearch,searchInput) => {
   const emptyData = JSON.parse(`[]`);
   try {
-    // switchNetworkClient(network);
-    // const indexerAddress = "0x4167eb613d784c910f5dc0f3f0515d61ec6ec8df";
-    // if (indexerAddress.length > 0) {
-    //   const data = await client.query({
-    //     query: gql(allocationsQuery),
-    //     variables: {
-    //       id: indexerAddress.toLowerCase()
-    //     }
-    //   });
-    //   if (data.data.indexer.allocations == undefined || data.data.indexer.allocations == 'undefined') {
-    //     return emptyData;
-    //   }
-    const mockData = MockDeposits;
-
-    return formatDepositsData(mockData);
-    // }
-
+    switchNetworkClient(network);
+    const data = await client.query({
+      query: gql(isSearch ? queryDepositsSearch : queryDeposits),
+      variables: {
+        user: searchInput,
+      },
+    });
+    // console.log(JSON.stringify(data.data.deposits));
+    if (data.data.deposits !== undefined) {
+      return formatDepositsData(data.data.deposits);
+    }
   } catch (e) {
     // console.log("error to fetch data " + e);
     return emptyData;
   }
+  return emptyData;
 };
 
 export const getRedeems = async (network, page) => {
-  // const emptyData = JSON.parse(`[]`);
-  // try {
-  //   switchNetworkClient(network);
-  //   const skip = page - 1;
-  //   const data = await client.query({
-  //     query: gql(querySubgraphs),
-  //     variables: {
-  //       first: 1000,
-  //       skip: 0,
-  //       orderBy: 'signalAmount',
-  //       orderDirection: "desc"
-  //     }
-  //   });
-  //   const formatSubgraphs = formatSubgraphData(data.data.subgraphs);
-  //   const formatSubgraphDupplicate = removeDupplicateIpfs(formatSubgraphs,"ipfsHash");
-  //   return formatSubgraphDupplicate;
-  // } catch (e) {
-  //   console.log("error to fetch data " + e);
-  //   return emptyData;
-  // }
-  const mockData = MockRedeems;
-
-  return formatRedeems(mockData);
+  const emptyData = JSON.parse(`[]`);
+  try {
+    switchNetworkClient(network);
+    const data = await client.query({
+      query: gql(queryRedeems)
+    });
+    // console.log(JSON.stringify(data.data.deposits));
+    if (data.data.redemptions !== undefined) {
+      return formatRedeems(data.data.redemptions);
+    }
+  } catch (e) {
+    // console.log("error to fetch data " + e);
+    return emptyData;
+  }
+  return emptyData;
 };

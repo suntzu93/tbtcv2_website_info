@@ -4,12 +4,13 @@
   text-indent: initial;
   border-spacing: 2px;
   border-color: grey;
+  text-align: center;
 }
 
 .search {
   float: right;
-  margin-right: 100px;
-  width: 20%;
+  margin-right: 70px;
+  width: 400px;
   min-width: 200px;
 }
 
@@ -32,16 +33,19 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-.wallet_connected {
-  background: lightblue;
-  border-radius: 10px;
-  font-family: "Work Sans", sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
 .about {
   float: right;
   margin-right: 20px;
+}
+
+.setting {
+  float: right;
+  margin-right: 10px;
+  margin-top: 5px;
+}
+
+.search {
+  float: right;
 }
 
 .network {
@@ -52,7 +56,7 @@
 
 .network button {
   top: 20%;
-  border-radius: 15px;
+  border-radius: 5px;
   font-family: "Work Sans", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -129,18 +133,19 @@
   font-weight: bold;
 }
 
-.allocation_header {
+.deposit_header {
   text-align: left;
   padding-bottom: 10px;
   margin-top: 20px;
 }
 
-.allocation_header h3 {
+.deposit_header h3 {
   font-weight: bold;
 }
 
-.allocation_header span {
+.deposit_header span {
   color: gray;
+  font-size: 1rem;
 }
 
 .link{
@@ -148,16 +153,7 @@
     underline: none;
 }
 
-.indexer_header{
-    font-weight: bold;
-    font-size: 1em;
-    padding:5px;
-    font-family: "Work Sans", sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-}
-
-.indexer_header h6 {
-    margin-bottom:0;
-    font-weight: bold;
+.div_bottom{
+  text-align: center;
+  margin-bottom: 50px;
 }
