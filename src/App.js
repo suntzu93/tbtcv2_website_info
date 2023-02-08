@@ -7,6 +7,7 @@ const theme = createTheme({
     typography: {
         allVariants: {
             fontSize:"0.875rem",
+            fontFamily: `Work Sans`,
             "-webkit-font-smoothing":"antialiased",
             "-moz-osx-font-smoothing":"grayscale"
         },

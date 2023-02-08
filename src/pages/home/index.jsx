@@ -144,17 +144,17 @@ const HomePage = () => {
                             sx={{display: "inline-block", paddingLeft: "20px"}}
                         >
                             <Tab
-                                sx={{fontFamily: '"Work Sans",sans-serif'}}
+                                sx={{padding:0}}
                                 label="Deposits"
                                 value="deposits"
                             />
                             <Tab
-                                sx={{fontFamily: '"Work Sans",sans-serif'}}
+                                sx={{padding:0}}
                                 label="Redeems"
                                 value="redeems"
                             />
                             <Tab
-                                sx={{fontFamily: '"Work Sans",sans-serif'}}
+                                sx={{padding:0}}
                                 label="Token"
                                 value="token"
                             />
@@ -166,7 +166,7 @@ const HomePage = () => {
                                 aria-label=""
                             >
                                 <Tab
-                                    sx={{fontFamily: '"Work Sans",sans-serif'}}
+                                    sx={{padding:0}}
                                     label="About"
                                     value="about"
                                 />

@@ -21,6 +21,9 @@
     .logo_header svg {
         width: 200px;
     }
+    .search{
+        visibility: hidden;
+    }
 }
 
 @media (max-width: 870px) {
@@ -31,7 +34,7 @@
 
 .search {
     float: right;
-    margin-right: 70px;
+    margin-right: 20px;
     width: 20%;
     min-width: 200px;
 }
@@ -62,12 +65,7 @@
 
 .setting {
     float: right;
-    margin-right: 10px;
     margin-top: 5px;
-}
-
-.search {
-    float: right;
 }
 
 .network {
