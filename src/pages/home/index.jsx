@@ -109,6 +109,7 @@ const HomePage = () => {
                 setIsSearch(true)
             }
         };
+
         return (<Box sx={{width: "100%", typography: "body"}}>
                 <TabContext value={tab}>
                     <Box
@@ -120,7 +121,7 @@ const HomePage = () => {
                             paddingTop: "20px",
                         }}
                     >
-                        <div style={{width: "fit-content", float: "left"}}>
+                        <div className={styles.logo_header}>
                             <a href="/">
                                 <Logo height={60}/>
                             </a>

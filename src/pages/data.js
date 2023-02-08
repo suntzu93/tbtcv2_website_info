@@ -298,13 +298,19 @@ const calculateTxMaxFee = (txMaxFee) => (
 )
 
 function convertToLittleEndian(hex) {
-  hex = hex.replace("0x", "");
-  hex = hex.padStart(8, "0");
-  let littleEndianHex = "";
-  for (let i = hex.length - 2; i >= 0; i -= 2) {
-    littleEndianHex += hex.slice(i, i + 2);
+  try {
+    if (hex == null)
+      return "Can't detect !"
+    hex = hex.replace("0x", "");
+    hex = hex.padStart(8, "0");
+    let littleEndianHex = "";
+    for (let i = hex.length - 2; i >= 0; i -= 2) {
+      littleEndianHex += hex.slice(i, i + 2);
+    }
+    return "0x" + littleEndianHex;
+  }catch (e) {
+    console.log(e)
   }
-  return "0x" + littleEndianHex;
 }
 
 export const formatDepositsData = (rawData) =>
@@ -321,7 +327,7 @@ export const formatDepositsData = (rawData) =>
     fundingOutputIndex: item.fundingOutputIndex,
     blindingFactor: item.blindingFactor,
     refundPubKeyHash: item.refundPubKeyHash,
-    refundLocktime: formatDate(parseInt(convertToLittleEndian(item.refundLocktime), 16) * 1000),
+    refundLocktime: formatDate(parseInt(convertToLittleEndian(item.refundLocktime) * 1000)),
     vault: item.vault,
     depositTimestamp: item.depositTimestamp * 1000,
     updateTime: item.updateTimestamp * 1000,

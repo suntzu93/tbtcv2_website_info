@@ -1,85 +1,109 @@
 .table_content {
-  box-shadow: rgb(20 20 20 / 20%) 0px 4px 8px;
-  box-sizing: border-box;
-  text-indent: initial;
-  border-spacing: 2px;
-  border-color: grey;
-  text-align: center;
+    box-shadow: rgb(20 20 20 / 20%) 0px 4px 8px;
+    box-sizing: border-box;
+    text-indent: initial;
+    border-spacing: 2px;
+    border-color: grey;
+    text-align: center;
+}
+
+.logo_header {
+    float: left;
+    width: fit-content;
+}
+
+.logo_header svg {
+    width: 250px;
+
+}
+
+@media (max-width: 940px) {
+    .logo_header svg {
+        width: 200px;
+    }
+}
+
+@media (max-width: 870px) {
+    .logo_header svg {
+        width: 150px;
+    }
 }
 
 .search {
-  float: right;
-  margin-right: 70px;
-  width: 400px;
-  min-width: 200px;
+    float: right;
+    margin-right: 70px;
+    width: 20%;
+    min-width: 200px;
 }
 
 .search_button {
-  position: absolute;
-  right: 4px;
-  top: 4px;
-  background-color: #c00;
-  border-radius: 50%;
-  border: 0;
-  color: #fff;
-  width: 35px;
-  height: 35px;
-  outline: 0;
+    position: absolute;
+    right: 4px;
+    top: 4px;
+    background-color: #c00;
+    border-radius: 50%;
+    border: 0;
+    color: #fff;
+    width: 35px;
+    height: 35px;
+    outline: 0;
 }
 
 .tab {
-  font-family: "Work Sans", sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+    font-family: "Work Sans", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 .about {
-  float: right;
-  margin-right: 20px;
+    float: right;
+    margin-right: 20px;
 }
 
 .setting {
-  float: right;
-  margin-right: 10px;
-  margin-top: 5px;
+    float: right;
+    margin-right: 10px;
+    margin-top: 5px;
 }
 
 .search {
-  float: right;
+    float: right;
 }
 
 .network {
-  float: right;
-  margin-right: 50px;
-  height: 50px;
+    float: right;
+    margin-right: 50px;
+    height: 50px;
 }
 
 .network button {
-  top: 20%;
-  border-radius: 5px;
-  font-family: "Work Sans", sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+    top: 20%;
+    border-radius: 5px;
+    font-family: "Work Sans", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
+
 .wallet {
-  float: right;
-  margin-right: 20px;
-  height: 50px;
+    float: right;
+    margin-right: 20px;
+    height: 50px;
 }
+
 .wallet button {
     top: 20%;
-  border-radius: 15px;
-  font-family: "Work Sans", sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+    border-radius: 15px;
+    font-family: "Work Sans", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 .wallet_address {
-  float: right;
-  margin-right: 5px;
-  display: grid;
-  place-items: center;
-  height: 50px;
+    float: right;
+    margin-right: 5px;
+    display: grid;
+    place-items: center;
+    height: 50px;
 }
 
 .wallet_address span {
@@ -102,14 +126,14 @@
 }
 
 .wallet_token {
-   color:gray;
-   font-size: 0.9em;
+    color: gray;
+    font-size: 0.9em;
 }
 
-.generate_token{
+.generate_token {
     cursor: pointer;
     font-size: 12px;
-    background-color:antiquewhite;
+    background-color: antiquewhite;
     background-size: 20px 20px;
     background-repeat: no-repeat;
     background-position: 2px;
@@ -119,42 +143,42 @@
 }
 
 .about_content {
-  box-shadow: rgb(20 20 20 / 20%) 0px 4px 8px;
-  box-sizing: border-box;
-  text-indent: initial;
-  border-spacing: 2px;
-  border-color: grey;
-  padding: 50px;
-  text-align: left;
-  font-family: "Work Sans", sans-serif;
+    box-shadow: rgb(20 20 20 / 20%) 0px 4px 8px;
+    box-sizing: border-box;
+    text-indent: initial;
+    border-spacing: 2px;
+    border-color: grey;
+    padding: 50px;
+    text-align: left;
+    font-family: "Work Sans", sans-serif;
 }
 
 .about_content h3 {
-  font-weight: bold;
+    font-weight: bold;
 }
 
 .deposit_header {
-  text-align: left;
-  padding-bottom: 10px;
-  margin-top: 20px;
+    text-align: left;
+    padding-bottom: 10px;
+    margin-top: 20px;
 }
 
 .deposit_header h3 {
-  font-weight: bold;
+    font-weight: bold;
 }
 
 .deposit_header span {
-  color: gray;
-  font-size: 1rem;
+    color: gray;
+    font-size: 1rem;
 }
 
-.link{
+.link {
     color: "#7850cd";
     underline: none;
 }
 
-.div_bottom{
-  font-size: 0.875rem;
-  text-align: center;
-  margin-bottom: 50px;
+.div_bottom {
+    font-size: 0.875rem;
+    text-align: center;
+    margin-bottom: 50px;
 }
