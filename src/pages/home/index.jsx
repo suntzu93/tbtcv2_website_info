@@ -19,28 +19,32 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import TextField from "@mui/material/TextField";
 import SearchIcon from "@mui/icons-material/Search";
+import TokenPage from "./token";
 
 const HomePage = () => {
     const [network, setNetwork] = useState("mainnet");
     const [tab, setTab] = React.useState("1");
-    const [anchorEl, setAnchorEl] = React.useState(null);
+    const [anchorElSetting, setAnchorElSetting] = React.useState(null);
     const [searchInput, setSearchInput] = React.useState("");
     const [isSearch, setIsSearch] = React.useState(false);
 
-    const open = Boolean(anchorEl);
+    const openSetting = Boolean(anchorElSetting);
 
     useEffect(() => {
         const localNetwork = localStorage.getItem("network");
         if (localNetwork != null) setNetwork(localNetwork); else localStorage.setItem("network", "mainnet");
 
-        if (window.location.pathname.startsWith("/subgraphs")) {
+        if (window.location.pathname.startsWith("/redeems")) {
             setTab("redeems");
         } else if (window.location.pathname.startsWith("/about")) {
             setTab("about");
+        } else if (window.location.pathname.startsWith("/token")) {
+            setTab("token");
         } else {
             setTab("deposits");
         }
     }, [network]);
+
 
     const reload = () => {
         browserHistory.push("/");
@@ -49,13 +53,19 @@ const HomePage = () => {
 
     function deposits() {
         return (<div>
-            <DepositPage network={localStorage.getItem("network")} isSearch={isSearch} searchInput={searchInput}/>
+            <DepositPage network={network} isSearch={isSearch} searchInput={searchInput}/>
         </div>);
     }
 
     function redeems() {
         return (<div>
-            <RedeemsPage network={localStorage.getItem("network")} isSearch={isSearch} searchInput={searchInput}/>
+            <RedeemsPage network={network} isSearch={isSearch} searchInput={searchInput}/>
+        </div>);
+    }
+
+    function token() {
+        return (<div>
+            <TokenPage network={network}/>
         </div>);
     }
 
@@ -71,6 +81,8 @@ const HomePage = () => {
                     return browserHistory.push("/deposits");
                 case "redeems":
                     return browserHistory.push("/redeems");
+                case "token":
+                    return browserHistory.push("/token");
                 case "about":
                     return browserHistory.push("/about");
                 default:
@@ -91,10 +103,10 @@ const HomePage = () => {
         }
 
         const handleClickOpenSetting = (event: React.MouseEvent<HTMLButtonElement>) => {
-            setAnchorEl(event.currentTarget);
+            setAnchorElSetting(event.currentTarget);
         };
         const handleCloseOpenSetting = () => {
-            setAnchorEl(null);
+            setAnchorElSetting(null);
         };
 
         const handleChangeSearchInput = (event) => {
@@ -141,6 +153,11 @@ const HomePage = () => {
                                 label="Redeems"
                                 value="redeems"
                             />
+                            <Tab
+                                sx={{fontFamily: '"Work Sans",sans-serif'}}
+                                label="Token"
+                                value="token"
+                            />
                         </TabList>
                         <div className={styles.about}>
                             <TabList
@@ -159,17 +176,17 @@ const HomePage = () => {
                             <IconButton
                                 color="primary"
                                 component="label"
-                                aria-controls={open ? "basic-menu" : undefined}
+                                aria-controls={openSetting ? "basic-menu" : undefined}
                                 aria-haspopup="true"
-                                aria-expanded={open ? "true" : undefined}
+                                aria-expanded={openSetting ? "true" : undefined}
                                 onClick={handleClickOpenSetting}
                             >
                                 <SettingsIcon/>
                             </IconButton>
                             <Menu
-                                id="basic-menu"
-                                anchorEl={anchorEl}
-                                open={open}
+                                style={{marginTop:"20px"}}
+                                anchorEl={anchorElSetting}
+                                open={openSetting}
                                 onClose={handleCloseOpenSetting}
                                 MenuListProps={{
                                     "aria-labelledby": "basic-button",
@@ -188,8 +205,7 @@ const HomePage = () => {
                         </div>
                         <div className={styles.search}>
                             <TextField
-                                id="outlined-basic"
-                                label="Search by depositer / redeemer address"
+                                label="depositer / redeemer address"
                                 variant="outlined"
                                 fullWidth
                                 value={searchInput}
@@ -207,15 +223,9 @@ const HomePage = () => {
                     </Box>
                     <TabPanel value="deposits">{deposits()}</TabPanel>
                     <TabPanel value="redeems">{redeems()}</TabPanel>
+                    <TabPanel value="token">{token()}</TabPanel>
                     <TabPanel value="about">{about()}</TabPanel>
                 </TabContext>
-                <div className={styles.div_bottom}>
-                    <a target="_blank" href={"https://github.com/suntzu93/threshold-tBTC"}>[Subgraph code] - </a>
-                    <a target="_blank" href={"https://github.com/suntzu93/tbtcv2_website_info"}>[Website code] </a>
-                    API (Mainnet : <a target="_blank" href={Const.MAINNET_API}>suntzu93/threshold-tbtc</a> -
-                    Testnet : <a target="_blank"
-                                 href={Const.TESTNET_API}>suntzu93/tbtcv2</a>)
-                </div>
             </Box>
 
         );
