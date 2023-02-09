@@ -6,7 +6,7 @@ import Loader from "../../components/loader";
 import {ReactComponent as TBTCTokenLogo} from '../../assets/ttoken.svg';
 import * as Utils from "../../utils/utils";
 import Link from "@mui/material/Link";
-import { ReactComponent as ShareLink } from "../../assets/link.svg";
+import {ReactComponent as ShareLink} from "../../assets/link.svg";
 
 const TokenPage = ({network}) => {
     const [token, setToken] = useState({
@@ -42,29 +42,32 @@ const TokenPage = ({network}) => {
                                     className={styles.div_token_info_supply_value}>{Data.formatWeiDecimal(token.tokenData.totalSupply)}</div>
                                 <div className={styles.div_token_info_supply_sub_title}>tBTC</div>
                             </div>
+
+                            <div className={styles.div_underlined}></div>
                         </div>
                     </div>
                 </div>
                 <div className={styles.div_token_info}>
                     <div direction="column" className={styles.div_token_info_column}>
-                        <div className={styles.div_token_info_stats_title}>tBTC System Stats</div>
+                        <div className={styles.div_token_info_stats_title}>tBTC System Stats
+                        </div>
                         <div className={styles.div_token_info_stats_item}>
-                            <div className={styles.div_token_info_stats_item_title}>tBTC Address</div>
+                            <div className={styles.div_token_info_stats_item_title}>Address</div>
                             <div className={styles.div_token_info_stats_item_data}>
-                                <div className={styles.div_token_info_stats_item_data_value_address}>
-                                    <Link
-                                        target="_blank"
-                                        underline="hover"
-                                        href={Utils.getEtherAddressLink() + token.tokenData.address}
-                                        className={styles.link}
-                                    >
-                                        {Data.formatStringEnd(token.tokenData.address)}
-                                    </Link>
-                                    <ShareLink/>
-                                </div>
-                                <div className={styles.div_underlined}></div>
+                            <div className={styles.div_token_info_stats_item_data_value_address}>
+                                <Link
+                                    target="_blank"
+                                    underline="hover"
+                                    href={Utils.getEtherAddressLink() + token.tokenData.address}
+                                    className={styles.link}
+                                >
+                                    {Data.formatStringEnd(token.tokenData.address)}
+                                </Link>
+                                <ShareLink/>
+                            </div>
                             </div>
                         </div>
+
                         <div className={styles.div_token_info_stats_item}>
                             <div className={styles.div_token_info_stats_item_title}>tBTC Minted</div>
                             <div className={styles.div_token_info_stats_item_data}>
