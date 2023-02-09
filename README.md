@@ -8,12 +8,16 @@ Live at : https://tbtcscan.com/
 ```bash
 git clone https://github.com/suntzu93/tbtcv2_website_info.git
 cd tbtcv2_website_info
-npm install --force
-npm install -g serve
 npm install -g yarn
-yarn add graphql
+yarn install
+yarn codegen
 
-npm run-script prod
+# run in dev mode
+yarn start
+
+# run in produce mode
+yarn build-prod
+yarn preview
 
 # http://localhost:4401
 ```

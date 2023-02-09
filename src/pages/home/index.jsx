@@ -22,7 +22,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import TokenPage from "./token";
 
 const HomePage = () => {
-    const [network, setNetwork] = useState("mainnet");
+    const [network, setNetwork] = useState(Const.DEFAULT_NETWORK);
     const [tab, setTab] = React.useState("1");
     const [anchorElSetting, setAnchorElSetting] = React.useState(null);
     const [searchInput, setSearchInput] = React.useState("");
@@ -31,9 +31,6 @@ const HomePage = () => {
     const openSetting = Boolean(anchorElSetting);
 
     useEffect(() => {
-        const localNetwork = localStorage.getItem("network");
-        if (localNetwork != null) setNetwork(localNetwork); else localStorage.setItem("network", "mainnet");
-
         if (window.location.pathname.startsWith("/redeems")) {
             setTab("redeems");
         } else if (window.location.pathname.startsWith("/about")) {
@@ -91,18 +88,19 @@ const HomePage = () => {
         };
 
         function swichNetwork() {
-            var newNetwork = network == Const.NETWORK_MAINNET ? Const.NETWORK_TESTNET : Const.NETWORK_MAINNET;
-            setNetwork(newNetwork);
             setTab("deposits");
-            localStorage.setItem("network", newNetwork);
-            reload();
+            if (Const.DEFAULT_NETWORK == Const.NETWORK_MAINNET){
+                window.location.href = "https://testnet.tbtcscan.com/"
+            }else {
+                window.location.href = "https://tbtcscan.com/"
+            }
         }
 
         function isMainnet() {
-            return network == Const.NETWORK_MAINNET;
+            return Const.DEFAULT_NETWORK == Const.NETWORK_MAINNET;
         }
 
-        const handleClickOpenSetting = (event: React.MouseEvent<HTMLButtonElement>) => {
+        const handleClickOpenSetting = (event) => {
             setAnchorElSetting(event.currentTarget);
         };
         const handleCloseOpenSetting = () => {
@@ -144,17 +142,17 @@ const HomePage = () => {
                             sx={{display: "inline-block", paddingLeft: "20px"}}
                         >
                             <Tab
-                                sx={{padding:0}}
+                                sx={{padding: 0}}
                                 label="Deposits"
                                 value="deposits"
                             />
                             <Tab
-                                sx={{padding:0}}
+                                sx={{padding: 0}}
                                 label="Redeems"
                                 value="redeems"
                             />
                             <Tab
-                                sx={{padding:0}}
+                                sx={{padding: 0}}
                                 label="Token"
                                 value="token"
                             />
@@ -166,7 +164,7 @@ const HomePage = () => {
                                 aria-label=""
                             >
                                 <Tab
-                                    sx={{padding:0}}
+                                    sx={{padding: 0}}
                                     label="About"
                                     value="about"
                                 />
@@ -184,7 +182,7 @@ const HomePage = () => {
                                 <SettingsIcon/>
                             </IconButton>
                             <Menu
-                                style={{marginTop:"20px"}}
+                                style={{marginTop: "20px"}}
                                 anchorEl={anchorElSetting}
                                 open={openSetting}
                                 onClose={handleCloseOpenSetting}

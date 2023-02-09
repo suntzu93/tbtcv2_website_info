@@ -2,13 +2,8 @@ import React, { useMemo } from "react";
 import { useTable } from "react-table";
 import Loader from "../loader";
 import styles from "./styles.module.css";
-import { ReactComponent as Copy } from '../../assets/copy.svg';
-import Tooltip from '@mui/material/Tooltip';
-import Button from '@mui/material/Button';
-import ReportOutlinedIcon from '@mui/icons-material/ReportOutlined';
 import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
-import Stack from "@mui/material/Stack";
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -22,12 +17,9 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import Collapse from '@mui/material/Collapse';
 import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
 import Link from "@mui/material/Link";
 import { ReactComponent as ShareLink } from "../../assets/link.svg";
 import * as Data from "../../pages/data";
-import * as Const from '../../utils/Cons';
-import * as Utils from '../../utils/utils';
 import TransactionTimeline from './timeline'
 
 export const RedeemTable = ({ columns, data, isLoading }) => {

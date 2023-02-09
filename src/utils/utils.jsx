@@ -1,7 +1,7 @@
 import * as Const from "./Cons";
 
 const getEtherScanLink= () => {
-    return localStorage.getItem("network") === Const.NETWORK_MAINNET ? "https://etherscan.io" : "https://goerli.etherscan.io"
+    return localStorage.getItem("network") === Const.DEFAULT_NETWORK ? "https://etherscan.io" : "https://goerli.etherscan.io"
 }
 
 export const getEtherAddressLink = () => {

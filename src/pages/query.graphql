@@ -1,0 +1,124 @@
+query GetDepositsQueryByUser($user: String){
+    deposits(first: 1000,where:{user :$user},orderBy: updateTimestamp,orderDirection: desc) {
+        id
+        status
+        user{
+            id
+        }
+        amount
+        newDebt
+        actualAmountReceived
+        treasuryFee
+        walletPubKeyHash
+        fundingTxHash
+        fundingOutputIndex
+        blindingFactor
+        refundPubKeyHash
+        refundLocktime
+        vault
+        depositTimestamp
+        updateTimestamp
+        transactions(orderBy: timestamp,orderDirection:desc){
+            timestamp
+            txHash
+            from
+            to
+            description
+        }
+    }
+}
+
+query GetAllDepositsQuery{
+    deposits(first: 1000,orderBy: updateTimestamp,orderDirection: desc) {
+        id
+        status
+        user{
+            id
+        }
+        amount
+        newDebt
+        actualAmountReceived
+        treasuryFee
+        walletPubKeyHash
+        fundingTxHash
+        fundingOutputIndex
+        blindingFactor
+        refundPubKeyHash
+        refundLocktime
+        vault
+        depositTimestamp
+        updateTimestamp
+        transactions(orderBy: timestamp,orderDirection:desc){
+            timestamp
+            txHash
+            from
+            to
+            description
+        }
+    }
+}
+
+query GetRedemptionQueryByUser($user: String){
+    redemptions (first: 1000,where:{user :$user},orderBy: updateTimestamp,orderDirection: desc) {
+        id,
+        status,
+        user{
+            id
+        },
+        amount,
+        walletPubKeyHash,
+        redeemerOutputScript,
+        redemptionTxHash,
+        treasuryFee,
+        txMaxFee,
+        completedTxHash
+        redemptionTimestamp
+        updateTimestamp
+        transactions(orderBy: timestamp,orderDirection:desc){
+            timestamp
+            txHash
+            from
+            to
+            description
+        }
+    }
+}
+
+query GetAllRedemptionsQuery{
+    redemptions (first: 1000,orderBy: updateTimestamp,orderDirection: desc) {
+        id,
+        status,
+        user{
+            id
+        },
+        amount,
+        walletPubKeyHash,
+        redeemerOutputScript,
+        redemptionTxHash,
+        treasuryFee,
+        txMaxFee,
+        completedTxHash
+        redemptionTimestamp
+        updateTimestamp
+        transactions(orderBy: timestamp,orderDirection:desc){
+            timestamp
+            txHash
+            from
+            to
+            description
+        }
+    }
+}
+
+query TokenInfoQuery{
+    tbtctokens{
+        name
+        symbol
+        decimals
+        address
+        totalSupply
+        totalMint
+        totalBurn
+        currentTokenHolders
+    }
+}

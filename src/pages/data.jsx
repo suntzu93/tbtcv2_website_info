@@ -1,149 +1,6 @@
-import {gql, ApolloClient, InMemoryCache} from '@apollo/client';
+import * as client from '../../.graphclient'
 import * as Const from '../utils/Cons';
 import moment from 'moment';
-import {SATOSHI_BITCOIN} from "../utils/Cons";
-
-export var client = new ApolloClient({
-    uri: Const.MAINNET_API,
-    cache: new InMemoryCache()
-});
-
-const queryDepositsSearch = `
-  query Deposit($user: String){
-    deposits(first: 1000,where:{user :$user},orderBy: updateTimestamp,orderDirection: desc) {
-      id
-      status
-      user{
-        id
-      }
-      amount
-      newDebt
-      actualAmountReceived
-      treasuryFee
-      walletPubKeyHash
-      fundingTxHash
-      fundingOutputIndex
-      blindingFactor
-      refundPubKeyHash
-      refundLocktime
-      vault
-      depositTimestamp
-      updateTimestamp
-      transactions(orderBy: timestamp,orderDirection:desc){
-        timestamp
-        txHash
-        from
-        to
-        description
-      }
-    }
-  }
-`;
-
-const queryDeposits = `
-  query {
-    deposits(first: 1000,orderBy: updateTimestamp,orderDirection: desc) {
-      id
-      status
-      user{
-        id
-      }
-      amount
-      newDebt
-      actualAmountReceived
-      treasuryFee
-      walletPubKeyHash
-      fundingTxHash
-      fundingOutputIndex
-      blindingFactor
-      refundPubKeyHash
-      refundLocktime
-      vault
-      depositTimestamp
-      updateTimestamp
-      transactions(orderBy: timestamp,orderDirection:desc){
-        timestamp
-        txHash
-        from
-        to
-        description
-      }
-    }
-  }
-`;
-
-const queryRedeemsSearch = `
-  query Redemption($user: String){
-    redemptions (first: 1000,where:{user :$user},orderBy: updateTimestamp,orderDirection: desc) {
-      id,
-      status,
-      user{
-        id
-      },
-      amount,
-      walletPubKeyHash,
-      redeemerOutputScript,
-      redemptionTxHash,
-      treasuryFee,
-      txMaxFee,
-      completedTxHash
-      redemptionTimestamp
-      updateTimestamp
-      transactions(orderBy: timestamp,orderDirection:desc){
-        timestamp
-        txHash
-        from
-        to
-        description
-      }
-    }
-  }
-`;
-
-const queryRedeems = `
-query {
-  redemptions (first: 1000,orderBy: updateTimestamp,orderDirection: desc) {
-    id,
-    status,
-    user{
-      id
-    },
-    amount,
-    walletPubKeyHash,
-    redeemerOutputScript,
-    redemptionTxHash,
-    treasuryFee,
-    txMaxFee,
-    completedTxHash
-    redemptionTimestamp
-    updateTimestamp
-    transactions(orderBy: timestamp,orderDirection:desc){
-      timestamp
-      txHash
-      from
-      to
-      description
-    }
-  }
-}
-`;
-
-
-const queryTokenInfo = `
-query {
-  tbtctokens{
-    name
-    symbol
-    decimals
-    address
-    totalSupply
-    totalMint
-    totalBurn
-    currentTokenHolders
-  }
-}
-`;
-
 
 export const deposit_columns = [
     {
@@ -366,34 +223,36 @@ export const formatRedeems = (rawData) =>
     }));
 
 
-const switchNetworkClient = (network) => {
-    if (network === Const.NETWORK_MAINNET) {
-        if (client.uri !== Const.MAINNET_API) {
-            client = new ApolloClient({
-                uri: Const.MAINNET_API,
-                cache: new InMemoryCache()
-            });
-        }
-    } else {
-        if (client.uri !== Const.TESTNET_API) {
-            client = new ApolloClient({
-                uri: Const.TESTNET_API,
-                cache: new InMemoryCache()
-            });
-        }
-    }
-}
+// const switchNetworkClient = (network) => {
+//     if (network === Const.NETWORK_MAINNET) {
+//         if (client.uri !== Const.MAINNET_API) {
+//             client = new ApolloClient({
+//                 uri: Const.MAINNET_API,
+//                 cache: new InMemoryCache()
+//             });
+//         }
+//     } else {
+//         if (client.uri !== Const.TESTNET_API) {
+//             client = new ApolloClient({
+//                 uri: Const.TESTNET_API,
+//                 cache: new InMemoryCache()
+//             });
+//         }
+//     }
+// }
 
 export const getDeposits = async (network, isSearch, searchInput) => {
     const emptyData = JSON.parse(`[]`);
     try {
-        switchNetworkClient(network);
-        const data = await client.query({
-            query: gql(isSearch ? queryDepositsSearch : queryDeposits),
-            variables: {
+        // switchNetworkClient(network);
+        let data = emptyData;
+        if (!isSearch) {
+            data = await client.execute(client.GetAllDepositsQueryDocument, {});
+        } else {
+            data = await client.execute(client.GetDepositsQueryByUserDocument, {
                 user: searchInput,
-            },
-        });
+            });
+        }
         // console.log(JSON.stringify(data.data.deposits));
         if (data.data.deposits !== undefined) {
             return formatDepositsData(data.data.deposits);
@@ -408,14 +267,14 @@ export const getDeposits = async (network, isSearch, searchInput) => {
 export const getRedeems = async (network, isSearch, searchInput) => {
     const emptyData = JSON.parse(`[]`);
     try {
-        switchNetworkClient(network);
-        const data = await client.query({
-            query: gql(isSearch ? queryRedeemsSearch : queryRedeems),
-            variables: {
+        let data = emptyData;
+        if (!isSearch) {
+            data = await client.execute(client.GetAllRedemptionsQueryDocument, {});
+        } else {
+            data = await client.execute(client.GetRedemptionQueryByUserDocument, {
                 user: searchInput,
-            },
-        });
-        // console.log(JSON.stringify(data.data.deposits));
+            });
+        }
         if (data.data.redemptions !== undefined) {
             return formatRedeems(data.data.redemptions);
         }
@@ -429,10 +288,9 @@ export const getRedeems = async (network, isSearch, searchInput) => {
 export const getTokenInfo = async (network) => {
     const emptyData = JSON.parse(`{}`);
     try {
-        switchNetworkClient(network);
-        const data = await client.query({
-            query: gql(queryTokenInfo)
-        });
+        // switchNetworkClient(network);
+        const data = await client.execute(client.TokenInfoQueryDocument, {});
+
         if (data.data.tbtctokens !== undefined) {
             return data.data.tbtctokens[0];
         }
