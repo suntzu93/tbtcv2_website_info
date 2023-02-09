@@ -194,8 +194,11 @@
 
 .div_token_info {
     display: grid;
+    margin-bottom: 10px;
     -webkit-box-align: start;
     align-items: start;
+    gap: 10px;
+    grid-template-columns: 1fr;
 }
 
 @media only screen and (min-width: 960px) {
@@ -234,8 +237,8 @@
     justify-content: center;
     -webkit-box-align: center;
     align-items: center;
-    width: 54px;
-    height: 54px;
+    width: 55px;
+    height: 55px;
     border-radius: 12px;
     background-color: rgb(10, 8, 6);
     margin-right: 16px;
@@ -244,6 +247,9 @@
 .div_token_info_supply {
     display: flex;
     flex: 1 1 0%;
+    -webkit-box-align: center;
+    align-items: center;
+    text-align: left;
 }
 
 .div_token_info_supply_data {
@@ -285,6 +291,14 @@
 .div_token_info_stats_title {
     font-size: 20px;
     color: rgb(0, 0, 0);
+    font-weight: bold;
+}
+
+.div_token_info_stats_sub_title{
+    font-size: 15px;
+    color: rgb(0, 0, 0);
+    margin-top: 10px;
+    font-weight: bold;
 }
 
 .div_token_info_stats_item {
@@ -314,10 +328,13 @@
 .div_token_info_stats_item_data_value {
     display: inline;
     margin-right: 2px;
+    font-size: 1rem;
 }
 
 .div_token_info_stats_item_data_value_address {
-    font-size: 1rem;
+    font-size: 0.87rem;
+    display: inline;
+    margin-right: 2px;
 }
 
 .div_underlined {
