@@ -5,6 +5,6 @@ export const DECIMAL_ETH = 1000000000000000000;
 export const SATOSHI_BITCOIN = 100000000;
 export const NETWORK_MAINNET = "mainnet";
 export const NETWORK_TESTNET = "testnet";
-export const DEFAULT_NETWORK = NETWORK_MAINNET;
+export const DEFAULT_NETWORK = NETWORK_TESTNET;
 
 export default MAINNET_API;
