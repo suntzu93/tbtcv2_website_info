@@ -23,11 +23,11 @@
     "web-vitals": "^1.1.1"
   },
   "scripts": {
-    "start": "export PORT=4002 && vite",
+    "start": "export PORT=4001 && vite",
     "build-pro": "vite build --mode production",
     "build": "vite build",
-    "preview": "vite preview --port 4002",
-    "prod": "npm run build && PORT=4002 serve -s build ",
+    "preview": "vite preview --port 4001",
+    "prod": "npm run build && PORT=4001 serve -s build ",
     "codegen": "graphclient build",
     "graphql": "graphclient serve-dev"
   },
