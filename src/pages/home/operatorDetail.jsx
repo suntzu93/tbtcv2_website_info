@@ -90,6 +90,8 @@ function Overview(operator) {
                 return "Operator has reduced " + amount + " token from WalletRegistry contract."
             case "REGISTERED_OPERATOR":
                 return "Operator has registered operator address."
+            case "BOND_OPERATOR":
+                return "Operator has registered operator address on SimplePREApplication contract."
             case "JOINED_SORTITION_POOL":
                 return "Operator has been joined the Sortition pool."
             case "SLASHED":
@@ -278,7 +280,7 @@ function Overview(operator) {
             <div style={{flex: "1 1 0%"}}>
                 <h4><strong>Log</strong></h4>
                 {operator?.events?.map(eventEntity => {
-                    const txHash = eventEntity.id;
+                    const txHash = eventEntity.txHash;
                     const from = eventEntity.from;
                     const to = eventEntity.to;
                     const event = eventEntity.event;

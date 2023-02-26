@@ -127,6 +127,7 @@ query TokenInfoQuery{
 query Operators {
     operators(first:1000, orderBy: tBTCAuthorizedAmount, orderDirection: desc){
         id
+        isRegisteredOperatorAddress
         tBTCAuthorized
         randomBeaconAuthorized
         tBTCAuthorizedAmount
@@ -142,6 +143,7 @@ query Operators {
 query SearchOperators($id: ID!) {
     operators(where:{id:$id}){
         id
+        isRegisteredOperatorAddress
         tBTCAuthorized
         randomBeaconAuthorized
         tBTCAuthorizedAmount
@@ -174,6 +176,7 @@ query OperatorDetail($id: ID!) {
         owner
         events(orderBy:timestamp,orderDirection:desc){
             id
+            txHash
             amount
             from
             to

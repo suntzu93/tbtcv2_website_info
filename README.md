@@ -2,6 +2,10 @@
 
 Provide insight into the workings of the tBTC systems - deposits, redemptions, who bonds for what, governance actions, etc.
 
+It incorporates work from️:
+
+[@miracle2k](https://github.com/miracle2k): Thanks for his [allthekeep](https://github.com/miracle2k/keep-subgraph) subgraph.
+
 Live at : https://tbtcscan.com/
 ## Installation
 
@@ -21,3 +25,5 @@ yarn preview
 
 # http://localhost:4401
 ```
+
+``
