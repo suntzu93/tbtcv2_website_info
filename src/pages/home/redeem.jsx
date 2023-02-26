@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from "react";
 import * as Data from "../data";
-import SubgraphTable from "../../components/table/redeem";
 import styles from './styles.module.css'
+import RedeemTable from "../../components/table/redeem";
 
 const RedeemsPage = ({network, isSearch, searchInput}) => {
     const [pageData, setPageData] = useState({
@@ -35,7 +35,7 @@ const RedeemsPage = ({network, isSearch, searchInput}) => {
                 <span>{pageData.totalPassengers} redeems</span>
             </div>
             <div className={styles.table_content}>
-                <SubgraphTable
+                <RedeemTable
                     columns={Data.redeem_columns}
                     data={pageData.rowData}
                     isLoading={pageData.isLoading}

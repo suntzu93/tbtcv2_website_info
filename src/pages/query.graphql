@@ -180,16 +180,20 @@ query OperatorDetail($id: ID!) {
             event
             timestamp
         }
-        groups(orderBy:createdAt,orderDirection:desc){
-            id
-            createdAt
-            groupPublicKey{
-                pubKey
-                terminated
+        randomBeaconGroupMemberships(orderBy:groupCreatedAt,orderDirection:desc){
+            count
+            group{
+                id
+                createdAt
+                groupPublicKey{
+                    pubKey
+                    terminated
+                }
+                size
+                uniqueMemberCount
+                misbehavedCount
+                totalSlashedAmount
             }
-            size
-            misbehavedCount
-            totalSlashedAmount
         }
     }
 }
@@ -203,14 +207,18 @@ query RandomBeaconGroupDetail($id: ID!){
             terminated
         }
         size
+        uniqueMemberCount
         misbehavedCount
         totalSlashedAmount
-        operators(orderBy:tBTCAuthorized,orderDirection:desc){
-            id
-            misbehavedCount
-            tBTCAuthorizedAmount
-            randomBeaconAuthorizedAmount
-            availableReward
+        memberships{
+            count
+            operator{
+                id
+                misbehavedCount
+                tBTCAuthorizedAmount
+                randomBeaconAuthorizedAmount
+                availableReward
+            }
         }
         relayEntries(orderBy:submittedAt,orderDirection:desc){
             id
@@ -219,4 +227,63 @@ query RandomBeaconGroupDetail($id: ID!){
             value
         }
     }
+}
+
+query GetUserDetail($id: ID!){
+    user(id:$id){
+        tokenBalance
+        totalTokensHeld
+        mintingDebt
+        deposits(first: 1000,orderBy: updateTimestamp,orderDirection: desc) {
+            id
+            status
+            user{
+                id
+            }
+            amount
+            newDebt
+            actualAmountReceived
+            treasuryFee
+            walletPubKeyHash
+            fundingTxHash
+            fundingOutputIndex
+            blindingFactor
+            refundPubKeyHash
+            refundLocktime
+            vault
+            depositTimestamp
+            updateTimestamp
+            transactions(orderBy: timestamp,orderDirection:desc){
+                timestamp
+                txHash
+                from
+                to
+                description
+            }
+        }
+        redemptions (first: 1000,orderBy: updateTimestamp,orderDirection: desc) {
+            id,
+            status,
+            user{
+                id
+            },
+            amount,
+            walletPubKeyHash,
+            redeemerOutputScript,
+            redemptionTxHash,
+            treasuryFee,
+            txMaxFee,
+            completedTxHash
+            redemptionTimestamp
+            updateTimestamp
+            transactions(orderBy: timestamp,orderDirection:desc){
+                timestamp
+                txHash
+                from
+                to
+                description
+            }
+        }
+    }
+
 }

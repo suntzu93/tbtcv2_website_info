@@ -43,6 +43,7 @@ function MembersGroup(group) {
                 <thead>
                 <tr>
                     <th>Address</th>
+                    <th>Total Slot of this Operator</th>
                     <th>TBTC Authorized</th>
                     <th>Random Beacon Authorized</th>
                     <th>Available Reward</th>
@@ -51,7 +52,9 @@ function MembersGroup(group) {
                 </thead>
 
                 <tbody>
-                {group?.operators?.map(operator => {
+                {group?.memberships?.map(memberShip => {
+                    const count = memberShip.count;
+                    const operator = memberShip.operator;
                     const id = operator.id;
                     const misbehavedCount = operator.misbehavedCount;
                     const tBTCAuthorizedAmount = operator.tBTCAuthorizedAmount;
@@ -67,6 +70,7 @@ function MembersGroup(group) {
                             >
                                 {Data.formatString(id)}
                             </Link></td>
+                            <td>{count}</td>
                             <td>{Data.formatWeiDecimal(tBTCAuthorizedAmount)}</td>
                             <td>{Data.formatWeiDecimal(randomBeaconAuthorizedAmount)}</td>
                             <td>{Data.formatWeiDecimal(availableReward)}</td>
@@ -137,12 +141,6 @@ const GroupDetailPage = () => {
         });
 
     }, []);
-
-    function calculatePercentAuthorizedOfStake(authorizedAmount, stakedAmount) {
-        if (stakedAmount == 0 || authorizedAmount == 0)
-            return 0
-        return parseFloat((authorizedAmount / stakedAmount) * 100).toFixed(2);
-    }
 
     return (<>
             {
