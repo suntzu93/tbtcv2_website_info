@@ -5,7 +5,7 @@ export const DECIMAL_ETH = 1000000000000000000;
 export const SATOSHI_BITCOIN = 100000000;
 export const NETWORK_MAINNET = "mainnet";
 export const NETWORK_TESTNET = "testnet";
-export const DEFAULT_NETWORK = NETWORK_TESTNET;
+export const DEFAULT_NETWORK = NETWORK_MAINNET;
 
 export const TIME_LOCK_DEAUTHORIZATION = 45 * 24 * 60 * 60;//45 days
 
