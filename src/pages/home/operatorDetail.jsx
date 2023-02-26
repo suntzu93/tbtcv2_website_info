@@ -416,7 +416,8 @@ const OperatorDetailPage = () => {
                                     <div className={styles.operator_detail_header_value_item_lable}>TBTC authorized
                                     </div>
                                     <div>
-                                        <div>{Data.formatWeiDecimal(pageData.rowData.tBTCAuthorizedAmount)}</div>
+                                        <div>{Data.formatWeiDecimal(pageData.rowData.tBTCAuthorizedAmount)}<span
+                                            className={styles.span_t_token}>{" T"}</span></div>
                                         <div
                                             className={styles.operator_detail_header_value_item_percent}>
                                             {calculatePercentAuthorizedOfStake(pageData.rowData.tBTCAuthorizedAmount, pageData.rowData.stakedAmount)}%
@@ -429,7 +430,8 @@ const OperatorDetailPage = () => {
                                         authorized
                                     </div>
                                     <div>
-                                        <div>{Data.formatWeiDecimal(pageData.rowData.randomBeaconAuthorizedAmount)}</div>
+                                        <div>{Data.formatWeiDecimal(pageData.rowData.randomBeaconAuthorizedAmount)}<span
+                                            className={styles.span_t_token}>{" T"}</span></div>
                                         <div
                                             className={styles.operator_detail_header_value_item_percent}>
                                             {calculatePercentAuthorizedOfStake(pageData.rowData.randomBeaconAuthorizedAmount, pageData.rowData.stakedAmount)}%
@@ -440,7 +442,8 @@ const OperatorDetailPage = () => {
                                 <div className={styles.operator_detail_header_value_item}>
                                     <div className={styles.operator_detail_header_value_item_lable}>staked</div>
                                     <div>
-                                        <div>{Data.formatWeiDecimal(pageData.rowData.stakedAmount)}</div>
+                                        <div>{Data.formatWeiDecimal(pageData.rowData.stakedAmount)}<span
+                                            className={styles.span_t_token}>{" T"}</span></div>
                                     </div>
                                 </div>
                                 <div className={styles.operator_detail_header_value_item}>
@@ -453,14 +456,16 @@ const OperatorDetailPage = () => {
                                     <div className={styles.operator_detail_header_value_item_lable}>available reward
                                     </div>
                                     <div>
-                                        <div>{Data.formatWeiDecimal(pageData.rowData.availableReward)}</div>
+                                        <div>{Data.formatWeiDecimal(pageData.rowData.availableReward)}<span
+                                            className={styles.span_t_token}>{" T"}</span></div>
                                     </div>
                                 </div>
                                 <div className={styles.operator_detail_header_value_item}>
                                     <div className={styles.operator_detail_header_value_item_lable}>rewards dispensed
                                     </div>
                                     <div>
-                                        <div>{Data.formatWeiDecimal(pageData.rowData.rewardDispensed)}</div>
+                                        <div>{Data.formatWeiDecimal(pageData.rowData.rewardDispensed)}<span
+                                            className={styles.span_t_token}>{" T"}</span></div>
                                     </div>
                                 </div>
                             </div>
