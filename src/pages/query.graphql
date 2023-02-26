@@ -122,3 +122,101 @@ query TokenInfoQuery{
         currentTokenHolders
     }
 }
+
+
+query Operators {
+    operators(first:1000, orderBy: tBTCAuthorizedAmount, orderDirection: desc){
+        id
+        tBTCAuthorized
+        randomBeaconAuthorized
+        tBTCAuthorizedAmount
+        randomBeaconAuthorizedAmount
+        stakedAmount
+        availableReward
+        misbehavedCount
+        poolRewardBanDuration
+        stakedAt
+    }
+}
+
+query SearchOperators($id: ID!) {
+    operators(where:{id:$id}){
+        id
+        tBTCAuthorized
+        randomBeaconAuthorized
+        tBTCAuthorizedAmount
+        randomBeaconAuthorizedAmount
+        stakedAmount
+        availableReward
+        misbehavedCount
+        poolRewardBanDuration
+        stakedAt
+    }
+}
+
+query OperatorDetail($id: ID!) {
+    operator(id:$id){
+        id
+        address
+        tBTCAuthorized
+        randomBeaconAuthorized
+        tBTCAuthorizedAmount
+        randomBeaconAuthorizedAmount
+        stakedAmount
+        rewardDispensed
+        availableReward
+        misbehavedCount
+        totalSlashedAmount
+        poolRewardBanDuration
+        stakedAt
+        authorizer
+        beneficiary
+        owner
+        events(orderBy:timestamp,orderDirection:desc){
+            id
+            amount
+            from
+            to
+            event
+            timestamp
+        }
+        groups(orderBy:createdAt,orderDirection:desc){
+            id
+            createdAt
+            groupPublicKey{
+                pubKey
+                terminated
+            }
+            size
+            misbehavedCount
+            totalSlashedAmount
+        }
+    }
+}
+
+query RandomBeaconGroupDetail($id: ID!){
+    randomBeaconGroup(id:$id){
+        id
+        createdAt
+        groupPublicKey{
+            pubKey
+            terminated
+        }
+        size
+        misbehavedCount
+        totalSlashedAmount
+        operators(orderBy:tBTCAuthorized,orderDirection:desc){
+            id
+            misbehavedCount
+            tBTCAuthorizedAmount
+            randomBeaconAuthorizedAmount
+            availableReward
+        }
+        relayEntries(orderBy:submittedAt,orderDirection:desc){
+            id
+            requestedAt
+            submittedAt
+            value
+        }
+    }
+}

@@ -7,4 +7,6 @@ export const NETWORK_MAINNET = "mainnet";
 export const NETWORK_TESTNET = "testnet";
 export const DEFAULT_NETWORK = NETWORK_TESTNET;
 
+export const TIME_LOCK_DEAUTHORIZATION = 45 * 24 * 60 * 60;//45 days
+
 export default MAINNET_API;

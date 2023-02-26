@@ -5,6 +5,8 @@
     border-spacing: 2px;
     border-color: grey;
     text-align: center;
+    background: rgb(255, 255, 255);
+    border-radius: 4px;
 }
 
 .logo_header {
@@ -21,7 +23,8 @@
     .logo_header svg {
         width: 200px;
     }
-    .search{
+
+    .search {
         visibility: hidden;
     }
 }
@@ -294,7 +297,7 @@
     font-weight: bold;
 }
 
-.div_token_info_stats_sub_title{
+.div_token_info_stats_sub_title {
     font-size: 15px;
     color: rgb(0, 0, 0);
     margin-top: 10px;
@@ -340,4 +343,122 @@
 .div_underlined {
     display: inline;
     font-size: 14px;
+}
+
+.operator_detail_header {
+    text-align: left;
+    padding-bottom: 10px;
+    display: flex;
+}
+
+.operator_detail_header h3 a {
+    font-weight: bold;
+    color: rgb(10, 8, 6);
+}
+
+.operator_detail_header span {
+    color: gray;
+    font-size: 1rem;
+}
+
+.operator_detail_header_address {
+    display: flex;
+    flex-direction: column;
+    align-self: flex-start;
+    flex: 1 1 0%;
+}
+
+.operator_detail_header_value {
+    display: flex;
+    flex-direction: row;
+}
+
+.operator_detail_header_value_item {
+    font-size: 35px;
+    color: rgb(10, 8, 6);
+    font-feature-settings: "zero";
+    margin-right: 40px;
+}
+
+.operator_detail_header_value_item_lable {
+    font-size: 16px;
+}
+
+.operator_detail_header_value_item_percent {
+    font-size: 20px;
+    color: gray;
+}
+
+.operator_detail {
+    box-shadow: rgb(20 20 20 / 20%) 0px 4px 8px;
+    box-sizing: border-box;
+    text-indent: initial;
+    border-spacing: 2px;
+    border-color: grey;
+    background: rgb(255, 255, 255);
+    border-radius: 4px;
+}
+
+.operator_detail_overview {
+    display: flex;
+    flex-direction: row;
+
+}
+
+.operator_detail_overview_table {
+    color: rgb(10, 8, 6);
+}
+
+.operator_detail_overview_table a {
+    color: #ae96e1;
+    font-size: 0.875rem;
+}
+
+.operator_detail_overview_table td, .operator_detail_overview_table th {
+    font-weight: normal;
+    padding: 5px;
+    text-align: left;
+    vertical-align: top;
+    font-size: 1rem;
+}
+
+.operator_detail_overview_table td {
+    padding-left: 60px;
+    display: flex;
+}
+
+.operator_detail_overview_table tbody.operator_detail_overview_table_tbody th:first-child {
+    padding-left: 20px;
+}
+
+.operator_detail_overview_table_td {
+    color: gray;
+    font-size: 0.8em;
+}
+
+.log_item:not(:last-child) {
+    margin-bottom: 20px;
+    border-bottom: 1px dotted silver;
+    padding-bottom: 20px;
+}
+
+.log_item_lable {
+    font-size: 0.875em;
+    margin-bottom: 0.4em;
+    color: gray;
+}
+
+.beacon_groups_table {
+    width: 100%;
+    margin-top: 20px;
+}
+
+.beacon_groups_table th {
+    text-align: left;
+    font-size: 1.15rem;
+}
+
+.beacon_groups_table td {
+    border-bottom: 1px solid rgb(245, 245, 245);
+    text-align: left;
 }
