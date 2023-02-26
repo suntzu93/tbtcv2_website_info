@@ -20,9 +20,11 @@ import MenuItem from "@mui/material/MenuItem";
 import TextField from "@mui/material/TextField";
 import SearchIcon from "@mui/icons-material/Search";
 import TokenPage from "./token";
+import OperatorPage from "./operator";
+import OperatorDetailPage from "./operatorDetail";
+import GroupDetailPage from "./groupDetail";
 
 const HomePage = () => {
-    const [network, setNetwork] = useState(Const.DEFAULT_NETWORK);
     const [tab, setTab] = React.useState("1");
     const [anchorElSetting, setAnchorElSetting] = React.useState(null);
     const [searchInput, setSearchInput] = React.useState("");
@@ -31,39 +33,61 @@ const HomePage = () => {
     const openSetting = Boolean(anchorElSetting);
 
     useEffect(() => {
-        if (window.location.pathname.startsWith("/redeems")) {
-            setTab("redeems");
-        } else if (window.location.pathname.startsWith("/about")) {
-            setTab("about");
-        } else if (window.location.pathname.startsWith("/token")) {
-            setTab("token");
+        const query = new URLSearchParams(window.location.search);
+        const operator = query.get("operator");
+        const group = query.get("group");
+        if (operator != undefined && operator.startsWith("0x")) {
+            setTab("operatorDetail");
+        } else if (group != undefined) {
+            setTab("groupDetail");
         } else {
-            setTab("deposits");
+            const pathName = window.location.pathname;
+            if (pathName.startsWith("/operator/")) {
+                setTab("operatorDetail");
+            } else if (pathName.startsWith("/redeems")) {
+                setTab("redeems");
+            } else if (pathName.startsWith("/operators")) {
+                setTab("operators");
+            } else if (pathName.startsWith("/about")) {
+                setTab("about");
+            } else if (pathName.startsWith("/token")) {
+                setTab("token");
+            } else {
+                setTab("deposits");
+            }
         }
-    }, [network]);
 
-
-    const reload = () => {
-        browserHistory.push("/");
-        window.location.reload();
-    };
+    }, []);
 
     function deposits() {
         return (<div>
-            <DepositPage network={network} isSearch={isSearch} searchInput={searchInput}/>
+            <DepositPage network={Const.DEFAULT_NETWORK} isSearch={isSearch} searchInput={searchInput}/>
         </div>);
     }
 
     function redeems() {
         return (<div>
-            <RedeemsPage network={network} isSearch={isSearch} searchInput={searchInput}/>
+            <RedeemsPage network={Const.DEFAULT_NETWORK} isSearch={isSearch} searchInput={searchInput}/>
         </div>);
     }
 
     function token() {
         return (<div>
-            <TokenPage network={network}/>
+            <TokenPage network={Const.DEFAULT_NETWORK}/>
         </div>);
+    }
+
+    function operators() {
+        return (<div>
+            <OperatorPage network={Const.DEFAULT_NETWORK} isSearch={isSearch} searchInput={searchInput}/>
+        </div>);
+    }
+
+    function operatorDetail() {
+        return <OperatorDetailPage/>;
+    }
+    function groupDetail() {
+        return <GroupDetailPage/>;
     }
 
     function about() {
@@ -78,6 +102,8 @@ const HomePage = () => {
                     return browserHistory.push("/deposits");
                 case "redeems":
                     return browserHistory.push("/redeems");
+                case "operators":
+                    return browserHistory.push("/operators");
                 case "token":
                     return browserHistory.push("/token");
                 case "about":
@@ -89,9 +115,9 @@ const HomePage = () => {
 
         function swichNetwork() {
             setTab("deposits");
-            if (Const.DEFAULT_NETWORK == Const.NETWORK_MAINNET){
+            if (Const.DEFAULT_NETWORK == Const.NETWORK_MAINNET) {
                 window.location.href = "https://testnet.tbtcscan.com/"
-            }else {
+            } else {
                 window.location.href = "https://tbtcscan.com/"
             }
         }
@@ -153,6 +179,11 @@ const HomePage = () => {
                             />
                             <Tab
                                 sx={{padding: 0}}
+                                label="Operators"
+                                value="operators"
+                            />
+                            <Tab
+                                sx={{padding: 0}}
                                 label="Token"
                                 value="token"
                             />
@@ -203,7 +234,7 @@ const HomePage = () => {
                         </div>
                         <div className={styles.search}>
                             <TextField
-                                label="depositer / redeemer address"
+                                label="depositer / redeemer / operator"
                                 variant="outlined"
                                 fullWidth
                                 value={searchInput}
@@ -221,6 +252,9 @@ const HomePage = () => {
                     </Box>
                     <TabPanel value="deposits">{deposits()}</TabPanel>
                     <TabPanel value="redeems">{redeems()}</TabPanel>
+                    <TabPanel value="operators">{operators()}</TabPanel>
+                    <TabPanel value="operatorDetail">{operatorDetail()}</TabPanel>
+                    <TabPanel value="groupDetail">{groupDetail()}</TabPanel>
                     <TabPanel value="token">{token()}</TabPanel>
                     <TabPanel value="about">{about()}</TabPanel>
                 </TabContext>

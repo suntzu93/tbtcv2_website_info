@@ -2,7 +2,7 @@ sources:
   - name: threshold-tbtc
     handler:
       graphql:
-        endpoint: https://api.thegraph.com/subgraphs/name/suntzu93/threshold-tbtc
+        endpoint: https://api.thegraph.com/subgraphs/name/suntzu93/threshold-tbtc-goerli
     transforms:
       - autoPagination:
           limitOfRecords: 2000
