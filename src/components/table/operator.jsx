@@ -19,6 +19,8 @@ import Link from "@mui/material/Link";
 import {ReactComponent as ShareLink} from "../../assets/link.svg";
 import * as Data from "../../pages/data";
 import * as Utils from '../../utils/utils';
+import CheckSharpIcon from '@mui/icons-material/CheckSharp';
+import CloseSharpIcon from '@mui/icons-material/CloseSharp';
 
 export const OperatorTable = ({columns, data, isLoading, network}) => {
     const columnData = useMemo(() => columns, [columns]);
@@ -78,7 +80,7 @@ export const OperatorTable = ({columns, data, isLoading, network}) => {
                     align={'left'}
                     sortDirection={orderBy === headCell.accessor ? order : false}
                 >
-                    {headCell.accessor == "tBTCAuthorizedAmount" || headCell.accessor == "randomBeaconAuthorizedAmount" || headCell.accessor == "stakedAmount" || headCell.accessor == "availableReward" || headCell.accessor == "stakedAt" ? (
+                    {headCell.accessor == "tBTCAuthorizedAmount" || headCell.accessor == "randomBeaconAuthorizedAmount" || headCell.accessor == "stakedAmount" || headCell.accessor == "availableReward" || headCell.accessor == "stakedAt" || headCell.accessor == "isRegisteredOperatorAddress" ? (
                         <TableSortLabel
                             direction={orderBy === headCell.accessor ? order : 'desc'}
                             onClick={createSortHandler(headCell.accessor)}
@@ -163,6 +165,19 @@ export const OperatorTable = ({columns, data, isLoading, network}) => {
                 </TableCell>
                 <TableCell align="left">
                     {row.misbehavedCount}
+                </TableCell>
+                <TableCell align="left">
+                    {
+                        row.isRegisteredOperatorAddress ? (
+                            <Tooltip title={"operator address is registered"}>
+                                <CheckSharpIcon style={{color: "green"}}/>
+                            </Tooltip>
+                        ) : (
+                            <Tooltip title={"operator address is not registered"}>
+                                <CloseSharpIcon style={{color: "red"}}/>
+                            </Tooltip>
+                        )
+                    }
                 </TableCell>
                 <TableCell align="left">
                     {Data.formatTimeToText(row.stakedAt)}

@@ -84,6 +84,10 @@ export const operator_columns = [
         header: "Faults",
         accessor: "misbehaved",
         numeric: true,
+    },{
+        header: "Node registered ?",
+        accessor: "isRegisteredOperatorAddress",
+        numeric: true,
     }, {
         header: "Staked At",
         accessor: "stakedAt",
@@ -338,6 +342,7 @@ export const formatRedeems = (rawData) =>
 export const formatOperators = (rawData) =>
     rawData.map((item) => ({
         id: item.id,
+        isRegisteredOperatorAddress: item.isRegisteredOperatorAddress,
         tBTCAuthorized: item.tBTCAuthorized,
         randomBeaconAuthorized: item.randomBeaconAuthorized,
         tBTCAuthorizedAmount: parseFloat(item.tBTCAuthorizedAmount),
@@ -368,7 +373,7 @@ export const getDeposits = async (network, isSearch, searchInput) => {
             data = await client.execute(client.GetAllDepositsQueryDocument, {});
         } else {
             data = await client.execute(client.GetDepositsQueryByUserDocument, {
-                user: searchInput,
+                user: searchInput.toLowerCase(),
             });
         }
         if (data.data.deposits !== undefined) {
@@ -388,7 +393,7 @@ export const getRedeems = async (network, isSearch, searchInput) => {
             data = await client.execute(client.GetAllRedemptionsQueryDocument, {});
         } else {
             data = await client.execute(client.GetRedemptionQueryByUserDocument, {
-                user: searchInput,
+                user: searchInput.toLowerCase(),
             });
         }
         if (data.data.redemptions !== undefined) {
@@ -423,7 +428,7 @@ export const getOperators = async (isSearch, searchInput) => {
             data = await client.execute(client.OperatorsDocument, {});
         } else {
             data = await client.execute(client.SearchOperatorsDocument, {
-                id: searchInput,
+                id: searchInput.toLowerCase(),
             });
         }
         return formatOperators(data.data.operators);
