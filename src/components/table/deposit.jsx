@@ -33,7 +33,6 @@ import TransactionTimeline from './timeline'
 export const DepositTable = ({columns, data, isLoading, network}) => {
     const columnData = useMemo(() => columns, [columns]);
     const rowData = useMemo(() => data, [data]);
-
     const {rows} = useTable({
         columns: columnData, data: rowData,
     });
@@ -160,7 +159,7 @@ export const DepositTable = ({columns, data, isLoading, network}) => {
                     <Link
                         target="_blank"
                         underline="hover"
-                        href={Utils.getEtherAddressLink() + row.depositor}
+                        href={Utils.getDomain() +"?user="+ row.depositor}
                         className={styles.link}
                     >
                         {Data.formatString(row.depositor)}

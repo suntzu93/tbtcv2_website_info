@@ -349,6 +349,17 @@ export const formatOperators = (rawData) =>
         stakedAt: item.stakedAt * 1000
     }));
 
+export const formatUserDetail = (user) =>
+    (
+        {
+            tokenBalance: user.tokenBalance,
+            totalTokensHeld: user.totalTokensHeld,
+            mintingDebt: user.mintingDebt,
+            deposits: formatDepositsData(user.deposits),
+            redemptions: formatRedeems(user.redemptions)
+        }
+    );
+
 export const getDeposits = async (network, isSearch, searchInput) => {
     const emptyData = JSON.parse(`[]`);
     try {
@@ -405,8 +416,6 @@ export const getTokenInfo = async (network) => {
 };
 
 export const getOperators = async (isSearch, searchInput) => {
-    console.log("isSearch: " + isSearch)
-    console.log("searchInput: " + searchInput)
     const emptyData = JSON.parse(`[]`);
     try {
         let data;
@@ -431,29 +440,37 @@ export const getOperatorDetail = async (operator) => {
             id: operator
         });
         const operatorData = {
-            ...data.data.operator, groups: [
+            ...data.data.operator, randomBeaconGroupMemberships: [
                 {
-                    "id": "0xabc123",
-                    "createdAt": "1677028167",
-                    "groupPublicKey": {
-                        "pubKey": "0xabc123",
-                        "terminated": false
-                    },
-                    "size": 56,
-                    "misbehavedCount": 2,
-                    "totalSlashedAmount": 1000000000000000000000
-                },
-                {
-                    "id": "0xdef456",
-                    "createdAt": "1676008167",
-                    "groupPublicKey": {
-                        "pubKey": "0xdef456",
-                        "terminated": false
-                    },
-                    "size": 60,
-                    "misbehavedCount": 0,
-                    "totalSlashedAmount": 0
-                }]
+                    "count": 3,
+                    "group": {
+                        "id": "0xabc123",
+                        "createdAt": "1677028167",
+                        "groupPublicKey": {
+                            "pubKey": "0xabc123",
+                            "terminated": false
+                        },
+                        "size": 56,
+                        "uniqueMemberCount": 44,
+                        "misbehavedCount": 2,
+                        "totalSlashedAmount": 1000000000000000000000
+                    }
+                }, {
+                    "count": 2,
+                    "group": {
+                        "id": "0xdef456",
+                        "createdAt": "1676008167",
+                        "groupPublicKey": {
+                            "pubKey": "0xdef456",
+                            "terminated": false
+                        },
+                        "size": 60,
+                        "uniqueMemberCount": 54,
+                        "misbehavedCount": 0,
+                        "totalSlashedAmount": 0
+                    }
+                }
+            ]
         };
         return operatorData;
     } catch (e) {
@@ -478,21 +495,27 @@ export const getGroupDetail = async (groupId) => {
             "size": 56,
             "misbehavedCount": 1,
             "totalSlashedAmount": 1000000000000000000000,
-            "operators": [
+            "memberships": [
                 {
-                    "id": "0xd96d4b52cab35cf3df1d58765bd2ea7cb1fb6016",
-                    "misbehavedCount": 2,
-                    "tBTCAuthorizedAmount": 40000000000000000000000,
-                    "randomBeaconAuthorizedAmount": 40000000000000000000000,
-                    "availableReward": 100000000000000000000
+                    "count": 2,
+                    "operator": {
+                        "id": "0xd96d4b52cab35cf3df1d58765bd2ea7cb1fb6016",
+                        "misbehavedCount": 2,
+                        "tBTCAuthorizedAmount": 40000000000000000000000,
+                        "randomBeaconAuthorizedAmount": 40000000000000000000000,
+                        "availableReward": 100000000000000000000
+                    }
                 },
                 {
-                    "id": "0xbb392cb752a3743b1c06490b9f9c6a09cdd83d8e",
-                    "misbehavedCount": 1,
-                    "tBTCAuthorizedAmount": 45000000000000000000000,
-                    "randomBeaconAuthorizedAmount": 35000000000000000000000,
-                    "availableReward": 80000000000000000000
-                }
+                    "count": 1,
+                    "operator": {
+                        "id": "0xbb392cb752a3743b1c06490b9f9c6a09cdd83d8e",
+                        "misbehavedCount": 1,
+                        "tBTCAuthorizedAmount": 45000000000000000000000,
+                        "randomBeaconAuthorizedAmount": 35000000000000000000000,
+                        "availableReward": 80000000000000000000
+                    }
+                },
             ],
             "relayEntries": [
                 {
@@ -512,6 +535,20 @@ export const getGroupDetail = async (groupId) => {
 
 
         return data;
+    } catch (e) {
+        console.log("error to fetch operators data " + e);
+    }
+    return emptyData;
+}
+
+export const getUserDetail = async (userAddress) => {
+    const emptyData = JSON.parse(`[]`);
+    try {
+        let data;
+        data = await client.execute(client.GetUserDetailDocument, {
+            id: userAddress,
+        });
+        return formatUserDetail(data.data.user);
     } catch (e) {
         console.log("error to fetch operators data " + e);
     }

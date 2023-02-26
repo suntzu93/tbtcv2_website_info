@@ -316,17 +316,22 @@ function BeaconGroup(operator) {
                 <thead>
                 <tr>
                     <th>Group</th>
-                    <th>Size</th>
-                    <th>Faults</th>
-                    <th>Slashed Amount</th>
+                    <th>Total Slot</th>
+                    <th>Unique Member</th>
+                    <th>Total Slot of this Operator</th>
+                    <th>Total Faults</th>
+                    <th>Total Slashed Amount</th>
                     <th>Create At</th>
                 </tr>
                 </thead>
 
                 <tbody>
-                {operator?.groups?.map(group => {
+                {operator?.randomBeaconGroupMemberships?.map(memberShip => {
+                    const thisOperatorSlot = memberShip.count;
+                    const group = memberShip.group;
                     const id = group.id;
                     const size = group.size;
+                    const uniqueMemberCount = group.uniqueMemberCount;
                     const faults = group.misbehavedCount;
                     const slashAmount = group.totalSlashedAmount;
                     const createAt = group.createdAt;
@@ -341,6 +346,8 @@ function BeaconGroup(operator) {
                                 {Data.formatString(id)}
                             </Link></td>
                             <td>{size}</td>
+                            <td>{uniqueMemberCount}</td>
+                            <td>{thisOperatorSlot}</td>
                             <td>{faults}</td>
                             <td>{Data.formatWeiDecimal(slashAmount)}</td>
                             <td>{Data.formatTimeToText(createAt * 1000)}</td>

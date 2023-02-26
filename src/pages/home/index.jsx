@@ -23,6 +23,7 @@ import TokenPage from "./token";
 import OperatorPage from "./operator";
 import OperatorDetailPage from "./operatorDetail";
 import GroupDetailPage from "./groupDetail";
+import UserDetailPage from "./userDetail";
 
 const HomePage = () => {
     const [tab, setTab] = React.useState("1");
@@ -34,12 +35,12 @@ const HomePage = () => {
 
     useEffect(() => {
         const query = new URLSearchParams(window.location.search);
-        const operator = query.get("operator");
-        const group = query.get("group");
-        if (operator != undefined && operator.startsWith("0x")) {
+        if (query.has("operator")) {
             setTab("operatorDetail");
-        } else if (group != undefined) {
+        } else if (query.has("group")) {
             setTab("groupDetail");
+        } else if (query.has("user")) {
+            setTab("userDetail");
         } else {
             const pathName = window.location.pathname;
             if (pathName.startsWith("/operator/")) {
@@ -86,8 +87,13 @@ const HomePage = () => {
     function operatorDetail() {
         return <OperatorDetailPage/>;
     }
+
     function groupDetail() {
         return <GroupDetailPage/>;
+    }
+
+    function userDetail() {
+        return <UserDetailPage/>;
     }
 
     function about() {
@@ -255,6 +261,8 @@ const HomePage = () => {
                     <TabPanel value="operators">{operators()}</TabPanel>
                     <TabPanel value="operatorDetail">{operatorDetail()}</TabPanel>
                     <TabPanel value="groupDetail">{groupDetail()}</TabPanel>
+                    <TabPanel value="userDetail">{userDetail()}</TabPanel>
+
                     <TabPanel value="token">{token()}</TabPanel>
                     <TabPanel value="about">{about()}</TabPanel>
                 </TabContext>

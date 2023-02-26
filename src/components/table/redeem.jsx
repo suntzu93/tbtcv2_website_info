@@ -21,6 +21,7 @@ import Link from "@mui/material/Link";
 import { ReactComponent as ShareLink } from "../../assets/link.svg";
 import * as Data from "../../pages/data";
 import TransactionTimeline from './timeline'
+import * as Utils from "../../utils/utils";
 
 export const RedeemTable = ({ columns, data, isLoading }) => {
   const columnData = useMemo(() => columns, [columns]);
@@ -163,7 +164,7 @@ export const RedeemTable = ({ columns, data, isLoading }) => {
             <Link
               target="_blank"
               underline="hover"
-              href="#"
+              href={Utils.getDomain() +"?user="+ row.depositor}
               className={styles.link}
             >
               {Data.formatString(row.redeemer)}
