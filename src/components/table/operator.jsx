@@ -80,7 +80,7 @@ export const OperatorTable = ({columns, data, isLoading, network}) => {
                     align={'left'}
                     sortDirection={orderBy === headCell.accessor ? order : false}
                 >
-                    {headCell.accessor == "tBTCAuthorizedAmount" || headCell.accessor == "randomBeaconAuthorizedAmount" || headCell.accessor == "stakedAmount" || headCell.accessor == "availableReward" || headCell.accessor == "stakedAt" || headCell.accessor == "isRegisteredOperatorAddress" ? (
+                    {headCell.accessor == "tBTCAuthorizedAmount" || headCell.accessor == "randomBeaconAuthorizedAmount" || headCell.accessor == "stakedAmount" || headCell.accessor == "availableReward" || headCell.accessor == "stakedAt" || headCell.accessor == "registeredOperatorAddress" ? (
                         <TableSortLabel
                             direction={orderBy === headCell.accessor ? order : 'desc'}
                             onClick={createSortHandler(headCell.accessor)}
@@ -168,7 +168,7 @@ export const OperatorTable = ({columns, data, isLoading, network}) => {
                 </TableCell>
                 <TableCell align="left">
                     {
-                        row.registeredOperatorAddress === 2 ? (
+                        row.registeredOperatorAddress >= 2 ? (
                             <Tooltip title={"operator address is registered"}>
                                 <CheckSharpIcon style={{color: "green"}}/>
                             </Tooltip>
