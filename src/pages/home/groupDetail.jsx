@@ -43,7 +43,7 @@ function MembersGroup(group) {
                 <thead>
                 <tr>
                     <th>Address</th>
-                    <th>Total Slot of this Operator</th>
+                    <th>Weight</th>
                     <th>TBTC Authorized</th>
                     <th>Random Beacon Authorized</th>
                     <th>Available Reward</th>

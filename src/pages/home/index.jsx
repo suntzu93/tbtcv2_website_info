@@ -276,11 +276,9 @@ const HomePage = () => {
                     <TabPanel value="redeems">{redeems()}</TabPanel>
                     <TabPanel value="operators">{operators()}</TabPanel>
                     <TabPanel value="groups">{groups()}</TabPanel>
-
                     <TabPanel value="operatorDetail">{operatorDetail()}</TabPanel>
                     <TabPanel value="groupDetail">{groupDetail()}</TabPanel>
                     <TabPanel value="userDetail">{userDetail()}</TabPanel>
-
                     <TabPanel value="token">{token()}</TabPanel>
                     <TabPanel value="about">{about()}</TabPanel>
                 </TabContext>
