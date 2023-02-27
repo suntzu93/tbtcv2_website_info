@@ -12,6 +12,7 @@ const GroupsPage = ({network}) => {
     });
 
     const [currentBlock, setCurrentBlock] = useState();
+    const [state, setState] = useState();
 
     useEffect(() => {
         setPageData((prevState) => ({
@@ -24,9 +25,10 @@ const GroupsPage = ({network}) => {
             const totalPassengers = info.length;
             setPageData({
                 isLoading: false,
-                rowData: info,
+                rowData: info.randomBeaconGroups,
                 totalPassengers: totalPassengers
             });
+            setState(info.statusRecord.groupState)
         });
 
         Data.getCurrentBlockNumber().then((info) => {
@@ -38,9 +40,22 @@ const GroupsPage = ({network}) => {
 
     return (
         <div>
-            <div className={styles.deposit_header}>
-                <h3>Groups</h3>
-                <span>{pageData.totalPassengers} groups</span>
+            <div>
+                <div className={styles.operator_detail_header}>
+                    <div className={styles.operator_detail_header_address}>
+                        <h3>Groups
+                        </h3>
+                    </div>
+                    <div className={styles.operator_detail_header_value}>
+                        <div className={styles.operator_detail_header_value_item}>
+                            <div className={styles.operator_detail_header_value_item_lable}>state
+                            </div>
+                            <div>
+                                <div>{state}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div className={styles.table_content}>
                 <GroupTable

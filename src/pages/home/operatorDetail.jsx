@@ -65,8 +65,14 @@ function Overview(operator) {
                 }
             }
         }
-        if (timeLock > 0)
-            return Data.formatWeiDecimal(amount) + " - Locked Until : " + Data.formatDate(timeLock * 1000);
+        if (timeLock > 0) {
+            if (timeLock * 1000 > new Date().getTime()) {
+                return Data.formatWeiDecimal(amount) + " - Locked Until : " + Data.formatDate(timeLock * 1000);
+            } else {
+                return Data.formatWeiDecimal(amount);
+            }
+        }
+
         return "..."
     }
 

@@ -237,6 +237,9 @@ query ListRandomBeaconGroup{
             value
         }
     }
+    statusRecord(id:"status"){
+        groupState
+    }
 }
 
 query RandomBeaconGroupDetail($id: ID!){

@@ -86,7 +86,7 @@ export const operator_columns = [
         numeric: true,
     }, {
         header: "Node registered ?",
-        accessor: "isRegisteredOperatorAddress",
+        accessor: "registeredOperatorAddress",
         numeric: true,
     }, {
         header: "Staked At",
@@ -517,7 +517,7 @@ export const getListGroups = async () => {
     try {
         let data;
         data = await client.execute(client.ListRandomBeaconGroupDocument, {});
-        return data.data.randomBeaconGroups;
+        return data.data;
     } catch (e) {
         console.log("error to fetch operators data " + e);
     }
