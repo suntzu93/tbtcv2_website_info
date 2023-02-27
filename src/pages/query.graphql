@@ -127,7 +127,7 @@ query TokenInfoQuery{
 query Operators {
     operators(first:1000, orderBy: tBTCAuthorizedAmount, orderDirection: desc){
         id
-        isRegisteredOperatorAddress
+        registeredOperatorAddress
         tBTCAuthorized
         randomBeaconAuthorized
         tBTCAuthorizedAmount
@@ -143,7 +143,7 @@ query Operators {
 query SearchOperators($id: ID!) {
     operators(where:{id:$id}){
         id
-        isRegisteredOperatorAddress
+        registeredOperatorAddress
         tBTCAuthorized
         randomBeaconAuthorized
         tBTCAuthorizedAmount
@@ -182,21 +182,59 @@ query OperatorDetail($id: ID!) {
             to
             event
             timestamp
+            isRandomBeaconEvent
         }
         randomBeaconGroupMemberships(orderBy:groupCreatedAt,orderDirection:desc){
             count
             group{
                 id
                 createdAt
+                createdAtBlock
                 groupPublicKey{
                     pubKey
-                    terminated
                 }
                 size
                 uniqueMemberCount
                 misbehavedCount
                 totalSlashedAmount
+                terminated
+                nonce
+                notifier
             }
+        }
+    }
+}
+
+query ListRandomBeaconGroup{
+    randomBeaconGroups{
+        id
+        createdAt
+        createdAtBlock
+        groupPublicKey{
+            pubKey
+        }
+        size
+        uniqueMemberCount
+        misbehavedCount
+        totalSlashedAmount
+        terminated
+        nonce
+        notifier
+        memberships{
+            count
+            operator{
+                id
+                misbehavedCount
+                tBTCAuthorizedAmount
+                randomBeaconAuthorizedAmount
+                availableReward
+            }
+        }
+        relayEntries(orderBy:submittedAt,orderDirection:desc){
+            id
+            requestedAt
+            submittedAt
+            value
         }
     }
 }
@@ -205,14 +243,17 @@ query RandomBeaconGroupDetail($id: ID!){
     randomBeaconGroup(id:$id){
         id
         createdAt
+        createdAtBlock
         groupPublicKey{
             pubKey
-            terminated
         }
         size
         uniqueMemberCount
         misbehavedCount
         totalSlashedAmount
+        terminated
+        nonce
+        notifier
         memberships{
             count
             operator{

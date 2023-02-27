@@ -124,9 +124,10 @@ function Entries(group) {
 const GroupDetailPage = () => {
     const [pageData, setPageData] = useState({
         rowData: {},
-        isLoading: false,
+        isLoading: true,
     });
     const [groupId, setGroupId] = useState();
+    const [currentBlock, setCurrentBlock] = useState();
 
     useEffect(() => {
         const query = new URLSearchParams(window.location.search);
@@ -139,6 +140,11 @@ const GroupDetailPage = () => {
                 rowData: info,
             });
         });
+
+        Data.getCurrentBlockNumber().then((info) => {
+            setCurrentBlock(info);
+        });
+
 
     }, []);
 
@@ -161,7 +167,14 @@ const GroupDetailPage = () => {
                                     <div className={styles.operator_detail_header_value_item_lable}>member size
                                     </div>
                                     <div>
-                                        <div>{pageData.rowData.operators?.length}</div>
+                                        <div>{pageData.rowData.size}</div>
+                                    </div>
+                                </div>
+                                <div className={styles.operator_detail_header_value_item}>
+                                    <div className={styles.operator_detail_header_value_item_lable}>unique member
+                                    </div>
+                                    <div>
+                                        <div>{pageData.rowData.uniqueMemberCount}</div>
                                     </div>
                                 </div>
                                 <div className={styles.operator_detail_header_value_item}>
@@ -182,6 +195,12 @@ const GroupDetailPage = () => {
                                     <div className={styles.operator_detail_header_value_item_lable}>create at</div>
                                     <div>
                                         <div>{Data.formatTimeToText(pageData.rowData.createdAt * 1000)}</div>
+                                    </div>
+                                </div>
+                                <div className={styles.operator_detail_header_value_item}>
+                                    <div className={styles.operator_detail_header_value_item_lable}>state</div>
+                                    <div>
+                                        <div>{Utils.getGroupState(pageData.rowData, currentBlock)}</div>
                                     </div>
                                 </div>
                             </div>

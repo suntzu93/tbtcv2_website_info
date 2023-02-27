@@ -19,10 +19,8 @@ import Link from "@mui/material/Link";
 import {ReactComponent as ShareLink} from "../../assets/link.svg";
 import * as Data from "../../pages/data";
 import * as Utils from '../../utils/utils';
-import CheckSharpIcon from '@mui/icons-material/CheckSharp';
-import CloseSharpIcon from '@mui/icons-material/CloseSharp';
 
-export const OperatorTable = ({columns, data, isLoading, network}) => {
+export const GroupTable = ({columns, data, isLoading, network, currentBlock}) => {
     const columnData = useMemo(() => columns, [columns]);
     const rowData = useMemo(() => data, [data]);
 
@@ -80,7 +78,7 @@ export const OperatorTable = ({columns, data, isLoading, network}) => {
                     align={'left'}
                     sortDirection={orderBy === headCell.accessor ? order : false}
                 >
-                    {headCell.accessor == "tBTCAuthorizedAmount" || headCell.accessor == "randomBeaconAuthorizedAmount" || headCell.accessor == "stakedAmount" || headCell.accessor == "availableReward" || headCell.accessor == "stakedAt" || headCell.accessor == "isRegisteredOperatorAddress" ? (
+                    {headCell.accessor == "misbehavedCount" || headCell.accessor == "size" || headCell.accessor == "createdAt" ? (
                         <TableSortLabel
                             direction={orderBy === headCell.accessor ? order : 'desc'}
                             onClick={createSortHandler(headCell.accessor)}
@@ -123,6 +121,7 @@ export const OperatorTable = ({columns, data, isLoading, network}) => {
     // Avoid a layout jump when reaching the last page with empty rows.
     const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
+
     function Row(props) {
         const {row} = props;
         const [open, setOpen] = React.useState(false);
@@ -138,49 +137,37 @@ export const OperatorTable = ({columns, data, isLoading, network}) => {
                     <Link
                         target="_blank"
                         underline="hover"
-                        href={Utils.getDomain() + "?operator=" + row.id}
+                        href={Utils.getDomain() + "?group=" + row.id}
                         className={styles.link}
                     >
-                        {Data.formatString(row.id)}
+                        {Data.formatString(row.groupPublicKey.pubKey)}
                     </Link>
                     <ShareLink/>
                     <Tooltip title="Copied">
                         <Copy
                             style={{cursor: "pointer"}}
-                            onClick={(e) => copyToClipBoard(row.id)}
+                            onClick={(e) => copyToClipBoard(row.groupPublicKey.pubKey)}
                         />
                     </Tooltip>
                 </TableCell>
                 <TableCell align="left">
-                    {Data.formatWeiDecimal(row.tBTCAuthorizedAmount)}
+                    {row.size}
                 </TableCell>
                 <TableCell align="left">
-                    {Data.formatWeiDecimal(row.randomBeaconAuthorizedAmount)}
-                </TableCell>
-                <TableCell align="left">
-                    {Data.formatWeiDecimal(row.stakedAmount)}
-                </TableCell>
-                <TableCell align="left">
-                    {Data.formatWeiDecimal(row.availableReward)}
+                    {row.uniqueMemberCount}
                 </TableCell>
                 <TableCell align="left">
                     {row.misbehavedCount}
                 </TableCell>
                 <TableCell align="left">
-                    {
-                        row.registeredOperatorAddress === 2 ? (
-                            <Tooltip title={"operator address is registered"}>
-                                <CheckSharpIcon style={{color: "green"}}/>
-                            </Tooltip>
-                        ) : (
-                            <Tooltip title={"operator address is not registered"}>
-                                <CloseSharpIcon style={{color: "red"}}/>
-                            </Tooltip>
-                        )
-                    }
+                    {Data.formatWeiDecimal(row.totalSlashedAmount)}
                 </TableCell>
                 <TableCell align="left">
-                    {Data.formatTimeToText(row.stakedAt)}
+                    {Data.formatTimeToText(row.createdAt * 1000)}
+                </TableCell>
+
+                <TableCell align="left">
+                    {Utils.getGroupState(row, currentBlock)}
                 </TableCell>
             </TableRow>
         </React.Fragment>);
@@ -240,4 +227,4 @@ export const OperatorTable = ({columns, data, isLoading, network}) => {
     </>);
 };
 
-export default OperatorTable;
+export default GroupTable;
