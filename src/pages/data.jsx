@@ -199,6 +199,8 @@ export const formatNumber = (value) => {
 }
 
 export function formatTimeToText(timestamp) {
+    if (timestamp == 0)
+        return "Didn't staked"
     const date = moment.duration(
         moment(new Date().getTime()).diff(moment(timestamp))
     );
