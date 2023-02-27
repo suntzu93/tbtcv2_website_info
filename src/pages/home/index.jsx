@@ -24,6 +24,7 @@ import OperatorPage from "./operator";
 import OperatorDetailPage from "./operatorDetail";
 import GroupDetailPage from "./groupDetail";
 import UserDetailPage from "./userDetail";
+import GroupsPage from "./groups";
 
 const HomePage = () => {
     const [tab, setTab] = React.useState("1");
@@ -49,6 +50,8 @@ const HomePage = () => {
                 setTab("redeems");
             } else if (pathName.startsWith("/operators")) {
                 setTab("operators");
+            } else if (pathName.startsWith("/groups")) {
+                setTab("groups");
             } else if (pathName.startsWith("/about")) {
                 setTab("about");
             } else if (pathName.startsWith("/token")) {
@@ -84,6 +87,12 @@ const HomePage = () => {
         </div>);
     }
 
+    function groups() {
+        return (<div>
+            <GroupsPage network={Const.DEFAULT_NETWORK}/>
+        </div>);
+    }
+
     function operatorDetail() {
         return <OperatorDetailPage/>;
     }
@@ -110,6 +119,8 @@ const HomePage = () => {
                     return browserHistory.push("/redeems");
                 case "operators":
                     return browserHistory.push("/operators");
+                case "groups":
+                    return browserHistory.push("/groups");
                 case "token":
                     return browserHistory.push("/token");
                 case "about":
@@ -190,6 +201,11 @@ const HomePage = () => {
                             />
                             <Tab
                                 sx={{padding: 0}}
+                                label="Groups"
+                                value="groups"
+                            />
+                            <Tab
+                                sx={{padding: 0}}
                                 label="Token"
                                 value="token"
                             />
@@ -259,6 +275,8 @@ const HomePage = () => {
                     <TabPanel value="deposits">{deposits()}</TabPanel>
                     <TabPanel value="redeems">{redeems()}</TabPanel>
                     <TabPanel value="operators">{operators()}</TabPanel>
+                    <TabPanel value="groups">{groups()}</TabPanel>
+
                     <TabPanel value="operatorDetail">{operatorDetail()}</TabPanel>
                     <TabPanel value="groupDetail">{groupDetail()}</TabPanel>
                     <TabPanel value="userDetail">{userDetail()}</TabPanel>

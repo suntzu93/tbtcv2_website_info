@@ -18,3 +18,12 @@ export const getDomain = () => {
         return "https://testnet.tbtcscan.com"
     }
 }
+
+export function getGroupState(group,currentBlock) {
+    //259_200 is group life time, ~30 days assuming 15s block time
+    if (group.terminated || parseInt(group.createdAtBlock) + 259200 < currentBlock) {
+        return "Inactive"
+    } else {
+        return "Active"
+    }
+}

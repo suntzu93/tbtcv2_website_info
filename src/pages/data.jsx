@@ -84,7 +84,7 @@ export const operator_columns = [
         header: "Faults",
         accessor: "misbehaved",
         numeric: true,
-    },{
+    }, {
         header: "Node registered ?",
         accessor: "isRegisteredOperatorAddress",
         numeric: true,
@@ -94,6 +94,38 @@ export const operator_columns = [
         numeric: true,
     },
 ];
+
+
+export const groups_columns = [
+    {
+        header: "Group Public key",
+        accessor: "id",
+    },
+    {
+        header: "Total Slot",
+        accessor: "size",
+    },
+    {
+        header: "Unique Member",
+        accessor: "uniqueMemberCount",
+    },
+    {
+        header: "Faults",
+        accessor: "misbehavedCount",
+    },
+    {
+        header: "Total Slashed Amount",
+        accessor: "totalSlashedAmount",
+    },
+    {
+        header: "Create At",
+        accessor: "createdAt",
+    }, {
+        header: "State",
+        accessor: "state",
+    }
+];
+
 
 const COUNT_FORMATS =
     [
@@ -342,7 +374,7 @@ export const formatRedeems = (rawData) =>
 export const formatOperators = (rawData) =>
     rawData.map((item) => ({
         id: item.id,
-        isRegisteredOperatorAddress: item.isRegisteredOperatorAddress,
+        registeredOperatorAddress: item.registeredOperatorAddress,
         tBTCAuthorized: item.tBTCAuthorized,
         randomBeaconAuthorized: item.randomBeaconAuthorized,
         tBTCAuthorizedAmount: parseFloat(item.tBTCAuthorizedAmount),
@@ -444,40 +476,7 @@ export const getOperatorDetail = async (operator) => {
         const data = await client.execute(client.OperatorDetailDocument, {
             id: operator
         });
-        const operatorData = {
-            ...data.data.operator, randomBeaconGroupMemberships: [
-                {
-                    "count": 3,
-                    "group": {
-                        "id": "0xabc123",
-                        "createdAt": "1677028167",
-                        "groupPublicKey": {
-                            "pubKey": "0xabc123",
-                            "terminated": false
-                        },
-                        "size": 56,
-                        "uniqueMemberCount": 44,
-                        "misbehavedCount": 2,
-                        "totalSlashedAmount": 1000000000000000000000
-                    }
-                }, {
-                    "count": 2,
-                    "group": {
-                        "id": "0xdef456",
-                        "createdAt": "1676008167",
-                        "groupPublicKey": {
-                            "pubKey": "0xdef456",
-                            "terminated": false
-                        },
-                        "size": 60,
-                        "uniqueMemberCount": 54,
-                        "misbehavedCount": 0,
-                        "totalSlashedAmount": 0
-                    }
-                }
-            ]
-        };
-        return operatorData;
+        return data.data.operator;
     } catch (e) {
         console.log("error to fetch operators data " + e);
     }
@@ -487,59 +486,10 @@ export const getOperatorDetail = async (operator) => {
 export const getGroupDetail = async (groupId) => {
     const emptyData = JSON.parse(`[]`);
     try {
-        // const data = await client.execute(client.RandomBeaconGroupDetailDocument, {
-        //     id: groupId
-        // });
-        const data = {
-            "id": "0xabc123",
-            "createdAt": "1677028167",
-            "groupPublicKey": {
-                "pubKey": "0xabc123",
-                "terminated": false
-            },
-            "size": 56,
-            "misbehavedCount": 1,
-            "totalSlashedAmount": 1000000000000000000000,
-            "memberships": [
-                {
-                    "count": 2,
-                    "operator": {
-                        "id": "0xd96d4b52cab35cf3df1d58765bd2ea7cb1fb6016",
-                        "misbehavedCount": 2,
-                        "tBTCAuthorizedAmount": 40000000000000000000000,
-                        "randomBeaconAuthorizedAmount": 40000000000000000000000,
-                        "availableReward": 100000000000000000000
-                    }
-                },
-                {
-                    "count": 1,
-                    "operator": {
-                        "id": "0xbb392cb752a3743b1c06490b9f9c6a09cdd83d8e",
-                        "misbehavedCount": 1,
-                        "tBTCAuthorizedAmount": 45000000000000000000000,
-                        "randomBeaconAuthorizedAmount": 35000000000000000000000,
-                        "availableReward": 80000000000000000000
-                    }
-                },
-            ],
-            "relayEntries": [
-                {
-                    "id": "123",
-                    "requestedAt": 1677028167,
-                    "submittedAt": 1677038167,
-                    "value": 1
-                },
-                {
-                    "id": "234",
-                    "requestedAt": 1674028167,
-                    "submittedAt": 1674078167,
-                    "value": 1
-                }
-            ]
-        }
-
-
-        return data;
+        const data = await client.execute(client.RandomBeaconGroupDetailDocument, {
+            id: groupId
+        });
+        return data.data.randomBeaconGroup;
     } catch (e) {
         console.log("error to fetch operators data " + e);
     }
@@ -559,3 +509,38 @@ export const getUserDetail = async (userAddress) => {
     }
     return emptyData;
 }
+
+export const getListGroups = async () => {
+    const emptyData = JSON.parse(`[]`);
+    try {
+        let data;
+        data = await client.execute(client.ListRandomBeaconGroupDocument, {});
+        return data.data.randomBeaconGroups;
+    } catch (e) {
+        console.log("error to fetch operators data " + e);
+    }
+    return emptyData;
+}
+
+export const getCurrentBlockNumber = async () => {
+    try {
+        const response = await fetch(Const.DEFAULT_NETWORK === Const.NETWORK_MAINNET
+            ? Const.RPC_ETH_MAINNET
+            : Const.RPC_ETH_GOERLI, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                jsonrpc: '2.0',
+                method: 'eth_blockNumber',
+                params: [],
+                id: 1,
+            }),
+        })
+        const dataJson = await response.json();
+        return parseInt(dataJson.result, 16);
+    } catch (e) {
+        return "ERROR";
+    }
+};

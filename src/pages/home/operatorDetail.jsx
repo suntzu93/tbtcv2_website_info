@@ -14,9 +14,10 @@ import CheckSharpIcon from '@mui/icons-material/CheckSharp';
 import CloseSharpIcon from '@mui/icons-material/CloseSharp';
 import {TIME_LOCK_DEAUTHORIZATION} from "../../utils/Cons";
 import Loader from "../../components/loader";
+import Tooltip from "@mui/material/Tooltip";
 
 
-function OperatorDetail({operator}) {
+function OperatorDetail({operator, currentBlock}) {
     const [value, setValue] = React.useState("1");
 
     const handleChange = (event, newValue) => {
@@ -33,7 +34,7 @@ function OperatorDetail({operator}) {
                     </TabList>
                 </Box>
                 <TabPanel value="1" className={styles.operator_detail}>{Overview(operator)}</TabPanel>
-                <TabPanel value="2" className={styles.operator_detail}>{BeaconGroup(operator)}</TabPanel>
+                <TabPanel value="2" className={styles.operator_detail}>{BeaconGroup(operator, currentBlock)}</TabPanel>
             </TabContext>
         </Box>
     );
@@ -69,7 +70,7 @@ function Overview(operator) {
         return "..."
     }
 
-    function formatEvent(event, amount) {
+    function formatEvent(event, isRandomBeaconEvent, amount) {
         if (event == undefined)
             return
 
@@ -89,11 +90,15 @@ function Overview(operator) {
             case "DECREASE_AUTHORIZED_TBTC":
                 return "Operator has reduced " + amount + " token from WalletRegistry contract."
             case "REGISTERED_OPERATOR":
-                return "Operator has registered operator address."
+                return isRandomBeaconEvent ?
+                    "Operator has registered operator address with RandomBeacon contract."
+                    : "Operator has registered operator address with WalletRegistry contract."
             case "BOND_OPERATOR":
                 return "Operator has registered operator address on SimplePREApplication contract."
             case "JOINED_SORTITION_POOL":
-                return "Operator has been joined the Sortition pool."
+                return isRandomBeaconEvent ?
+                    "Operator has been joined the Sortition pool with RandomBeacon contract."
+                    : "Operator been joined the Sortition pool with WalletRegistry contract."
             case "SLASHED":
                 return "Operator has been penalized " + amount + " token for bad behavior."
             case "WITHDRAW_REWARD":
@@ -298,7 +303,7 @@ function Overview(operator) {
                             <div>
                                 <strong>{event.replaceAll("_", " ")}</strong>
                                 <div>
-                                    {formatEvent(event, Data.formatWeiDecimal(amount))}
+                                    {formatEvent(event, eventEntity.isRandomBeaconEvent, Data.formatWeiDecimal(amount))}
                                 </div>
                             </div>
                         </div>
@@ -309,7 +314,17 @@ function Overview(operator) {
     );
 }
 
-function BeaconGroup(operator) {
+function BeaconGroup(operator, currentBlock) {
+
+    function checkGroupState(group) {
+        //259_200 is group life time, ~30 days assuming 15s block time
+        if (group.terminated || parseInt(group.createdAtBlock) + 259200 < currentBlock) {
+            return "Inactive"
+        } else {
+            return "Active"
+        }
+    }
+
     return (<div>
             <h4>
                 <strong>Random Beacon Groups</strong>
@@ -320,16 +335,19 @@ function BeaconGroup(operator) {
                     <th>Group</th>
                     <th>Total Slot</th>
                     <th>Unique Member</th>
-                    <th>Total Slot of this Operator</th>
+                    <th><Tooltip
+                        title={"An operator can fill multiple membership slots in a group, and will then earn a multiple of rewards."}><span>{"Weight"}</span></Tooltip>
+                    </th>
                     <th>Total Faults</th>
                     <th>Total Slashed Amount</th>
                     <th>Create At</th>
+                    <th>State</th>
                 </tr>
                 </thead>
 
                 <tbody>
                 {operator?.randomBeaconGroupMemberships?.map(memberShip => {
-                    const thisOperatorSlot = memberShip.count;
+                    const weight = memberShip.count;
                     const group = memberShip.group;
                     const id = group.id;
                     const size = group.size;
@@ -349,10 +367,12 @@ function BeaconGroup(operator) {
                             </Link></td>
                             <td>{size}</td>
                             <td>{uniqueMemberCount}</td>
-                            <td>{thisOperatorSlot}</td>
+                            <td>{weight}</td>
                             <td>{faults}</td>
                             <td>{Data.formatWeiDecimal(slashAmount)}</td>
                             <td>{Data.formatTimeToText(createAt * 1000)}</td>
+                            <td>{checkGroupState(group)}</td>
+
                         </tr>
                     )
                 })}
@@ -368,6 +388,7 @@ const OperatorDetailPage = () => {
         isLoading: true,
     });
     const [operator, setOperator] = useState();
+    const [currentBlock, setCurrentBlock] = useState();
 
     useEffect(() => {
         const query = new URLSearchParams(window.location.search);
@@ -379,6 +400,10 @@ const OperatorDetailPage = () => {
                 isLoading: false,
                 rowData: info,
             });
+        });
+
+        Data.getCurrentBlockNumber().then((info) => {
+            setCurrentBlock(info);
         });
 
     }, []);
@@ -416,7 +441,8 @@ const OperatorDetailPage = () => {
                                     <div className={styles.operator_detail_header_value_item_lable}>TBTC authorized
                                     </div>
                                     <div>
-                                        <div>{Data.formatWeiDecimal(pageData.rowData.tBTCAuthorizedAmount)}</div>
+                                        <div>{Data.formatWeiDecimal(pageData.rowData.tBTCAuthorizedAmount)}<span
+                                            className={styles.span_t_token}>{" T"}</span></div>
                                         <div
                                             className={styles.operator_detail_header_value_item_percent}>
                                             {calculatePercentAuthorizedOfStake(pageData.rowData.tBTCAuthorizedAmount, pageData.rowData.stakedAmount)}%
@@ -429,7 +455,8 @@ const OperatorDetailPage = () => {
                                         authorized
                                     </div>
                                     <div>
-                                        <div>{Data.formatWeiDecimal(pageData.rowData.randomBeaconAuthorizedAmount)}</div>
+                                        <div>{Data.formatWeiDecimal(pageData.rowData.randomBeaconAuthorizedAmount)}<span
+                                            className={styles.span_t_token}>{" T"}</span></div>
                                         <div
                                             className={styles.operator_detail_header_value_item_percent}>
                                             {calculatePercentAuthorizedOfStake(pageData.rowData.randomBeaconAuthorizedAmount, pageData.rowData.stakedAmount)}%
@@ -440,7 +467,8 @@ const OperatorDetailPage = () => {
                                 <div className={styles.operator_detail_header_value_item}>
                                     <div className={styles.operator_detail_header_value_item_lable}>staked</div>
                                     <div>
-                                        <div>{Data.formatWeiDecimal(pageData.rowData.stakedAmount)}</div>
+                                        <div>{Data.formatWeiDecimal(pageData.rowData.stakedAmount)}<span
+                                            className={styles.span_t_token}>{" T"}</span></div>
                                     </div>
                                 </div>
                                 <div className={styles.operator_detail_header_value_item}>
@@ -453,19 +481,21 @@ const OperatorDetailPage = () => {
                                     <div className={styles.operator_detail_header_value_item_lable}>available reward
                                     </div>
                                     <div>
-                                        <div>{Data.formatWeiDecimal(pageData.rowData.availableReward)}</div>
+                                        <div>{Data.formatWeiDecimal(pageData.rowData.availableReward)}<span
+                                            className={styles.span_t_token}>{" T"}</span></div>
                                     </div>
                                 </div>
                                 <div className={styles.operator_detail_header_value_item}>
                                     <div className={styles.operator_detail_header_value_item_lable}>rewards dispensed
                                     </div>
                                     <div>
-                                        <div>{Data.formatWeiDecimal(pageData.rowData.rewardDispensed)}</div>
+                                        <div>{Data.formatWeiDecimal(pageData.rowData.rewardDispensed)}<span
+                                            className={styles.span_t_token}>{" T"}</span></div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <OperatorDetail operator={pageData.rowData}/>
+                        <OperatorDetail operator={pageData.rowData} currentBlock={currentBlock}/>
                     </div>
                 )
             }</>
