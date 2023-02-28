@@ -241,7 +241,7 @@ query RandomBeaconGroupDetail($id: ID!){
         terminated
         nonce
         notifier
-        memberships{
+        memberships(orderBy: count,orderDirection: desc){
             count
             operator{
                 id
