@@ -220,22 +220,6 @@ query ListRandomBeaconGroup{
         terminated
         nonce
         notifier
-        memberships{
-            count
-            operator{
-                id
-                misbehavedCount
-                tBTCAuthorizedAmount
-                randomBeaconAuthorizedAmount
-                availableReward
-            }
-        }
-        relayEntries(orderBy:submittedAt,orderDirection:desc){
-            id
-            requestedAt
-            submittedAt
-            value
-        }
     }
     statusRecord(id:"status"){
         groupState
@@ -257,7 +241,7 @@ query RandomBeaconGroupDetail($id: ID!){
         terminated
         nonce
         notifier
-        memberships{
+        memberships(orderBy: count,orderDirection: desc){
             count
             operator{
                 id
