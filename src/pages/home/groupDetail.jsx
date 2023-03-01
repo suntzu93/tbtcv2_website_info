@@ -10,6 +10,8 @@ import TabList from '@mui/lab/TabList';
 import TabContext from "@mui/lab/TabContext";
 import Loader from "../../components/loader";
 import moment from "moment/moment";
+import Tooltip from "@mui/material/Tooltip";
+import {ReactComponent as Copy} from '../../assets/copy.svg';
 
 
 function GroupDetail({group}) {
@@ -25,12 +27,24 @@ function GroupDetail({group}) {
                 <Box sx={{borderBottom: 1, borderColor: 'divider'}}>
                     <TabList onChange={handleChange} aria-label="lab API tabs example">
                         <Tab style={{textTransform: 'none', color: "black"}} label="Members" value="1"/>
-                        <Tab style={{textTransform: 'none', color: "black"}} label="Entries" value="2"/>
-
+                        {
+                            !group?.isWalletRegistry ? (
+                                <Tab style={{textTransform: 'none', color: "black"}} label="Entries" value="2"/>
+                            ) : (
+                                <></>
+                            )
+                        }
                     </TabList>
                 </Box>
                 <TabPanel value="1" className={styles.operator_detail}>{MembersGroup(group)}</TabPanel>
-                <TabPanel value="2" className={styles.operator_detail}>{Entries(group)}</TabPanel>
+                {
+                    !group?.isWalletRegistry ? (
+                        <TabPanel value="2" className={styles.operator_detail}>{Entries(group)}</TabPanel>
+                    ) : (
+                        <></>
+                    )
+                }
+
 
             </TabContext>
         </Box>
@@ -43,7 +57,9 @@ function MembersGroup(group) {
                 <thead>
                 <tr>
                     <th>Address</th>
+                    <th>Node Address</th>
                     <th>Weight</th>
+                    <th>Seats</th>
                     <th>TBTC Authorized</th>
                     <th>Random Beacon Authorized</th>
                     <th>Available Reward</th>
@@ -54,8 +70,10 @@ function MembersGroup(group) {
                 <tbody>
                 {group?.memberships?.map(memberShip => {
                     const count = memberShip.count;
+                    const seats = memberShip.seats;
                     const operator = memberShip.operator;
                     const id = operator.id;
+                    const nodeAddress = operator.address;
                     const misbehavedCount = operator.misbehavedCount;
                     const tBTCAuthorizedAmount = operator.tBTCAuthorizedAmount;
                     const randomBeaconAuthorizedAmount = operator.randomBeaconAuthorizedAmount;
@@ -70,7 +88,16 @@ function MembersGroup(group) {
                             >
                                 {Data.formatString(id)}
                             </Link></td>
+                            <td><Link
+                                target="_blank"
+                                underline="hover"
+                                href={Utils.getEtherAddressLink() + nodeAddress}
+                                className={styles.link}
+                            >
+                                {Data.formatString(nodeAddress)}
+                            </Link></td>
                             <td>{count}</td>
+                            <td>{seats.toString()}</td>
                             <td>{Data.formatWeiDecimal(tBTCAuthorizedAmount)}</td>
                             <td>{Data.formatWeiDecimal(randomBeaconAuthorizedAmount)}</td>
                             <td>{Data.formatWeiDecimal(availableReward)}</td>
@@ -126,15 +153,15 @@ const GroupDetailPage = () => {
         rowData: {},
         isLoading: true,
     });
-    const [groupId, setGroupId] = useState();
+    const [groupPublicKey, setGroupPublicKey] = useState();
     const [currentBlock, setCurrentBlock] = useState();
 
     useEffect(() => {
         const query = new URLSearchParams(window.location.search);
         const group = query.get("group");
-        setGroupId(group);
 
         Data.getGroupDetail(group).then((info) => {
+            setGroupPublicKey(info?.groupPublicKey?.pubKey);
             setPageData({
                 isLoading: false,
                 rowData: info,
@@ -148,6 +175,13 @@ const GroupDetailPage = () => {
 
     }, []);
 
+    const copyToClipBoard = (data) => {
+        try {
+            navigator.clipboard.writeText(data);
+        } catch (err) {
+        }
+    }
+
     return (<>
             {
                 pageData.isLoading ? (
@@ -158,7 +192,13 @@ const GroupDetailPage = () => {
                     <div>
                         <div className={styles.operator_detail_header}>
                             <div className={styles.operator_detail_header_address}>
-                                <h3>{Data.formatString(groupId)}
+                                <h3>{Data.formatString(groupPublicKey)}
+                                    <Tooltip title="Copied">
+                                        <Copy
+                                            style={{cursor: "pointer"}}
+                                            onClick={(e) => copyToClipBoard(groupPublicKey)}
+                                        />
+                                    </Tooltip>
                                 </h3>
                                 <span>group</span>
                             </div>
@@ -167,34 +207,34 @@ const GroupDetailPage = () => {
                                     <div className={styles.operator_detail_header_value_item_lable}>member size
                                     </div>
                                     <div>
-                                        <div>{pageData.rowData.size}</div>
+                                        <div>{pageData.rowData?.size}</div>
                                     </div>
                                 </div>
                                 <div className={styles.operator_detail_header_value_item}>
                                     <div className={styles.operator_detail_header_value_item_lable}>unique member
                                     </div>
                                     <div>
-                                        <div>{pageData.rowData.uniqueMemberCount}</div>
+                                        <div>{pageData.rowData?.uniqueMemberCount}</div>
                                     </div>
                                 </div>
                                 <div className={styles.operator_detail_header_value_item}>
                                     <div className={styles.operator_detail_header_value_item_lable}> misbehave</div>
                                     <div>
-                                        <div>{pageData.rowData.misbehavedCount}</div>
+                                        <div>{pageData.rowData?.misbehavedCount}</div>
                                     </div>
                                 </div>
                                 <div className={styles.operator_detail_header_value_item}>
                                     <div className={styles.operator_detail_header_value_item_lable}> slashed</div>
                                     <div>
                                         <div><span
-                                            style={{fontSize: "25px"}}>{"T "}</span>{Data.formatWeiDecimal(pageData.rowData.totalSlashedAmount)}
+                                            style={{fontSize: "25px"}}>{"T "}</span>{Data.formatWeiDecimal(pageData.rowData?.totalSlashedAmount)}
                                         </div>
                                     </div>
                                 </div>
                                 <div className={styles.operator_detail_header_value_item}>
                                     <div className={styles.operator_detail_header_value_item_lable}>create at</div>
                                     <div>
-                                        <div>{Data.formatTimeToText(pageData.rowData.createdAt * 1000)}</div>
+                                        <div>{Data.formatTimeToText(pageData.rowData?.createdAt * 1000)}</div>
                                     </div>
                                 </div>
                                 <div className={styles.operator_detail_header_value_item}>

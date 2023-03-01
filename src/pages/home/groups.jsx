@@ -19,16 +19,25 @@ const GroupsPage = ({network}) => {
             ...prevState,
             rowData: [],
             isLoading: true,
+            totalPassengers: 0
         }));
 
         Data.getListGroups().then((info) => {
-            const totalPassengers = info.length;
-            setPageData({
-                isLoading: false,
-                rowData: info.randomBeaconGroups,
-                totalPassengers: totalPassengers
-            });
-            setState(info.statusRecord.groupState)
+            if (info !== undefined && info?.randomBeaconGroups?.length > 0) {
+                const totalPassengers = info.randomBeaconGroups.length;
+                setPageData({
+                    isLoading: false,
+                    rowData: info.randomBeaconGroups,
+                    totalPassengers: totalPassengers
+                });
+                setState(info.statusRecord.groupState)
+            } else {
+                setPageData({
+                    isLoading: false,
+                    rowData: [],
+                    totalPassengers: 0
+                });
+            }
         });
 
         Data.getCurrentBlockNumber().then((info) => {
@@ -43,8 +52,8 @@ const GroupsPage = ({network}) => {
             <div>
                 <div className={styles.operator_detail_header}>
                     <div className={styles.operator_detail_header_address}>
-                        <h3>Groups
-                        </h3>
+                        <h3>Groups</h3>
+                        <span>{pageData.totalPassengers} groups</span>
                     </div>
                     <div className={styles.operator_detail_header_value}>
                         <div className={styles.operator_detail_header_value_item}>

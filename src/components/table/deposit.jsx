@@ -134,7 +134,6 @@ export const DepositTable = ({columns, data, isLoading, network}) => {
     function Row(props) {
         const {row} = props;
         const [open, setOpen] = React.useState(false);
-
         return (<React.Fragment>
             <TableRow
                 hover
@@ -152,14 +151,16 @@ export const DepositTable = ({columns, data, isLoading, network}) => {
                         {open ? <KeyboardArrowUpIcon/> : <KeyboardArrowDownIcon/>}
                     </IconButton>
                 </TableCell>
-                <TableCell align="left">
-                    {Data.calculateTimeMoment(row.updateTime)}
+                <TableCell align="left" style={{width:"10%"}}>
+                    <Tooltip title={Data.formatDate(row.updateTime)}>
+                        <span>{Data.calculateTimeMoment(row.updateTime)}</span>
+                    </Tooltip>
                 </TableCell>
                 <TableCell align="left">
                     <Link
                         target="_blank"
                         underline="hover"
-                        href={Utils.getDomain() +"?user="+ row.depositor}
+                        href={Utils.getDomain() + "?user=" + row.depositor}
                         className={styles.link}
                     >
                         {Data.formatString(row.depositor)}
@@ -187,9 +188,11 @@ export const DepositTable = ({columns, data, isLoading, network}) => {
                     <Collapse in={open} timeout="auto" unmountOnExit>
                         <Box sx={{margin: 1}}>
                             <div className={styles.detail_item}>
-                                <TransactionTimeline className={styles.timeline} transactions={row.transactions}
-                                                     network={network}/>
-                                <div>
+                                <div style={{flex: "1 1 0%"}}>
+                                    <TransactionTimeline className={styles.timeline} transactions={row.transactions}
+                                                         network={network}/>
+                                </div>
+                                <div style={{flex: "1 1 0%"}}>
                                     <TableContainer className={styles.timeline}>
                                         <Table
                                             className={styles.table_detail}
@@ -217,11 +220,16 @@ export const DepositTable = ({columns, data, isLoading, network}) => {
                                                 </TableRow>
                                                 <TableRow>
                                                     <TableCell>Funding TxHash </TableCell>
-                                                    <TableCell>{Data.formatString(row.fundingTxHash)}
-                                                        <Copy
-                                                            style={{cursor: "pointer"}}
-                                                            onClick={(e) => copyToClipBoard(row.fundingTxHash)}
-                                                        /></TableCell>
+                                                    <TableCell>
+                                                        <Link
+                                                            target="_blank"
+                                                            underline="hover"
+                                                            href={Utils.getBlockStreamInfo() + row.fundingTxHash.replace("0x", "")}
+                                                            className={styles.link}
+                                                        >
+                                                            {Data.formatString(row.fundingTxHash.replace("0x", ""))}
+                                                        </Link>
+                                                    </TableCell>
                                                 </TableRow>
                                                 <TableRow>
                                                     <TableCell>Funding Output Index</TableCell>
@@ -229,7 +237,7 @@ export const DepositTable = ({columns, data, isLoading, network}) => {
                                                 </TableRow>
                                                 <TableRow>
                                                     <TableCell>Blinding Factor</TableCell>
-                                                    <TableCell>{Data.formatString(row.blindingFactor)}
+                                                    <TableCell>{row.blindingFactor}
                                                         <Copy
                                                             style={{cursor: "pointer"}}
                                                             onClick={(e) => copyToClipBoard(row.blindingFactor)}

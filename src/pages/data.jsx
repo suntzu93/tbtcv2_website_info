@@ -344,9 +344,10 @@ export const formatDepositsData = (rawData) =>
         actualAmountReceived: parseFloat(item.actualAmountReceived),
         treasuryFee: parseFloat(item.treasuryFee),
         walletPubKeyHash: item.walletPubKeyHash,
-        fundingTxHash: item.fundingTxHash,
+        fundingTxHash: convertToLittleEndian(item.fundingTxHash),
         fundingOutputIndex: item.fundingOutputIndex,
-        blindingFactor: item.blindingFactor,
+        // eslint-disable-next-line no-undef
+        blindingFactor: BigInt(item.blindingFactor).toString(),
         refundPubKeyHash: item.refundPubKeyHash,
         refundLocktime: formatDate(parseInt(convertToLittleEndian(item.refundLocktime) * 1000)),
         vault: item.vault,
@@ -465,7 +466,7 @@ export const getOperators = async (isSearch, searchInput) => {
                 id: searchInput.toLowerCase(),
             });
         }
-        return formatOperators(data.data.operators);
+        return data.data;
     } catch (e) {
         console.log("error to fetch operators data " + e);
     }
@@ -493,7 +494,7 @@ export const getGroupDetail = async (groupId) => {
         });
         return data.data.randomBeaconGroup;
     } catch (e) {
-        console.log("error to fetch operators data " + e);
+        console.log("error to fetch group data " + e);
     }
     return emptyData;
 }
@@ -507,7 +508,7 @@ export const getUserDetail = async (userAddress) => {
         });
         return formatUserDetail(data.data.user);
     } catch (e) {
-        console.log("error to fetch operators data " + e);
+        console.log("error to fetch user data " + e);
     }
     return emptyData;
 }
@@ -519,7 +520,7 @@ export const getListGroups = async () => {
         data = await client.execute(client.ListRandomBeaconGroupDocument, {});
         return data.data;
     } catch (e) {
-        console.log("error to fetch operators data " + e);
+        console.log("error to fetch list group data " + e);
     }
     return emptyData;
 }

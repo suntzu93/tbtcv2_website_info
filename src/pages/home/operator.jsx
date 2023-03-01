@@ -11,6 +11,13 @@ const OperatorPage = ({network, isSearch, searchInput}) => {
         totalPassengers: 0,
     });
 
+    const [stats, setStats] = useState({
+        "numOperatorsRegisteredNode" : "loading...",
+        "totalTBTCAuthorizedAmount" : 0,
+        "totalRandomBeaconAuthorizedAmount" : 0,
+        "totalStaked" : 0,
+    });
+
     useEffect(() => {
         setPageData((prevState) => ({
             ...prevState,
@@ -19,12 +26,15 @@ const OperatorPage = ({network, isSearch, searchInput}) => {
         }));
 
         Data.getOperators(isSearch, searchInput).then((info) => {
-            const totalPassengers = info.length;
+            const operators = Data.formatOperators(info.operators);
+            const totalPassengers = operators.length;
             setPageData({
                 isLoading: false,
-                rowData: info,
+                rowData: operators,
                 totalPassengers: totalPassengers
             });
+
+            setStats(info.statsRecord);
         });
 
     }, [isSearch]);
@@ -32,9 +42,58 @@ const OperatorPage = ({network, isSearch, searchInput}) => {
 
     return (
         <div>
-            <div className={styles.deposit_header}>
-                <h3>Operators</h3>
-                <span>{pageData.totalPassengers} operators</span>
+            <div className={styles.operator_detail_header}>
+
+                <div className={styles.operator_detail_header_address}>
+                    {
+                        isSearch ? (
+                            <>
+                                <h4>Search : {searchInput}</h4>
+                                <span>{pageData.totalPassengers} operator</span>
+                            </>
+                        ) : (
+                            <>
+                                <h3>Operators</h3>
+                                <span>{pageData.totalPassengers} operators</span></>
+                        )
+                    }
+                </div>
+                <div className={styles.operator_detail_header_value}>
+                    <div className={styles.operator_detail_header_value_item}>
+                        <div className={styles.operator_detail_header_value_item_lable}>total registered nodes
+                        </div>
+                        <div>
+                            <div>{stats?.numOperatorsRegisteredNode}</div>
+                        </div>
+                    </div>
+                </div>
+                <div className={styles.operator_detail_header_value}>
+                    <div className={styles.operator_detail_header_value_item}>
+                        <div className={styles.operator_detail_header_value_item_lable}>total authorized tbtc
+                        </div>
+                        <div>
+                            <div>{Data.formatWeiDecimal(stats?.totalTBTCAuthorizedAmount)}</div>
+                        </div>
+                    </div>
+                </div>
+                <div className={styles.operator_detail_header_value}>
+                    <div className={styles.operator_detail_header_value_item}>
+                        <div className={styles.operator_detail_header_value_item_lable}>total authorized beacon
+                        </div>
+                        <div>
+                            <div>{Data.formatWeiDecimal(stats?.totalRandomBeaconAuthorizedAmount)}</div>
+                        </div>
+                    </div>
+                </div>
+                <div className={styles.operator_detail_header_value}>
+                    <div className={styles.operator_detail_header_value_item}>
+                        <div className={styles.operator_detail_header_value_item_lable}>total staked
+                        </div>
+                        <div>
+                            <div>{Data.formatWeiDecimal(stats?.totalStaked)}</div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div className={styles.table_content}>
                 <OperatorTable

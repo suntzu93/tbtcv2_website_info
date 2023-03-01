@@ -1,3 +1,11 @@
+::-webkit-scrollbar {
+    width: 0;  /* Remove scrollbar space */
+    background: transparent;  /* Optional: just make scrollbar invisible */
+}
+/* Optional: show position indicator in red */
+::-webkit-scrollbar-thumb {
+}
+
 .table_content {
     box-shadow: rgb(20 20 20 / 20%) 0px 4px 8px;
     box-sizing: border-box;
@@ -7,6 +15,7 @@
     text-align: center;
     background: rgb(255, 255, 255);
     border-radius: 4px;
+    margin-top: 10px;
 }
 
 .logo_header {
@@ -24,9 +33,6 @@
         width: 200px;
     }
 
-    .search {
-        visibility: hidden;
-    }
 }
 
 @media (max-width: 870px) {
@@ -36,7 +42,6 @@
 }
 
 .search {
-    float: right;
     margin-right: 20px;
     width: 20%;
     min-width: 200px;
@@ -62,12 +67,10 @@
 }
 
 .about {
-    float: right;
     margin-right: 20px;
 }
 
 .setting {
-    float: right;
     margin-top: 5px;
 }
 
@@ -366,6 +369,10 @@
     flex-direction: column;
     align-self: flex-start;
     flex: 1 1 0%;
+}
+
+.operator_detail_header_address h3 {
+    font-weight: bold;
 }
 
 .operator_detail_header_value {
