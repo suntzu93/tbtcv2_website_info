@@ -1,7 +1,8 @@
 sources:
-  - name: threshold-tbtc
+  - name: threshold-tbtc-mainnet
     handler:
       graphql:
+        endpoint: https://api.studio.thegraph.com/query/575/threshold-tbtc-mainnet/v0.1.1
         endpoint: https://api.thegraph.com/subgraphs/name/suntzu93/threshold-tbtc-goerli
     transforms:
       - autoPagination:

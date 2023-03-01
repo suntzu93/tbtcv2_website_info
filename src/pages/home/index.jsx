@@ -167,11 +167,17 @@ const HomePage = () => {
                 <TabContext value={tab}>
                     <Box
                         sx={{
+                            mb: 0,
                             borderBottom: 1,
                             borderColor: "divider",
                             textAlign: "left",
                             marginLeft: "20px",
                             paddingTop: "20px",
+                            display:"flex",
+                            flexDirection:"row",
+                            overflowX:"scroll",
+                            overflowY:"hidden",
+                            height:"90px"
                         }}
                     >
                         <div className={styles.logo_header}>
@@ -182,7 +188,7 @@ const HomePage = () => {
                         <TabList
                             onChange={handleChange}
                             aria-label=""
-                            sx={{display: "inline-block", paddingLeft: "20px"}}
+                            sx={{display: "flex", paddingLeft: "20px",minWidth:"500px"}}
                         >
                             <Tab
                                 sx={{padding: 0}}
@@ -210,18 +216,23 @@ const HomePage = () => {
                                 value="token"
                             />
                         </TabList>
-                        <div className={styles.about}>
-                            <TabList
-                                className={styles.tab}
-                                onChange={handleChange}
-                                aria-label=""
-                            >
-                                <Tab
-                                    sx={{padding: 0}}
-                                    label="About"
-                                    value="about"
-                                />
-                            </TabList>
+                        <div style={{flex:"1 1 0%"}}></div>
+                        <div className={styles.search}>
+                            <TextField
+                                label="depositor / redeemer / operator"
+                                variant="outlined"
+                                fullWidth
+                                value={searchInput}
+                                onChange={handleChangeSearchInput}
+                                onKeyUp={(event) => {
+                                    if (event.key == "Enter") submitSearch();
+                                }}
+                                InputProps={{
+                                    endAdornment: (<IconButton>
+                                        <SearchIcon onClick={() => submitSearch()}/>
+                                    </IconButton>),
+                                }}
+                            />
                         </div>
                         <div className={styles.setting}>
                             <IconButton
@@ -254,23 +265,21 @@ const HomePage = () => {
                                 </MenuItem>
                             </Menu>
                         </div>
-                        <div className={styles.search}>
-                            <TextField
-                                label="depositer / redeemer / operator"
-                                variant="outlined"
-                                fullWidth
-                                value={searchInput}
-                                onChange={handleChangeSearchInput}
-                                onKeyUp={(event) => {
-                                    if (event.key == "Enter") submitSearch();
-                                }}
-                                InputProps={{
-                                    endAdornment: (<IconButton>
-                                        <SearchIcon onClick={() => submitSearch()}/>
-                                    </IconButton>),
-                                }}
-                            />
+                        <div className={styles.about}>
+                            <TabList
+                                className={styles.tab}
+                                onChange={handleChange}
+                                aria-label=""
+                            >
+                                <Tab
+                                    sx={{padding: 0}}
+                                    label="About"
+                                    value="about"
+                                />
+                            </TabList>
                         </div>
+
+
                     </Box>
                     <TabPanel value="deposits">{deposits()}</TabPanel>
                     <TabPanel value="redeems">{redeems()}</TabPanel>

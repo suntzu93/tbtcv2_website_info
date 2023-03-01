@@ -34,8 +34,18 @@ const DepositPage = ({network, isSearch, searchInput}) => {
     return (
         <div>
             <div className={styles.deposit_header}>
-                <h3>All Deposits</h3>
-                <span>{pageData.totalPassengers} deposits</span>
+                {
+                    isSearch ? (
+                        <>
+                            <h4>Search : {searchInput}</h4>
+                            <span>{pageData.totalPassengers} deposits</span>
+                        </>
+                    ) : (
+                        <>
+                            <h3>Deposits</h3>
+                            <span>{pageData.totalPassengers} deposits</span></>
+                    )
+                }
             </div>
             <div className={styles.table_content}>
                 <DepositTable

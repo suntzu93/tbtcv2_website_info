@@ -138,6 +138,12 @@ query Operators {
         poolRewardBanDuration
         stakedAt
     }
+    statsRecord(id:"current"){
+        totalStaked
+        numOperatorsRegisteredNode
+        totalTBTCAuthorizedAmount
+        totalRandomBeaconAuthorizedAmount
+    }
 }
 
 query SearchOperators($id: ID!) {
@@ -153,6 +159,12 @@ query SearchOperators($id: ID!) {
         misbehavedCount
         poolRewardBanDuration
         stakedAt
+    }
+    statsRecord(id:"current"){
+        totalStaked
+        numOperatorsRegisteredNode
+        totalTBTCAuthorizedAmount
+        totalRandomBeaconAuthorizedAmount
     }
 }
 
@@ -241,10 +253,13 @@ query RandomBeaconGroupDetail($id: ID!){
         terminated
         nonce
         notifier
+        isWalletRegistry
         memberships(orderBy: count,orderDirection: desc){
             count
+            seats
             operator{
                 id
+                address
                 misbehavedCount
                 tBTCAuthorizedAmount
                 randomBeaconAuthorizedAmount

@@ -30,18 +30,21 @@ const RedeemsPage = ({network, isSearch, searchInput}) => {
     return (
         <div>
 
-            <div className={styles.allocation_header}>
-                <h3>All Redeems</h3>
+            <div className={styles.deposit_header}>
+                <h3>Redeems</h3>
                 <span>{pageData.totalPassengers} redeems</span>
             </div>
-            <div className={styles.table_content}>
-                <RedeemTable
-                    columns={Data.redeem_columns}
-                    data={pageData.rowData}
-                    isLoading={pageData.isLoading}
-                    network={network}
-                />
+            <div style={{textAlign:"center"}}>
+                <h6>This function is currently being implemented.</h6>
             </div>
+            {/*<div className={styles.table_content}>*/}
+                {/*<RedeemTable*/}
+                {/*    columns={Data.redeem_columns}*/}
+                {/*    data={pageData.rowData}*/}
+                {/*    isLoading={pageData.isLoading}*/}
+                {/*    network={network}*/}
+                {/*/>*/}
+            {/*</div>*/}
         </div>
     );
 }
