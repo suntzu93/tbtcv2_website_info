@@ -12,6 +12,8 @@ import Loader from "../../components/loader";
 import moment from "moment/moment";
 import Tooltip from "@mui/material/Tooltip";
 import {ReactComponent as Copy} from '../../assets/copy.svg';
+import Paper from "@mui/material/Paper";
+import TableContainer from "@mui/material/TableContainer";
 
 
 function GroupDetail({group}) {
@@ -53,6 +55,8 @@ function GroupDetail({group}) {
 
 function MembersGroup(group) {
     return (<div>
+        <Paper sx={{backgroundColor:"transparent", boxShadow:"0"}}>
+            <TableContainer >
             <table className={styles.beacon_groups_table}>
                 <thead>
                 <tr>
@@ -107,6 +111,8 @@ function MembersGroup(group) {
                 })}
                 </tbody>
             </table>
+            </TableContainer>
+        </Paper>
         </div>
     );
 }

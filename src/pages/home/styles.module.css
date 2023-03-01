@@ -409,7 +409,6 @@
 .operator_detail_overview {
     display: flex;
     flex-direction: row;
-
 }
 
 .operator_detail_overview_table {
@@ -468,6 +467,7 @@
 .beacon_groups_table td {
     border-bottom: 1px solid rgb(245, 245, 245);
     text-align: left;
+    min-width: 100px;
 }
 
 .span_t_token{
