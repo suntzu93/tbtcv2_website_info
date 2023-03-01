@@ -15,6 +15,8 @@ import CloseSharpIcon from '@mui/icons-material/CloseSharp';
 import {TIME_LOCK_DEAUTHORIZATION} from "../../utils/Cons";
 import Loader from "../../components/loader";
 import Tooltip from "@mui/material/Tooltip";
+import TableContainer from "@mui/material/TableContainer";
+import Paper from "@mui/material/Paper";
 
 
 function OperatorDetail({operator, currentBlock}) {
@@ -112,211 +114,213 @@ function Overview(operator) {
         }
     }
 
-    return (<div className={styles.operator_detail_overview}>
-            <div style={{flex: "1 1 0%"}}>
-                <table className={styles.operator_detail_overview_table}>
-                    {/* --------- Stake---------*/}
-                    <tbody>
-                    <tr>
-                        <th colSpan="2" style={{fontWeight: "bold"}}>Stake</th>
-                    </tr>
-                    </tbody>
-                    <tbody className={styles.operator_detail_overview_table_tbody}>
-                    <tr>
-                        <th>Stake</th>
-                        <td>
-                            {"T " + Data.formatWeiDecimal(operator.stakedAmount)}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Date</th>
-                        <td>
-                            {Data.formatDate(operator.stakedAt * 1000)}
-                        </td>
-                    </tr>
-                    </tbody>
-                    {/* --------- Roles---------*/}
-                    <tbody>
-                    <tr>
-                        <th colSpan="2" style={{fontWeight: "bold"}}>Roles</th>
-                    </tr>
-                    </tbody>
-                    <tbody className={styles.operator_detail_overview_table_tbody}>
-                    <tr>
-                        <th>Node</th>
-                        <td>
-                            <Link
-                                target="_blank"
-                                underline="hover"
-                                href={Utils.getEtherAddressLink() + operator.address}
-                                className={styles.link}
-                            >
-                                {Data.formatString(operator.address)}
-                            </Link>
-                            <ShareLink/>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Owner</th>
-                        <td>
-                            <Link
-                                target="_blank"
-                                underline="hover"
-                                href={Utils.getEtherAddressLink() + operator.owner}
-                                className={styles.link}
-                            >
-                                {Data.formatString(operator.owner)}
-                            </Link>
-                            <ShareLink/>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Beneficiary</th>
-                        <td>
-                            <Link
-                                target="_blank"
-                                underline="hover"
-                                href={Utils.getEtherAddressLink() + operator.beneficiary}
-                                className={styles.link}
-                            >
-                                {Data.formatString(operator.beneficiary)}
-                            </Link>
-                            <ShareLink/>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Authorizer</th>
-                        <td>
-                            <Link
-                                target="_blank"
-                                underline="hover"
-                                href={Utils.getEtherAddressLink() + operator.authorizer}
-                                className={styles.link}
-                            >
-                                {Data.formatString(operator.authorizer)}
-                            </Link>
-                            <ShareLink/>
-                        </td>
-                    </tr>
-                    </tbody>
+    return (
+            <div className={styles.operator_detail_overview}>
 
-                    {/* --------- Authorizations---------*/}
-                    <tbody>
-                    <tr>
-                        <th colSpan="2" style={{fontWeight: "bold"}}>Authorizations</th>
-                    </tr>
-                    </tbody>
-                    <tbody className={styles.operator_detail_overview_table_tbody}>
-                    <tr>
-                        <th>TBTC</th>
-                        <td>
-                            {
-                                Data.formatWeiDecimal(operator.tBTCAuthorizedAmount)
-                            }
-                            {
-                                operator.tBTCAuthorized ? (
-                                    <CheckSharpIcon style={{color: "green"}}/>
-                                ) : (
-                                    <CloseSharpIcon style={{color: "red"}}/>
-                                )
-                            }
+                <div style={{flex: "1 1 0%"}}>
+                    <table className={styles.operator_detail_overview_table}>
+                        {/* --------- Stake---------*/}
+                        <tbody>
+                        <tr>
+                            <th colSpan="2" style={{fontWeight: "bold"}}>Stake</th>
+                        </tr>
+                        </tbody>
+                        <tbody className={styles.operator_detail_overview_table_tbody}>
+                        <tr>
+                            <th>Stake</th>
+                            <td>
+                                {"T " + Data.formatWeiDecimal(operator.stakedAmount)}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Date</th>
+                            <td>
+                                {Data.formatDate(operator.stakedAt * 1000)}
+                            </td>
+                        </tr>
+                        </tbody>
+                        {/* --------- Roles---------*/}
+                        <tbody>
+                        <tr>
+                            <th colSpan="2" style={{fontWeight: "bold"}}>Roles</th>
+                        </tr>
+                        </tbody>
+                        <tbody className={styles.operator_detail_overview_table_tbody}>
+                        <tr>
+                            <th>Node</th>
+                            <td>
+                                <Link
+                                    target="_blank"
+                                    underline="hover"
+                                    href={Utils.getEtherAddressLink() + operator.address}
+                                    className={styles.link}
+                                >
+                                    {Data.formatString(operator.address)}
+                                </Link>
+                                <ShareLink/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Owner</th>
+                            <td>
+                                <Link
+                                    target="_blank"
+                                    underline="hover"
+                                    href={Utils.getEtherAddressLink() + operator.owner}
+                                    className={styles.link}
+                                >
+                                    {Data.formatString(operator.owner)}
+                                </Link>
+                                <ShareLink/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Beneficiary</th>
+                            <td>
+                                <Link
+                                    target="_blank"
+                                    underline="hover"
+                                    href={Utils.getEtherAddressLink() + operator.beneficiary}
+                                    className={styles.link}
+                                >
+                                    {Data.formatString(operator.beneficiary)}
+                                </Link>
+                                <ShareLink/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Authorizer</th>
+                            <td>
+                                <Link
+                                    target="_blank"
+                                    underline="hover"
+                                    href={Utils.getEtherAddressLink() + operator.authorizer}
+                                    className={styles.link}
+                                >
+                                    {Data.formatString(operator.authorizer)}
+                                </Link>
+                                <ShareLink/>
+                            </td>
+                        </tr>
+                        </tbody>
 
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Random Beacon</th>
-                        <td>
-                            {
-                                Data.formatWeiDecimal(operator.randomBeaconAuthorizedAmount)
-                            }
-                            {
-                                operator.randomBeaconAuthorized ? (
-                                    <CheckSharpIcon style={{color: "green"}}/>
-                                ) : (
-                                    <CloseSharpIcon style={{color: "red"}}/>
-                                )
-                            }
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>PRE App</th>
-                        <td>
-                            <CheckSharpIcon style={{color: "green"}}/>
-                        </td>
-                    </tr>
-                    </tbody>
-                    {/* --------- Deauthorization ---------*/}
-                    <tbody>
-                    <tr>
-                        <th colSpan="2" style={{fontWeight: "bold"}}>Deauthorization</th>
-                    </tr>
-                    </tbody>
-                    <tbody className={styles.operator_detail_overview_table_tbody}>
-                    <tr>
-                        <th>TBTC</th>
-                        <td>
-                            {getDeAuthorization(true)}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Random Beacon</th>
-                        <td>
-                            {getDeAuthorization(false)}
-                        </td>
-                    </tr>
-                    </tbody>
-                    {/* --------- Slashed ---------*/}
-                    <tbody>
-                    <tr>
-                        <th colSpan="2" style={{fontWeight: "bold"}}>Misbehaved</th>
-                    </tr>
-                    </tbody>
-                    <tbody className={styles.operator_detail_overview_table_tbody}>
-                    <tr>
-                        <th>Total slashed amount</th>
-                        <td>
-                            {Data.formatWeiDecimal(operator.totalSlashedAmount)}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Rewards Ban Duration</th>
-                        <td>
-                            {operator.poolRewardBanDuration > 0 ?
-                                Data.formatDate(operator.poolRewardBanDuration * 1000) : "No ban"}
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div style={{flex: "1 1 0%"}}>
-                <h4><strong>Log</strong></h4>
-                {operator?.events?.map(eventEntity => {
-                    const txHash = eventEntity.txHash;
-                    const from = eventEntity.from;
-                    const to = eventEntity.to;
-                    const event = eventEntity.event;
-                    const timestamp = eventEntity.timestamp;
-                    const amount = eventEntity.amount;
-                    return (
-                        <div className={styles.log_item}>
-                            <div className={styles.log_item_lable}>
-                                <span>{Data.formatTimeToText(timestamp * 1000)}</span> @
-                                <span><a target="_blank"
-                                         href={Utils.getEtherTxHashLink() + txHash}>{Data.formatString(txHash)}</a></span> {" by "}
-                                <a target="_blank"
-                                   href={Utils.getEtherAddressLink() + from}>{Data.formatString(from)} </a>
-                            </div>
-                            <div>
-                                <strong>{event.replaceAll("_", " ")}</strong>
+                        {/* --------- Authorizations---------*/}
+                        <tbody>
+                        <tr>
+                            <th colSpan="2" style={{fontWeight: "bold"}}>Authorizations</th>
+                        </tr>
+                        </tbody>
+                        <tbody className={styles.operator_detail_overview_table_tbody}>
+                        <tr>
+                            <th>TBTC</th>
+                            <td>
+                                {
+                                    Data.formatWeiDecimal(operator.tBTCAuthorizedAmount)
+                                }
+                                {
+                                    operator.tBTCAuthorized ? (
+                                        <CheckSharpIcon style={{color: "green"}}/>
+                                    ) : (
+                                        <CloseSharpIcon style={{color: "red"}}/>
+                                    )
+                                }
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Random Beacon</th>
+                            <td>
+                                {
+                                    Data.formatWeiDecimal(operator.randomBeaconAuthorizedAmount)
+                                }
+                                {
+                                    operator.randomBeaconAuthorized ? (
+                                        <CheckSharpIcon style={{color: "green"}}/>
+                                    ) : (
+                                        <CloseSharpIcon style={{color: "red"}}/>
+                                    )
+                                }
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>PRE App</th>
+                            <td>
+                                <CheckSharpIcon style={{color: "green"}}/>
+                            </td>
+                        </tr>
+                        </tbody>
+                        {/* --------- Deauthorization ---------*/}
+                        <tbody>
+                        <tr>
+                            <th colSpan="2" style={{fontWeight: "bold"}}>Deauthorization</th>
+                        </tr>
+                        </tbody>
+                        <tbody className={styles.operator_detail_overview_table_tbody}>
+                        <tr>
+                            <th>TBTC</th>
+                            <td>
+                                {getDeAuthorization(true)}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Random Beacon</th>
+                            <td>
+                                {getDeAuthorization(false)}
+                            </td>
+                        </tr>
+                        </tbody>
+                        {/* --------- Slashed ---------*/}
+                        <tbody>
+                        <tr>
+                            <th colSpan="2" style={{fontWeight: "bold"}}>Misbehaved</th>
+                        </tr>
+                        </tbody>
+                        <tbody className={styles.operator_detail_overview_table_tbody}>
+                        <tr>
+                            <th>Total slashed amount</th>
+                            <td>
+                                {Data.formatWeiDecimal(operator.totalSlashedAmount)}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Rewards Ban Duration</th>
+                            <td>
+                                {operator.poolRewardBanDuration > 0 ?
+                                    Data.formatDate(operator.poolRewardBanDuration * 1000) : "No ban"}
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div style={{flex: "1 1 0%"}}>
+                    <h4><strong>Log</strong></h4>
+                    {operator?.events?.map(eventEntity => {
+                        const txHash = eventEntity.txHash;
+                        const from = eventEntity.from;
+                        const to = eventEntity.to;
+                        const event = eventEntity.event;
+                        const timestamp = eventEntity.timestamp;
+                        const amount = eventEntity.amount;
+                        return (
+                            <div className={styles.log_item}>
+                                <div className={styles.log_item_lable}>
+                                    <span>{Data.formatTimeToText(timestamp * 1000)}</span> @
+                                    <span><a target="_blank"
+                                             href={Utils.getEtherTxHashLink() + txHash}>{Data.formatString(txHash)}</a></span> {" by "}
+                                    <a target="_blank"
+                                       href={Utils.getEtherAddressLink() + from}>{Data.formatString(from)} </a>
+                                </div>
                                 <div>
-                                    {formatEvent(event, eventEntity.isRandomBeaconEvent, Data.formatWeiDecimal(amount))}
+                                    <strong>{event.replaceAll("_", " ")}</strong>
+                                    <div>
+                                        {formatEvent(event, eventEntity.isRandomBeaconEvent, Data.formatWeiDecimal(amount))}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    )
-                })}
+                        )
+                    })}
+                </div>
             </div>
-        </div>
     );
 }
 
@@ -335,55 +339,59 @@ function BeaconGroup(operator, currentBlock) {
             <h4>
                 <strong>Random Beacon Groups</strong>
             </h4>
-            <table className={styles.beacon_groups_table}>
-                <thead>
-                <tr>
-                    <th>Group</th>
-                    <th>Total Slot</th>
-                    <th>Unique Member</th>
-                    <th><Tooltip
-                        title={"An operator can fill multiple membership slots in a group, and will then earn a multiple of rewards."}><span>{"Weight"}</span></Tooltip>
-                    </th>
-                    <th>Total Faults</th>
-                    <th>Total Slashed Amount</th>
-                    <th>Create At</th>
-                    <th>State</th>
-                </tr>
-                </thead>
-
-                <tbody>
-                {operator?.randomBeaconGroupMemberships?.map(memberShip => {
-                    const weight = memberShip.count;
-                    const group = memberShip.group;
-                    const id = group.id;
-                    const size = group.size;
-                    const uniqueMemberCount = group.uniqueMemberCount;
-                    const faults = group.misbehavedCount;
-                    const slashAmount = group.totalSlashedAmount;
-                    const createAt = group.createdAt;
-                    return (
+            <Paper sx={{backgroundColor: "transparent", boxShadow: "0"}}>
+                <TableContainer>
+                    <table className={styles.beacon_groups_table}>
+                        <thead>
                         <tr>
-                            <td><Link
-                                target="_blank"
-                                underline="hover"
-                                href={Utils.getDomain() + "?group=" + id}
-                                className={styles.link}
-                            >
-                                {Data.formatString(id)}
-                            </Link></td>
-                            <td>{size}</td>
-                            <td>{uniqueMemberCount}</td>
-                            <td>{weight}</td>
-                            <td>{faults}</td>
-                            <td>{Data.formatWeiDecimal(slashAmount)}</td>
-                            <td>{Data.formatTimeToText(createAt * 1000)}</td>
-                            <td>{checkGroupState(group)}</td>
-
+                            <th>Group</th>
+                            <th>Total Slot</th>
+                            <th>Unique Member</th>
+                            <th><Tooltip
+                                title={"An operator can fill multiple membership slots in a group, and will then earn a multiple of rewards."}><span>{"Weight"}</span></Tooltip>
+                            </th>
+                            <th>Total Faults</th>
+                            <th>Total Slashed Amount</th>
+                            <th>Create At</th>
+                            <th>State</th>
                         </tr>
-                    )
-                })}
-                </tbody>
-            </table>
+                        </thead>
+
+                        <tbody>
+                        {operator?.randomBeaconGroupMemberships?.map(memberShip => {
+                            const weight = memberShip.count;
+                            const group = memberShip.group;
+                            const id = group.id;
+                            const size = group.size;
+                            const uniqueMemberCount = group.uniqueMemberCount;
+                            const faults = group.misbehavedCount;
+                            const slashAmount = group.totalSlashedAmount;
+                            const createAt = group.createdAt;
+                            return (
+                                <tr>
+                                    <td><Link
+                                        target="_blank"
+                                        underline="hover"
+                                        href={Utils.getDomain() + "?group=" + id}
+                                        className={styles.link}
+                                    >
+                                        {Data.formatString(id)}
+                                    </Link></td>
+                                    <td>{size}</td>
+                                    <td>{uniqueMemberCount}</td>
+                                    <td>{weight}</td>
+                                    <td>{faults}</td>
+                                    <td>{Data.formatWeiDecimal(slashAmount)}</td>
+                                    <td>{Data.formatTimeToText(createAt * 1000)}</td>
+                                    <td>{checkGroupState(group)}</td>
+
+                                </tr>
+                            )
+                        })}
+                        </tbody>
+                    </table>
+                </TableContainer>
+            </Paper>
         </div>
     );
 }
