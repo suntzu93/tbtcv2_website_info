@@ -97,7 +97,7 @@ function MembersGroup(group) {
                                 {Data.formatString(nodeAddress)}
                             </Link></td>
                             <td>{count}</td>
-                            <td>{seats.toString()}</td>
+                            <td style={{wordBreak: "break-word"}}>{seats.toString()}</td>
                             <td>{Data.formatWeiDecimal(tBTCAuthorizedAmount)}</td>
                             <td>{Data.formatWeiDecimal(randomBeaconAuthorizedAmount)}</td>
                             <td>{Data.formatWeiDecimal(availableReward)}</td>
