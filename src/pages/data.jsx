@@ -570,7 +570,35 @@ export const getBalanceOfAddress = async (address) => {
     return 0;
 };
 
-export const getAvailableMerkleDropReward = async (address) => {
+export const getRewardClaimed = async (address) => {
+    const web3 = new Web3(Const.RPC_ETH_MAINNET);
+    const cumulativeMerkleDrop = '0xeA7CA290c7811d1cC2e79f8d706bD05d8280BD37';
+    const contractAbi = [{
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "name": "cumulativeClaimed",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    }];
+
+    const contract = new web3.eth.Contract(contractAbi, cumulativeMerkleDrop);
+    const claimedAmount = await contract.methods.cumulativeClaimed(address).call();
+    return parseFloat(formatGwei(claimedAmount)).toFixed(1);
+}
+
+export const getTotalMerkleDropReward = async (address) => {
     try {
         if (Const.DEFAULT_NETWORK === Const.NETWORK_TESTNET)
             return 0;
@@ -584,32 +612,7 @@ export const getAvailableMerkleDropReward = async (address) => {
             const amount = data.claims[key].amount;
             if (amount === undefined || amount === 0)
                 return 0;
-
-            const web3 = new Web3(Const.RPC_ETH_MAINNET);
-            const cumulativeMerkleDrop = '0xeA7CA290c7811d1cC2e79f8d706bD05d8280BD37';
-            const contractAbi = [{
-                "inputs": [
-                    {
-                        "internalType": "address",
-                        "name": "",
-                        "type": "address"
-                    }
-                ],
-                "name": "cumulativeClaimed",
-                "outputs": [
-                    {
-                        "internalType": "uint256",
-                        "name": "",
-                        "type": "uint256"
-                    }
-                ],
-                "stateMutability": "view",
-                "type": "function"
-            }];
-
-            const contract = new web3.eth.Contract(contractAbi, cumulativeMerkleDrop);
-            const claimedAmount = await contract.methods.cumulativeClaimed(address).call();
-            return parseFloat(formatGwei(amount) - formatGwei(claimedAmount)).toFixed(1)
+            return parseFloat(formatGwei(amount)).toFixed(1);
         }
     } catch (e) {
         console.log("get merkle drop reward error " + e.toString());

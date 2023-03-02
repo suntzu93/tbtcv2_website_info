@@ -406,7 +406,7 @@ const OperatorDetailPage = () => {
     const [currentBlock, setCurrentBlock] = useState();
     const [nodeBalance, setNodeBalance] = useState("loading...");
     const [merkleDropReward, setMerkleDropReward] = useState("loading...");
-
+    const [rewardsRispensed,setRewardsRispensed] = useState("loading...");
     useEffect(() => {
         const query = new URLSearchParams(window.location.search);
         const operator = query.get("operator");
@@ -423,8 +423,13 @@ const OperatorDetailPage = () => {
                 setNodeBalance(balance);
             })
 
-            Data.getAvailableMerkleDropReward(info.id).then((reward) => {
-                setMerkleDropReward(reward)
+            Data.getTotalMerkleDropReward(info.id).then((reward) => {
+                Data.getRewardClaimed(info.id).then((claimed) =>{
+                    const available = reward - claimed;
+                    setMerkleDropReward(available)
+                    setRewardsRispensed(claimed)
+                })
+
             })
         });
 
@@ -520,8 +525,13 @@ const OperatorDetailPage = () => {
                                     <div className={styles.operator_detail_header_value_item_lable}>rewards dispensed
                                     </div>
                                     <div>
-                                        <div>{Data.formatWeiDecimal(pageData.rowData.rewardDispensed)}<span
-                                            className={styles.span_t_token}>{" T"}</span></div>
+                                        <Tooltip title={"Does not include reward from SortitionPool"}>
+                                            <div>{merkleDropReward !== "loading..." ? Data.formatNumberToDecimal(rewardsRispensed) : rewardsRispensed}<span
+                                                className={styles.span_t_token}>{" T"}</span></div>
+                                        </Tooltip>
+
+                                        {/*<div>{Data.formatWeiDecimal(pageData.rowData.rewardDispensed)}<span*/}
+                                        {/*    className={styles.span_t_token}>{" T"}</span></div>*/}
                                     </div>
                                 </div>
                             </div>
