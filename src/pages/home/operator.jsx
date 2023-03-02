@@ -72,7 +72,7 @@ const OperatorPage = ({network, isSearch, searchInput}) => {
                         <div className={styles.operator_detail_header_value_item_lable}>total authorized tbtc
                         </div>
                         <div>
-                            <div>{Data.formatWeiDecimal(stats?.totalTBTCAuthorizedAmount)}</div>
+                            <div>{Data.formatWeiDecimalNoSurplus(stats?.totalTBTCAuthorizedAmount)}</div>
                         </div>
                     </div>
                 </div>
@@ -81,7 +81,7 @@ const OperatorPage = ({network, isSearch, searchInput}) => {
                         <div className={styles.operator_detail_header_value_item_lable}>total authorized beacon
                         </div>
                         <div>
-                            <div>{Data.formatWeiDecimal(stats?.totalRandomBeaconAuthorizedAmount)}</div>
+                            <div>{Data.formatWeiDecimalNoSurplus(stats?.totalRandomBeaconAuthorizedAmount)}</div>
                         </div>
                     </div>
                 </div>
@@ -90,7 +90,7 @@ const OperatorPage = ({network, isSearch, searchInput}) => {
                         <div className={styles.operator_detail_header_value_item_lable}>total staked
                         </div>
                         <div>
-                            <div>{Data.formatWeiDecimal(stats?.totalStaked)}</div>
+                            <div>{Data.formatWeiDecimalNoSurplus(stats?.totalStaked)}</div>
                         </div>
                     </div>
                 </div>

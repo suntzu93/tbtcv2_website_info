@@ -160,9 +160,9 @@ export const OperatorTable = ({columns, data, isLoading, network}) => {
                 <TableCell align="left">
                     {Data.formatWeiDecimal(row.stakedAmount)}
                 </TableCell>
-                <TableCell align="left">
-                    {Data.formatWeiDecimal(row.availableReward)}
-                </TableCell>
+                {/*<TableCell align="left">*/}
+                {/*    {Data.formatWeiDecimal(row.availableReward)}*/}
+                {/*</TableCell>*/}
                 <TableCell align="left">
                     {row.misbehavedCount}
                 </TableCell>

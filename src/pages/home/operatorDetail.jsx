@@ -19,7 +19,7 @@ import TableContainer from "@mui/material/TableContainer";
 import Paper from "@mui/material/Paper";
 
 
-function OperatorDetail({operator, currentBlock,nodeBalance}) {
+function OperatorDetail({operator, currentBlock, nodeBalance}) {
     const [value, setValue] = React.useState("1");
 
     const handleChange = (event, newValue) => {
@@ -35,14 +35,14 @@ function OperatorDetail({operator, currentBlock,nodeBalance}) {
                         <Tab style={{textTransform: 'none', color: "black"}} label="Beacon Groups" value="2"/>
                     </TabList>
                 </Box>
-                <TabPanel value="1" className={styles.operator_detail}>{Overview(operator,nodeBalance)}</TabPanel>
+                <TabPanel value="1" className={styles.operator_detail}>{Overview(operator, nodeBalance)}</TabPanel>
                 <TabPanel value="2" className={styles.operator_detail}>{BeaconGroup(operator, currentBlock)}</TabPanel>
             </TabContext>
         </Box>
     );
 }
 
-function Overview(operator,nodeBalance) {
+function Overview(operator, nodeBalance) {
 
     function getDeAuthorization(isTBTC) {
         if (operator == undefined || operator.events == undefined)
@@ -148,7 +148,7 @@ function Overview(operator,nodeBalance) {
                     <tbody className={styles.operator_detail_overview_table_tbody}>
                     <tr>
                         <th>Node</th>
-                        <td style={{display:"flow-root"}}>
+                        <td style={{display: "flow-root"}}>
                             <Link
                                 target="_blank"
                                 underline="hover"
@@ -158,7 +158,7 @@ function Overview(operator,nodeBalance) {
                                 {Data.formatString(operator.address)}
                             </Link>
                             <ShareLink/>
-                            <p style={{fontSize:"0.875rem"}}>balance: {nodeBalance} eth</p>
+                            <p style={{fontSize: "0.875rem"}}>balance: {nodeBalance} eth</p>
                         </td>
                     </tr>
                     <tr>
@@ -405,6 +405,7 @@ const OperatorDetailPage = () => {
     const [operator, setOperator] = useState();
     const [currentBlock, setCurrentBlock] = useState();
     const [nodeBalance, setNodeBalance] = useState("loading...");
+    const [merkleDropReward, setMerkleDropReward] = useState("loading...");
 
     useEffect(() => {
         const query = new URLSearchParams(window.location.search);
@@ -420,6 +421,10 @@ const OperatorDetailPage = () => {
             let nodeAddress = info.address;
             Data.getBalanceOfAddress(nodeAddress).then((balance) => {
                 setNodeBalance(balance);
+            })
+
+            Data.getAvailableMerkleDropReward(info.id).then((reward) => {
+                setMerkleDropReward(reward)
             })
         });
 
@@ -502,8 +507,13 @@ const OperatorDetailPage = () => {
                                     <div className={styles.operator_detail_header_value_item_lable}>available reward
                                     </div>
                                     <div>
-                                        <div>{Data.formatWeiDecimal(pageData.rowData.availableReward)}<span
-                                            className={styles.span_t_token}>{" T"}</span></div>
+                                        {/*<div>{Data.formatWeiDecimal(pageData.rowData.availableReward)}<span*/}
+                                        {/*    className={styles.span_t_token}>{" T"}</span></div>*/}
+                                        {/*TODO: Have to include SortitionPool reward here*/}
+                                        <Tooltip title={"Does not include reward from SortitionPool"}>
+                                            <div>{merkleDropReward !== "loading..." ? Data.formatNumberToDecimal(merkleDropReward) : merkleDropReward}<span
+                                                className={styles.span_t_token}>{" T"}</span></div>
+                                        </Tooltip>
                                     </div>
                                 </div>
                                 <div className={styles.operator_detail_header_value_item}>
@@ -516,7 +526,8 @@ const OperatorDetailPage = () => {
                                 </div>
                             </div>
                         </div>
-                        <OperatorDetail operator={pageData.rowData} currentBlock={currentBlock} nodeBalance={nodeBalance}/>
+                        <OperatorDetail operator={pageData.rowData} currentBlock={currentBlock}
+                                        nodeBalance={nodeBalance}/>
                     </div>
                 )
             }</>
