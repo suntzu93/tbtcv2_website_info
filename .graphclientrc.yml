@@ -2,7 +2,7 @@ sources:
   - name: threshold-tbtc-mainnet
     handler:
       graphql:
-        endpoint: https://api.studio.thegraph.com/query/575/threshold-tbtc-mainnet/v0.1.1
+        endpoint: https://api.studio.thegraph.com/query/575/threshold-tbtc-mainnet/v0.1.2
     transforms:
       - autoPagination:
           limitOfRecords: 2000
