@@ -572,6 +572,9 @@ export const getBalanceOfAddress = async (address) => {
 
 export const getAvailableMerkleDropReward = async (address) => {
     try {
+        if (Const.DEFAULT_NETWORK === Const.NETWORK_TESTNET)
+            return 0;
+
         let tags = await (await fetch(`https://api.github.com/repos/threshold-network/token-dashboard/tags`)).json();
         const latestTag = tags[0].name;
         const rewardsJsonUrl = `https://raw.githubusercontent.com/threshold-network/token-dashboard/${latestTag}/src/merkle-drop/rewards.json`
