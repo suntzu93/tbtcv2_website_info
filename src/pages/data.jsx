@@ -464,6 +464,7 @@ export const getOperators = async (isSearch, searchInput) => {
         } else {
             data = await client.execute(client.SearchOperatorsDocument, {
                 id: searchInput.toLowerCase(),
+                address: searchInput.toLowerCase()
             });
         }
         return data.data;

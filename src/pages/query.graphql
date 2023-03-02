@@ -146,8 +146,14 @@ query Operators {
     }
 }
 
-query SearchOperators($id: ID!) {
-    operators(where:{id:$id}){
+query SearchOperators($id: ID!,$address: Bytes) {
+    operators(where:{
+        or: [
+            {id:$id},
+            {address:$address}
+        ]
+    })
+    {
         id
         registeredOperatorAddress
         tBTCAuthorized
