@@ -1,6 +1,7 @@
 import * as client from '../../.graphclient'
 import * as Const from '../utils/Cons';
 import moment from 'moment';
+import Web3 from 'web3';
 
 export const deposit_columns = [
     {
@@ -75,11 +76,11 @@ export const operator_columns = [
         accessor: "stakedAmount",
         numeric: true,
     },
-    {
-        header: "Available reward",
-        accessor: "availableReward",
-        numeric: true,
-    },
+    // {
+    //     header: "Available reward",
+    //     accessor: "availableReward",
+    //     numeric: true,
+    // },
     {
         header: "Faults",
         accessor: "misbehaved",
@@ -184,6 +185,10 @@ export const formatGwei = (value) => {
 
 export const formatWeiDecimal = (value) => {
     return new Intl.NumberFormat().format(formatGwei(value));
+};
+
+export const formatWeiDecimalNoSurplus = (value) => {
+    return new Intl.NumberFormat().format(parseFloat(value / Const.DECIMAL_ETH).toFixed(0));
 };
 
 export const formatNumberToDecimal = (value) => {
@@ -564,3 +569,47 @@ export const getBalanceOfAddress = async (address) => {
     }
     return 0;
 };
+
+export const getAvailableMerkleDropReward = async (address) => {
+    try {
+        let tags = await (await fetch(`https://api.github.com/repos/threshold-network/token-dashboard/tags`)).json();
+        const latestTag = tags[0].name;
+        const rewardsJsonUrl = `https://raw.githubusercontent.com/threshold-network/token-dashboard/${latestTag}/src/merkle-drop/rewards.json`
+        const data = await (await fetch(rewardsJsonUrl)).json();
+        if (data != undefined && data.claims != undefined) {
+            const key = Object.keys(data.claims).find(k => k.toLowerCase() === address.toLowerCase());
+            const amount = data.claims[key].amount;
+            if (amount === undefined || amount === 0)
+                return 0;
+
+            const web3 = new Web3(Const.RPC_ETH_MAINNET);
+            const cumulativeMerkleDrop = '0xeA7CA290c7811d1cC2e79f8d706bD05d8280BD37';
+            const contractAbi = [{
+                "inputs": [
+                    {
+                        "internalType": "address",
+                        "name": "",
+                        "type": "address"
+                    }
+                ],
+                "name": "cumulativeClaimed",
+                "outputs": [
+                    {
+                        "internalType": "uint256",
+                        "name": "",
+                        "type": "uint256"
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function"
+            }];
+
+            const contract = new web3.eth.Contract(contractAbi, cumulativeMerkleDrop);
+            const claimedAmount = await contract.methods.cumulativeClaimed(address).call();
+            return parseFloat(formatGwei(amount) - formatGwei(claimedAmount)).toFixed(1)
+        }
+    } catch (e) {
+        console.log("get merkle drop reward error " + e.toString());
+    }
+    return 0;
+}
