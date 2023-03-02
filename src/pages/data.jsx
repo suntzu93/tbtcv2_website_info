@@ -571,6 +571,9 @@ export const getBalanceOfAddress = async (address) => {
 };
 
 export const getRewardClaimed = async (address) => {
+    if (Const.DEFAULT_NETWORK === Const.NETWORK_TESTNET)
+        return 0;
+
     const web3 = new Web3(Const.RPC_ETH_MAINNET);
     const cumulativeMerkleDrop = '0xeA7CA290c7811d1cC2e79f8d706bD05d8280BD37';
     const contractAbi = [{
