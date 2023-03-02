@@ -19,7 +19,7 @@ import TableContainer from "@mui/material/TableContainer";
 import Paper from "@mui/material/Paper";
 
 
-function OperatorDetail({operator, currentBlock}) {
+function OperatorDetail({operator, currentBlock,nodeBalance}) {
     const [value, setValue] = React.useState("1");
 
     const handleChange = (event, newValue) => {
@@ -35,14 +35,14 @@ function OperatorDetail({operator, currentBlock}) {
                         <Tab style={{textTransform: 'none', color: "black"}} label="Beacon Groups" value="2"/>
                     </TabList>
                 </Box>
-                <TabPanel value="1" className={styles.operator_detail}>{Overview(operator)}</TabPanel>
+                <TabPanel value="1" className={styles.operator_detail}>{Overview(operator,nodeBalance)}</TabPanel>
                 <TabPanel value="2" className={styles.operator_detail}>{BeaconGroup(operator, currentBlock)}</TabPanel>
             </TabContext>
         </Box>
     );
 }
 
-function Overview(operator) {
+function Overview(operator,nodeBalance) {
 
     function getDeAuthorization(isTBTC) {
         if (operator == undefined || operator.events == undefined)
@@ -115,212 +115,213 @@ function Overview(operator) {
     }
 
     return (
-            <div className={styles.operator_detail_overview}>
+        <div className={styles.operator_detail_overview}>
 
-                <div style={{flex: "1 1 0%"}}>
-                    <table className={styles.operator_detail_overview_table}>
-                        {/* --------- Stake---------*/}
-                        <tbody>
-                        <tr>
-                            <th colSpan="2" style={{fontWeight: "bold"}}>Stake</th>
-                        </tr>
-                        </tbody>
-                        <tbody className={styles.operator_detail_overview_table_tbody}>
-                        <tr>
-                            <th>Stake</th>
-                            <td>
-                                {"T " + Data.formatWeiDecimal(operator.stakedAmount)}
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>Date</th>
-                            <td>
-                                {Data.formatDate(operator.stakedAt * 1000)}
-                            </td>
-                        </tr>
-                        </tbody>
-                        {/* --------- Roles---------*/}
-                        <tbody>
-                        <tr>
-                            <th colSpan="2" style={{fontWeight: "bold"}}>Roles</th>
-                        </tr>
-                        </tbody>
-                        <tbody className={styles.operator_detail_overview_table_tbody}>
-                        <tr>
-                            <th>Node</th>
-                            <td>
-                                <Link
-                                    target="_blank"
-                                    underline="hover"
-                                    href={Utils.getEtherAddressLink() + operator.address}
-                                    className={styles.link}
-                                >
-                                    {Data.formatString(operator.address)}
-                                </Link>
-                                <ShareLink/>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>Owner</th>
-                            <td>
-                                <Link
-                                    target="_blank"
-                                    underline="hover"
-                                    href={Utils.getEtherAddressLink() + operator.owner}
-                                    className={styles.link}
-                                >
-                                    {Data.formatString(operator.owner)}
-                                </Link>
-                                <ShareLink/>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>Beneficiary</th>
-                            <td>
-                                <Link
-                                    target="_blank"
-                                    underline="hover"
-                                    href={Utils.getEtherAddressLink() + operator.beneficiary}
-                                    className={styles.link}
-                                >
-                                    {Data.formatString(operator.beneficiary)}
-                                </Link>
-                                <ShareLink/>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>Authorizer</th>
-                            <td>
-                                <Link
-                                    target="_blank"
-                                    underline="hover"
-                                    href={Utils.getEtherAddressLink() + operator.authorizer}
-                                    className={styles.link}
-                                >
-                                    {Data.formatString(operator.authorizer)}
-                                </Link>
-                                <ShareLink/>
-                            </td>
-                        </tr>
-                        </tbody>
+            <div style={{flex: "1 1 0%"}}>
+                <table className={styles.operator_detail_overview_table}>
+                    {/* --------- Stake---------*/}
+                    <tbody>
+                    <tr>
+                        <th colSpan="2" style={{fontWeight: "bold"}}>Stake</th>
+                    </tr>
+                    </tbody>
+                    <tbody className={styles.operator_detail_overview_table_tbody}>
+                    <tr>
+                        <th>Stake</th>
+                        <td>
+                            {"T " + Data.formatWeiDecimal(operator.stakedAmount)}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Date</th>
+                        <td>
+                            {Data.formatDate(operator.stakedAt * 1000)}
+                        </td>
+                    </tr>
+                    </tbody>
+                    {/* --------- Roles---------*/}
+                    <tbody>
+                    <tr>
+                        <th colSpan="2" style={{fontWeight: "bold"}}>Roles</th>
+                    </tr>
+                    </tbody>
+                    <tbody className={styles.operator_detail_overview_table_tbody}>
+                    <tr>
+                        <th>Node</th>
+                        <td style={{display:"flow-root"}}>
+                            <Link
+                                target="_blank"
+                                underline="hover"
+                                href={Utils.getEtherAddressLink() + operator.address}
+                                className={styles.link}
+                            >
+                                {Data.formatString(operator.address)}
+                            </Link>
+                            <ShareLink/>
+                            <p style={{fontSize:"0.875rem"}}>balance: {nodeBalance} eth</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Owner</th>
+                        <td>
+                            <Link
+                                target="_blank"
+                                underline="hover"
+                                href={Utils.getEtherAddressLink() + operator.owner}
+                                className={styles.link}
+                            >
+                                {Data.formatString(operator.owner)}
+                            </Link>
+                            <ShareLink/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Beneficiary</th>
+                        <td>
+                            <Link
+                                target="_blank"
+                                underline="hover"
+                                href={Utils.getEtherAddressLink() + operator.beneficiary}
+                                className={styles.link}
+                            >
+                                {Data.formatString(operator.beneficiary)}
+                            </Link>
+                            <ShareLink/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Authorizer</th>
+                        <td>
+                            <Link
+                                target="_blank"
+                                underline="hover"
+                                href={Utils.getEtherAddressLink() + operator.authorizer}
+                                className={styles.link}
+                            >
+                                {Data.formatString(operator.authorizer)}
+                            </Link>
+                            <ShareLink/>
+                        </td>
+                    </tr>
+                    </tbody>
 
-                        {/* --------- Authorizations---------*/}
-                        <tbody>
-                        <tr>
-                            <th colSpan="2" style={{fontWeight: "bold"}}>Authorizations</th>
-                        </tr>
-                        </tbody>
-                        <tbody className={styles.operator_detail_overview_table_tbody}>
-                        <tr>
-                            <th>TBTC</th>
-                            <td>
-                                {
-                                    Data.formatWeiDecimal(operator.tBTCAuthorizedAmount)
-                                }
-                                {
-                                    operator.tBTCAuthorized ? (
-                                        <CheckSharpIcon style={{color: "green"}}/>
-                                    ) : (
-                                        <CloseSharpIcon style={{color: "red"}}/>
-                                    )
-                                }
+                    {/* --------- Authorizations---------*/}
+                    <tbody>
+                    <tr>
+                        <th colSpan="2" style={{fontWeight: "bold"}}>Authorizations</th>
+                    </tr>
+                    </tbody>
+                    <tbody className={styles.operator_detail_overview_table_tbody}>
+                    <tr>
+                        <th>TBTC</th>
+                        <td>
+                            {
+                                Data.formatWeiDecimal(operator.tBTCAuthorizedAmount)
+                            }
+                            {
+                                operator.tBTCAuthorized ? (
+                                    <CheckSharpIcon style={{color: "green"}}/>
+                                ) : (
+                                    <CloseSharpIcon style={{color: "red"}}/>
+                                )
+                            }
 
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>Random Beacon</th>
-                            <td>
-                                {
-                                    Data.formatWeiDecimal(operator.randomBeaconAuthorizedAmount)
-                                }
-                                {
-                                    operator.randomBeaconAuthorized ? (
-                                        <CheckSharpIcon style={{color: "green"}}/>
-                                    ) : (
-                                        <CloseSharpIcon style={{color: "red"}}/>
-                                    )
-                                }
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>PRE App</th>
-                            <td>
-                                <CheckSharpIcon style={{color: "green"}}/>
-                            </td>
-                        </tr>
-                        </tbody>
-                        {/* --------- Deauthorization ---------*/}
-                        <tbody>
-                        <tr>
-                            <th colSpan="2" style={{fontWeight: "bold"}}>Deauthorization</th>
-                        </tr>
-                        </tbody>
-                        <tbody className={styles.operator_detail_overview_table_tbody}>
-                        <tr>
-                            <th>TBTC</th>
-                            <td>
-                                {getDeAuthorization(true)}
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>Random Beacon</th>
-                            <td>
-                                {getDeAuthorization(false)}
-                            </td>
-                        </tr>
-                        </tbody>
-                        {/* --------- Slashed ---------*/}
-                        <tbody>
-                        <tr>
-                            <th colSpan="2" style={{fontWeight: "bold"}}>Misbehaved</th>
-                        </tr>
-                        </tbody>
-                        <tbody className={styles.operator_detail_overview_table_tbody}>
-                        <tr>
-                            <th>Total slashed amount</th>
-                            <td>
-                                {Data.formatWeiDecimal(operator.totalSlashedAmount)}
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>Rewards Ban Duration</th>
-                            <td>
-                                {operator.poolRewardBanDuration > 0 ?
-                                    Data.formatDate(operator.poolRewardBanDuration * 1000) : "No ban"}
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div style={{flex: "1 1 0%"}}>
-                    <h4><strong>Log</strong></h4>
-                    {operator?.events?.map(eventEntity => {
-                        const txHash = eventEntity.txHash;
-                        const from = eventEntity.from;
-                        const to = eventEntity.to;
-                        const event = eventEntity.event;
-                        const timestamp = eventEntity.timestamp;
-                        const amount = eventEntity.amount;
-                        return (
-                            <div className={styles.log_item}>
-                                <div className={styles.log_item_lable}>
-                                    <span>{Data.formatTimeToText(timestamp * 1000)}</span> @
-                                    <span><a target="_blank"
-                                             href={Utils.getEtherTxHashLink() + txHash}>{Data.formatString(txHash)}</a></span> {" by "}
-                                    <a target="_blank"
-                                       href={Utils.getEtherAddressLink() + from}>{Data.formatString(from)} </a>
-                                </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Random Beacon</th>
+                        <td>
+                            {
+                                Data.formatWeiDecimal(operator.randomBeaconAuthorizedAmount)
+                            }
+                            {
+                                operator.randomBeaconAuthorized ? (
+                                    <CheckSharpIcon style={{color: "green"}}/>
+                                ) : (
+                                    <CloseSharpIcon style={{color: "red"}}/>
+                                )
+                            }
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>PRE App</th>
+                        <td>
+                            <CheckSharpIcon style={{color: "green"}}/>
+                        </td>
+                    </tr>
+                    </tbody>
+                    {/* --------- Deauthorization ---------*/}
+                    <tbody>
+                    <tr>
+                        <th colSpan="2" style={{fontWeight: "bold"}}>Deauthorization</th>
+                    </tr>
+                    </tbody>
+                    <tbody className={styles.operator_detail_overview_table_tbody}>
+                    <tr>
+                        <th>TBTC</th>
+                        <td>
+                            {getDeAuthorization(true)}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Random Beacon</th>
+                        <td>
+                            {getDeAuthorization(false)}
+                        </td>
+                    </tr>
+                    </tbody>
+                    {/* --------- Slashed ---------*/}
+                    <tbody>
+                    <tr>
+                        <th colSpan="2" style={{fontWeight: "bold"}}>Misbehaved</th>
+                    </tr>
+                    </tbody>
+                    <tbody className={styles.operator_detail_overview_table_tbody}>
+                    <tr>
+                        <th>Total slashed amount</th>
+                        <td>
+                            {Data.formatWeiDecimal(operator.totalSlashedAmount)}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Rewards Ban Duration</th>
+                        <td>
+                            {operator.poolRewardBanDuration > 0 ?
+                                Data.formatDate(operator.poolRewardBanDuration * 1000) : "No ban"}
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div style={{flex: "1 1 0%"}}>
+                <h4><strong>Log</strong></h4>
+                {operator?.events?.map(eventEntity => {
+                    const txHash = eventEntity.txHash;
+                    const from = eventEntity.from;
+                    const to = eventEntity.to;
+                    const event = eventEntity.event;
+                    const timestamp = eventEntity.timestamp;
+                    const amount = eventEntity.amount;
+                    return (
+                        <div className={styles.log_item}>
+                            <div className={styles.log_item_lable}>
+                                <span>{Data.formatTimeToText(timestamp * 1000)}</span> @
+                                <span><a target="_blank"
+                                         href={Utils.getEtherTxHashLink() + txHash}>{Data.formatString(txHash)}</a></span> {" by "}
+                                <a target="_blank"
+                                   href={Utils.getEtherAddressLink() + from}>{Data.formatString(from)} </a>
+                            </div>
+                            <div>
+                                <strong>{event.replaceAll("_", " ")}</strong>
                                 <div>
-                                    <strong>{event.replaceAll("_", " ")}</strong>
-                                    <div>
-                                        {formatEvent(event, eventEntity.isRandomBeaconEvent, Data.formatWeiDecimal(amount))}
-                                    </div>
+                                    {formatEvent(event, eventEntity.isRandomBeaconEvent, Data.formatWeiDecimal(amount))}
                                 </div>
                             </div>
-                        )
-                    })}
-                </div>
+                        </div>
+                    )
+                })}
             </div>
+        </div>
     );
 }
 
@@ -403,6 +404,7 @@ const OperatorDetailPage = () => {
     });
     const [operator, setOperator] = useState();
     const [currentBlock, setCurrentBlock] = useState();
+    const [nodeBalance, setNodeBalance] = useState("loading...");
 
     useEffect(() => {
         const query = new URLSearchParams(window.location.search);
@@ -414,6 +416,11 @@ const OperatorDetailPage = () => {
                 isLoading: false,
                 rowData: info,
             });
+
+            let nodeAddress = info.address;
+            Data.getBalanceOfAddress(nodeAddress).then((balance) => {
+                setNodeBalance(balance);
+            })
         });
 
         Data.getCurrentBlockNumber().then((info) => {
@@ -509,7 +516,7 @@ const OperatorDetailPage = () => {
                                 </div>
                             </div>
                         </div>
-                        <OperatorDetail operator={pageData.rowData} currentBlock={currentBlock}/>
+                        <OperatorDetail operator={pageData.rowData} currentBlock={currentBlock} nodeBalance={nodeBalance}/>
                     </div>
                 )
             }</>

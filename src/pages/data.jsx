@@ -547,3 +547,19 @@ export const getCurrentBlockNumber = async () => {
         return "ERROR";
     }
 };
+
+export const getBalanceOfAddress = async (address) => {
+    try {
+        let rpc = Const.MAINNET_AP_BALANCE;
+        if (Const.DEFAULT_NETWORK === Const.NETWORK_TESTNET) {
+            rpc = Const.GOERLI_API_BALANCE;
+        }
+
+        const response = await fetch(rpc + address);
+        const data = await response.json();
+        return parseFloat(parseFloat(data.result) / 1000000000000000000).toFixed(2);
+    } catch (e) {
+        console.log("fetch balance error : " + e.toString())
+    }
+    return 0;
+};
