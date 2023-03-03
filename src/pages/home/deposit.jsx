@@ -25,6 +25,7 @@ const DepositPage = ({network, isSearch, searchInput}) => {
                 isLoading: false,
                 rowData: Data.formatDepositsData(info?.deposits),
                 mintingStatus: info.statsRecord?.mintingStatus,
+                tbtctoken: info.tbtctoken,
                 totalPassengers: totalPassengers
             });
         });
@@ -50,6 +51,14 @@ const DepositPage = ({network, isSearch, searchInput}) => {
                     }
                 </div>
                 <div className={styles.operator_detail_header_value}>
+                    <div className={styles.operator_detail_header_value_item}>
+                        <div className={styles.operator_detail_header_value_item_lable}>total minted
+                        </div>
+                        <div>
+                            <div>{pageData.tbtctoken === undefined ? "loading..." : Data.formatWeiDecimal(pageData.tbtctoken?.totalMint)}<span
+                                className={styles.span_t_token}>{" tBTC"}</span></div>
+                        </div>
+                    </div>
                     <div className={styles.operator_detail_header_value_item}>
                         <div className={styles.operator_detail_header_value_item_lable}>minting state
                         </div>
