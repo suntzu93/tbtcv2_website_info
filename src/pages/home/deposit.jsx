@@ -55,7 +55,7 @@ const DepositPage = ({network, isSearch, searchInput}) => {
                         <div className={styles.operator_detail_header_value_item_lable}>total minted
                         </div>
                         <div>
-                            <div>{Data.formatWeiDecimal(pageData.tbtctoken.totalMint)}<span
+                            <div>{pageData.tbtctoken === undefined ? "loading..." : Data.formatWeiDecimal(pageData.tbtctoken?.totalMint)}<span
                                 className={styles.span_t_token}>{" tBTC"}</span></div>
                         </div>
                     </div>
