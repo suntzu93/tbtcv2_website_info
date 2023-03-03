@@ -14,6 +14,7 @@ const RedeemsPage = ({network, isSearch, searchInput}) => {
         setPageData((prevState) => ({
             ...prevState,
             isLoading: true,
+            redeemStatus: false
         }));
 
         Data.getRedeems(network, isSearch, searchInput).then((info) => {
@@ -29,10 +30,30 @@ const RedeemsPage = ({network, isSearch, searchInput}) => {
 
     return (
         <div>
-
-            <div className={styles.deposit_header}>
-                <h3>Redeems</h3>
-                <span>{pageData.totalPassengers} redeems</span>
+            <div className={styles.operator_detail_header}>
+                <div className={styles.operator_detail_header_address}>
+                    {
+                        isSearch ? (
+                            <>
+                                <h4>Search : {searchInput}</h4>
+                                <span>{pageData.totalPassengers} redeems</span>
+                            </>
+                        ) : (
+                            <>
+                                <h3>Redeems</h3>
+                                <span>{pageData.totalPassengers} redeems</span></>
+                        )
+                    }
+                </div>
+                <div className={styles.operator_detail_header_value}>
+                    <div className={styles.operator_detail_header_value_item}>
+                        <div className={styles.operator_detail_header_value_item_lable}>redeem state
+                        </div>
+                        <div>
+                            <div>{pageData.redeemStatus === "loading..." ? pageData.redeemStatus : pageData.redeemStatus ? "running" : "pausing"}</div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div style={{textAlign:"center"}}>
                 <h6>This function is currently being implemented.</h6>

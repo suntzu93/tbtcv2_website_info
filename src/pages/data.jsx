@@ -416,8 +416,8 @@ export const getDeposits = async (network, isSearch, searchInput) => {
                 user: searchInput.toLowerCase(),
             });
         }
-        if (data.data.deposits !== undefined) {
-            return formatDepositsData(data.data.deposits);
+        if (data.data != undefined) {
+            return data.data;
         }
     } catch (e) {
         console.log("error to fetch deposit data " + e);

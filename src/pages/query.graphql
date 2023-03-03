@@ -26,6 +26,9 @@ query GetDepositsQueryByUser($user: String){
             description
         }
     }
+    statsRecord(id:"current"){
+        mintingStatus
+    }
 }
 
 query GetAllDepositsQuery{
@@ -55,6 +58,9 @@ query GetAllDepositsQuery{
             to
             description
         }
+    }
+    statsRecord(id:"current"){
+        mintingStatus
     }
 }
 
