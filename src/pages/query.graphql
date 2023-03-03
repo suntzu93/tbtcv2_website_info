@@ -26,6 +26,14 @@ query GetDepositsQueryByUser($user: String){
             description
         }
     }
+    statsRecord(id:"current"){
+        mintingStatus
+    }
+    tbtctoken(id:"TBTCToken"){
+        totalMint
+        totalBurn
+        totalSupply
+    }
 }
 
 query GetAllDepositsQuery{
@@ -56,6 +64,14 @@ query GetAllDepositsQuery{
             description
         }
     }
+    statsRecord(id:"current"){
+        mintingStatus
+    }
+    tbtctoken(id:"TBTCToken"){
+        totalMint
+        totalBurn
+        totalSupply
+    }
 }
 
 query GetRedemptionQueryByUser($user: String){
@@ -82,6 +98,11 @@ query GetRedemptionQueryByUser($user: String){
             description
         }
     }
+    tbtctoken(id:"TBTCToken"){
+        totalMint
+        totalBurn
+        totalSupply
+    }
 }
 
 query GetAllRedemptionsQuery{
@@ -107,6 +128,11 @@ query GetAllRedemptionsQuery{
             to
             description
         }
+    }
+    tbtctoken(id:"TBTCToken"){
+        totalMint
+        totalBurn
+        totalSupply
     }
 }
 

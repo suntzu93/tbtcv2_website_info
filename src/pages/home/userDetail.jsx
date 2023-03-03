@@ -106,15 +106,15 @@ const UserDetailPage = () => {
                                     <div className={styles.operator_detail_header_value_item_lable}>balance
                                     </div>
                                     <div>
-                                        <div><span
-                                            style={{fontSize: "25px"}}>{"tBTC "}</span>{Data.formatGwei(pageData.rowData.tokenBalance)}</div>
+                                        <div>{Data.formatGwei(pageData.rowData.tokenBalance)}<span
+                                            className={styles.span_t_token}>{" tBTC"}</span></div>
                                     </div>
                                 </div>
                                 <div className={styles.operator_detail_header_value_item}>
                                     <div className={styles.operator_detail_header_value_item_lable}> minting debt</div>
                                     <div>
-                                        <div><span
-                                            style={{fontSize: "25px"}}>{"tBTC "}</span>{Data.formatGwei(pageData.rowData.mintingDebt)}</div>
+                                        <div>{Data.formatGwei(pageData.rowData.mintingDebt)}<span
+                                            className={styles.span_t_token}>{" tBTC"}</span></div>
                                     </div>
                                 </div>
                             </div>
