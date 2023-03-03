@@ -342,7 +342,7 @@ function convertToLittleEndian(hex) {
 export const formatDepositsData = (rawData) =>
     rawData.map((item) => ({
         id: item.id,
-        status: item.status,
+        status: item.status.replace("_",""),
         depositor: item.user.id,
         amount: parseFloat(item.amount),
         newDebt: parseFloat(item.newDebt),
@@ -365,7 +365,7 @@ export const formatDepositsData = (rawData) =>
 export const formatRedeems = (rawData) =>
     rawData.map((item) => ({
         id: item.id,
-        status: item.status,
+        status: item.status.replace("_",""),
         redeemer: item.user.id,
         amount: parseFloat(item.amount),
         walletPubKeyHash: item.walletPubKeyHash,
