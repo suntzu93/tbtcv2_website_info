@@ -7,8 +7,13 @@ const getEtherScanLink = () => {
 export const getEtherAddressLink = () => {
     return getEtherScanLink() + "/address/"
 }
+
 export const getEtherTxHashLink = () => {
     return getEtherScanLink() + "/tx/"
+}
+
+export const getEtherBlockLink = () => {
+    return getEtherScanLink() + "/block/"
 }
 
 export const getDomain = () => {
@@ -29,7 +34,7 @@ export const getBlockStreamInfo = () => {
 
 export function getGroupState(group,currentBlock) {
     //259_200 is group life time, ~30 days assuming 15s block time
-    if (group?.terminated || parseInt(group?.createdAtBlock) + 259200 < currentBlock) {
+    if (group?.terminated || parseInt(group?.createdAtBlock) + Const.GROUP_LIFE_TIME < currentBlock) {
         return "Inactive"
     } else {
         return "Active"

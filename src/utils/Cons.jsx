@@ -17,4 +17,5 @@ export const DEFAULT_NETWORK = NETWORK_MAINNET;
 
 export const TIME_LOCK_DEAUTHORIZATION = 45 * 24 * 60 * 60;//45 days
 
+export const GROUP_LIFE_TIME = 259200; //~30days
 export default MAINNET_API;

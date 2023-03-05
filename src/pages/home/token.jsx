@@ -19,7 +19,6 @@ const TokenPage = ({network}) => {
         }));
 
         Data.getTokenInfo(network).then((info) => {
-            console.log(info);
             setToken({
                 tokenData: info, isLoading: false,
             })
