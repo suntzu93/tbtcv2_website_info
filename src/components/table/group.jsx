@@ -100,7 +100,7 @@ export const GroupTable = ({columns, data, isLoading, network, currentBlock}) =>
     };
 
     const [order, setOrder] = React.useState('desc');
-    const [orderBy, setOrderBy] = React.useState('tBTCAuthorizedAmount');
+    const [orderBy, setOrderBy] = React.useState('createdAt');
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(100);
 
