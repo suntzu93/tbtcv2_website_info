@@ -19,6 +19,7 @@ import Link from "@mui/material/Link";
 import {ReactComponent as ShareLink} from "../../assets/link.svg";
 import * as Data from "../../pages/data";
 import * as Utils from '../../utils/utils';
+import * as Const from '../../utils/Cons';
 
 export const GroupTable = ({columns, data, isLoading, network, currentBlock}) => {
     const columnData = useMemo(() => columns, [columns]);
@@ -163,9 +164,21 @@ export const GroupTable = ({columns, data, isLoading, network, currentBlock}) =>
                     {Data.formatWeiDecimal(row.totalSlashedAmount)}
                 </TableCell>
                 <TableCell align="left">
-                    {Data.formatTimeToText(row.createdAt * 1000)}
+                    <Tooltip title={Data.formatDate(row.createdAt * 1000)}>
+                        <span>{Data.formatTimeToText(row.createdAt * 1000)}</span>
+                    </Tooltip>
                 </TableCell>
+                <TableCell align="left">
+                    <Link
+                        target="_blank"
+                        underline="hover"
+                        href={Utils.getEtherBlockLink() + (parseInt(row.createdAtBlock) + Const.GROUP_LIFE_TIME)}
+                        className={styles.link}
+                    >
+                        {parseInt(row.createdAtBlock) + Const.GROUP_LIFE_TIME}
+                    </Link>
 
+                </TableCell>
                 <TableCell align="left">
                     {Utils.getGroupState(row, currentBlock)}
                 </TableCell>

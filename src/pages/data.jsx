@@ -122,6 +122,9 @@ export const groups_columns = [
         header: "Create At",
         accessor: "createdAt",
     }, {
+        header: "Expired block",
+        accessor: "createdAtBlock",
+    },{
         header: "State",
         accessor: "state",
     }
