@@ -13,8 +13,7 @@ const RedeemsPage = ({network, isSearch, searchInput}) => {
     useEffect(() => {
         setPageData((prevState) => ({
             ...prevState,
-            isLoading: true,
-            redeemStatus: false
+            isLoading: true
         }));
 
         Data.getRedeems(network, isSearch, searchInput).then((info) => {
@@ -45,26 +44,26 @@ const RedeemsPage = ({network, isSearch, searchInput}) => {
                         )
                     }
                 </div>
-                <div className={styles.operator_detail_header_value}>
-                    <div className={styles.operator_detail_header_value_item}>
-                        <div className={styles.operator_detail_header_value_item_lable}>redeem state
-                        </div>
-                        <div>
-                            <div>{pageData.redeemStatus === "loading..." ? pageData.redeemStatus : pageData.redeemStatus ? "running" : "pausing"}</div>
-                        </div>
-                    </div>
-                </div>
+                {/*<div className={styles.operator_detail_header_value}>*/}
+                {/*    <div className={styles.operator_detail_header_value_item}>*/}
+                {/*        <div className={styles.operator_detail_header_value_item_lable}>redeem state*/}
+                {/*        </div>*/}
+                {/*        <div>*/}
+                {/*            <div>{pageData.redeemStatus === "loading..." ? pageData.redeemStatus : pageData.redeemStatus ? "running" : "pausing"}</div>*/}
+                {/*        </div>*/}
+                {/*    </div>*/}
+                {/*</div>*/}
             </div>
             <div style={{textAlign:"center"}}>
                 <h6>This function is currently being implemented.</h6>
             </div>
             {/*<div className={styles.table_content}>*/}
-                {/*<RedeemTable*/}
-                {/*    columns={Data.redeem_columns}*/}
-                {/*    data={pageData.rowData}*/}
-                {/*    isLoading={pageData.isLoading}*/}
-                {/*    network={network}*/}
-                {/*/>*/}
+            {/*    <RedeemTable*/}
+            {/*        columns={Data.redeem_columns}*/}
+            {/*        data={pageData.rowData}*/}
+            {/*        isLoading={pageData.isLoading}*/}
+            {/*        network={network}*/}
+            {/*    />*/}
             {/*</div>*/}
         </div>
     );
