@@ -52,6 +52,10 @@ export const redeem_columns = [
         header: "Current State",
         accessor: "status",
         numeric: false,
+    },{
+        header: "Completed TxHash",
+        accessor: "completedTxHash",
+        numeric: false,
     }
 ];
 
@@ -376,7 +380,7 @@ export const formatRedeems = (rawData) =>
         redemptionTxHash: item.redemptionTxHash,
         treasuryFee: calculateTreasuryFee(item.treasuryFee),
         txMaxFee: calculateTxMaxFee(item.txMaxFee),
-        completedTxHash: item.completedTxHash,
+        completedTxHash: convertToLittleEndian(item.completedTxHash),
         redemptionTimestamp: item.redemptionTimestamp * 1000,
         updateTime: item.updateTimestamp * 1000,
         transactions: item.transactions
