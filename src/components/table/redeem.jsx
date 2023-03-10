@@ -174,15 +174,23 @@ export const RedeemTable = ({ columns, data, isLoading }) => {
           <TableCell align="left">{Data.formatGwei(row.amount)}</TableCell>
           <TableCell align="left">{row.status}</TableCell>
           <TableCell align="left">
-            <Link
-              target="_blank"
-              underline="hover"
-              href={Utils.getBlockStreamInfo() + row.completedTxHash}
-              className={styles.link}
-            >
-              {Data.formatString(row.completedTxHash)}
-            </Link>
-            <ShareLink />
+            {
+              row.completedTxHash?.length > 0 ? (
+                  <>
+                    <Link
+                        target="_blank"
+                        underline="hover"
+                        href={Utils.getBlockStreamInfo() + row.completedTxHash}
+                        className={styles.link}
+                    >
+                      {Data.formatString(row.completedTxHash)}
+                    </Link>
+                    <ShareLink />
+                  </>
+              ) : (
+                  "..."
+              )
+            }
           </TableCell>
         </TableRow>
         <TableRow className={styles.container_detail}>
