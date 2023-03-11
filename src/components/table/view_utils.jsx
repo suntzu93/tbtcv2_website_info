@@ -5,7 +5,7 @@ export function getColorByStatus(status) {
         return "#f1c40f";
     } else if (status == "SWEPT") {
         return "#e74c3c";
-    } else if (status == "COMPLETED") {
+    } else if (status == "COMPLETED" || status == "Active") {
         return "#2ecc71";
     } else {
         return "#95a5a6";
