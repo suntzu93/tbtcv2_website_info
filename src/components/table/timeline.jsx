@@ -12,6 +12,7 @@ import styles from "./styles.module.css";
 import {getEtherTxHashLink, getEtherAddressLink} from "../../utils/utils"
 import * as Data from "../../pages/data";
 import {getColorByStatus} from "./view_utils"
+import Tooltip from "@mui/material/Tooltip";
 
 export default function TransactionTimeline(transactions, network) {
     const rowData = useMemo(() => transactions, [transactions]);
@@ -20,7 +21,9 @@ export default function TransactionTimeline(transactions, network) {
         <Timeline>
             {rowData.transactions.map((transaction, index) => (<TimelineItem>
                 <TimelineOppositeContent color="text.secondary">
-                    {Data.calculateTimeMoment(transaction.timestamp * 1000)}
+                    <Tooltip title={Data.formatDate(transaction.timestamp * 1000)}>
+                        <span>{Data.calculateTimeMoment(transaction.timestamp * 1000)}</span>
+                    </Tooltip>
                 </TimelineOppositeContent>
                 <TimelineSeparator>
                     <TimelineDot sx={{backgroundColor:getColorByStatus(transaction.description)}}/>
