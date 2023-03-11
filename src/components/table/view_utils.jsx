@@ -20,7 +20,7 @@ export function getColorByStatus(status) {
     status == "Active" ||
     status == "Minting Finalized" ||
     status == "Redemption success" ||
-    status.startWith("Swept deposit processed successfully")
+    status == "Swept deposit processed successfully."
   ) {
     return "#2ecc71";
   } else {
