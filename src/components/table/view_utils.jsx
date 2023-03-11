@@ -7,7 +7,7 @@ export function getColorByStatus(status) {
     status == "Redemption Requested"
   ) {
     return "#3498db";
-  } else if (status == "MINTING_REQUESTED" || status == "Minting Requested") {
+  } else if (status == "MINTING REQUESTED" || status == "Minting Requested") {
     return "#f1c40f";
   } else if (
     status == "SWEPT" ||
