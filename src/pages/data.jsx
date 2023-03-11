@@ -416,6 +416,7 @@ export const getDeposits = async (network, isSearch, searchInput) => {
     } else {
       data = await client.execute(client.GetDepositsQueryByUserDocument, {
         user: searchInput.toLowerCase(),
+        id : searchInput.toLowerCase()
       });
     }
     if (data.data != undefined) {
@@ -436,6 +437,7 @@ export const getRedeems = async (network, isSearch, searchInput) => {
     } else {
       data = await client.execute(client.GetRedemptionQueryByUserDocument, {
         user: searchInput.toLowerCase(),
+        id : searchInput.toLowerCase()
       });
     }
     if (data.data.redemptions !== undefined) {

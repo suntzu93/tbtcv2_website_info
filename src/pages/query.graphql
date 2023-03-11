@@ -1,5 +1,10 @@
-query GetDepositsQueryByUser($user: String){
-    deposits(first: 1000,where:{user :$user},orderBy: updateTimestamp,orderDirection: desc) {
+query GetDepositsQueryByUser($user: String, $id: Bytes){
+    deposits(first: 1000,where:{
+        or:[
+            {user : $user},
+            {id: $id}
+        ]
+        },orderBy: updateTimestamp,orderDirection: desc) {
         id
         status
         user{
@@ -74,8 +79,13 @@ query GetAllDepositsQuery{
     }
 }
 
-query GetRedemptionQueryByUser($user: String){
-    redemptions (first: 1000,where:{user :$user},orderBy: updateTimestamp,orderDirection: desc) {
+query GetRedemptionQueryByUser($user: String, $id: Bytes){
+    redemptions (first: 1000,where:{
+        or:[
+            {user : $user},
+            {id: $id}
+        ]
+    },orderBy: updateTimestamp,orderDirection: desc) {
         id,
         status,
         user{
