@@ -219,7 +219,7 @@ const HomePage = () => {
                         <div style={{flex:"1 1 0%"}}></div>
                         <div className={styles.search}>
                             <TextField
-                                label="depositor / redeemer / operator"
+                                label="key or addresses"
                                 variant="outlined"
                                 fullWidth
                                 value={searchInput}

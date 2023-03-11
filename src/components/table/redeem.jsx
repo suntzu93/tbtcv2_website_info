@@ -22,6 +22,7 @@ import { ReactComponent as ShareLink } from "../../assets/link.svg";
 import * as Data from "../../pages/data";
 import TransactionTimeline from "./timeline";
 import * as Utils from "../../utils/utils";
+import {getColorByStatus} from "./view_utils"
 
 export const RedeemTable = ({ columns, data, isLoading }) => {
   const columnData = useMemo(() => columns, [columns]);
@@ -172,7 +173,7 @@ export const RedeemTable = ({ columns, data, isLoading }) => {
             <ShareLink />
           </TableCell>
           <TableCell align="left">{Data.formatGwei(row.amount)}</TableCell>
-          <TableCell align="left">{row.status}</TableCell>
+          <TableCell align="left" sx={{color:getColorByStatus(row.status)}}>{row.status}</TableCell>
           <TableCell align="left">
             {
               row.completedTxHash?.length > 0 ? (
