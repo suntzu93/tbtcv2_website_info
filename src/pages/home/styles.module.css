@@ -391,6 +391,10 @@
     font-size: 16px;
 }
 
+.operator_detail_header_value_item_lable_sub {
+    font-size: 14px;
+}
+
 .operator_detail_header_value_item_percent {
     font-size: 20px;
     color: gray;

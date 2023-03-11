@@ -20,6 +20,7 @@ import {ReactComponent as ShareLink} from "../../assets/link.svg";
 import * as Data from "../../pages/data";
 import * as Utils from '../../utils/utils';
 import * as Const from '../../utils/Cons';
+import {getColorByStatus} from "./view_utils"
 
 export const GroupTable = ({columns, data, isLoading, network, currentBlock}) => {
     const columnData = useMemo(() => columns, [columns]);
@@ -179,7 +180,7 @@ export const GroupTable = ({columns, data, isLoading, network, currentBlock}) =>
                     </Link>
 
                 </TableCell>
-                <TableCell align="left">
+                <TableCell align="left" sx={{color:getColorByStatus(Utils.getGroupState(row, currentBlock))}}>
                     {Utils.getGroupState(row, currentBlock)}
                 </TableCell>
             </TableRow>
