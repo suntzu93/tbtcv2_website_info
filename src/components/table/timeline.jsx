@@ -11,6 +11,7 @@ import {ReactComponent as ShareLink} from "../../assets/link.svg";
 import styles from "./styles.module.css";
 import {getEtherTxHashLink, getEtherAddressLink} from "../../utils/utils"
 import * as Data from "../../pages/data";
+import {getColorByStatus} from "./view_utils"
 
 export default function TransactionTimeline(transactions, network) {
     const rowData = useMemo(() => transactions, [transactions]);
@@ -22,7 +23,7 @@ export default function TransactionTimeline(transactions, network) {
                     {Data.calculateTimeMoment(transaction.timestamp * 1000)}
                 </TimelineOppositeContent>
                 <TimelineSeparator>
-                    <TimelineDot/>
+                    <TimelineDot sx={{backgroundColor:getColorByStatus(transaction.description)}}/>
                     {index != transactionLength - 1 ? <TimelineConnector/> : ""}
                 </TimelineSeparator>
                 <TimelineContent>
