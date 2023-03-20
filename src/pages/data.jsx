@@ -337,7 +337,7 @@ function convertFromLittleEndian(hex) {
     for (let i = hex.length - 2; i >= 0; i -= 2) {
       littleEndianHex += hex.slice(i, i + 2);
     }
-    return littleEndianHex;
+    return "0x" + littleEndianHex;
   } catch (e) {
     console.log(e);
   }
