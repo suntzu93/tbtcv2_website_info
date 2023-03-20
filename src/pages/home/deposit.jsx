@@ -21,13 +21,24 @@ const DepositPage = ({network, isSearch, searchInput}) => {
 
         Data.getDeposits(network, isSearch, searchInput).then((info) => {
             const totalPassengers = info.length;
-            setPageData({
-                isLoading: false,
-                rowData: Data.formatDepositsData(info?.deposits),
-                mintingStatus: info.statsRecord?.mintingStatus,
-                tbtctoken: info.tbtctoken,
-                totalPassengers: totalPassengers
-            });
+            if(info?.deposits === undefined){
+                setPageData({
+                    isLoading: false,
+                    rowData: [],
+                    mintingStatus: info.statsRecord?.mintingStatus,
+                    tbtctoken: info.tbtctoken,
+                    totalPassengers: 0
+                });
+            }else {
+                setPageData({
+                    isLoading: false,
+                    rowData: Data.formatDepositsData(info?.deposits),
+                    mintingStatus: info.statsRecord?.mintingStatus,
+                    tbtctoken: info.tbtctoken,
+                    totalPassengers: totalPassengers
+                });
+            }
+
         });
 
     }, [network, isSearch]);
