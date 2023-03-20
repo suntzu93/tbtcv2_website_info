@@ -328,7 +328,7 @@ export const calculateTimeMoment = (timestamp) => {
 const calculateTreasuryFee = (treasuryFee) => (1 / treasuryFee) * 100;
 const calculateTxMaxFee = (txMaxFee) => txMaxFee / Const.SATOSHI_BITCOIN;
 
-function convertToLittleEndian(hex) {
+function convertFromLittleEndian(hex) {
   try {
     if (hex == null) return "Can't detect !";
     hex = hex.replace("0x", "");
@@ -337,10 +337,25 @@ function convertToLittleEndian(hex) {
     for (let i = hex.length - 2; i >= 0; i -= 2) {
       littleEndianHex += hex.slice(i, i + 2);
     }
+    return littleEndianHex;
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+export function convertToLittleEndian(txHash) {
+  try {
+    if (txHash === undefined) {
+      return "";
+    }
+    txHash = txHash.replace("0x", "");
+    const chunks = txHash.match(/.{2}/g).reverse();
+    const littleEndianHex = chunks.join("");
     return "0x" + littleEndianHex;
   } catch (e) {
     console.log(e);
   }
+  return "";
 }
 
 export const formatDepositsData = (rawData) =>
@@ -353,13 +368,13 @@ export const formatDepositsData = (rawData) =>
     actualAmountReceived: parseFloat(item.actualAmountReceived),
     treasuryFee: parseFloat(item.treasuryFee),
     walletPubKeyHash: item.walletPubKeyHash,
-    fundingTxHash: convertToLittleEndian(item.fundingTxHash),
+    fundingTxHash: convertFromLittleEndian(item.fundingTxHash),
     fundingOutputIndex: item.fundingOutputIndex,
     // eslint-disable-next-line no-undef
     blindingFactor: BigInt(item.blindingFactor).toString(),
     refundPubKeyHash: item.refundPubKeyHash,
     refundLocktime: formatDate(
-      parseInt(convertToLittleEndian(item.refundLocktime) * 1000)
+      parseInt(convertFromLittleEndian(item.refundLocktime) * 1000)
     ),
     vault: item.vault,
     depositTimestamp: item.depositTimestamp * 1000,
@@ -378,7 +393,7 @@ export const formatRedeems = (rawData) =>
     redemptionTxHash: item.redemptionTxHash,
     treasuryFee: calculateTreasuryFee(item.treasuryFee),
     txMaxFee: calculateTxMaxFee(item.txMaxFee),
-    completedTxHash: convertToLittleEndian(item.completedTxHash),
+    completedTxHash: convertFromLittleEndian(item.completedTxHash),
     redemptionTimestamp: item.redemptionTimestamp * 1000,
     updateTime: item.updateTimestamp * 1000,
     transactions: item.transactions,
@@ -414,9 +429,11 @@ export const getDeposits = async (network, isSearch, searchInput) => {
     if (!isSearch) {
       data = await client.execute(client.GetAllDepositsQueryDocument, {});
     } else {
+      const fundingTxHashHex = convertToLittleEndian(searchInput.toLowerCase());
       data = await client.execute(client.GetDepositsQueryByUserDocument, {
         user: searchInput.toLowerCase(),
-        id : searchInput.toLowerCase()
+        id: searchInput.toLowerCase(),
+        fundingTxHash: fundingTxHashHex,
       });
     }
     if (data.data != undefined) {
@@ -435,9 +452,14 @@ export const getRedeems = async (network, isSearch, searchInput) => {
     if (!isSearch) {
       data = await client.execute(client.GetAllRedemptionsQueryDocument, {});
     } else {
+      const completedTxHashHex = convertToLittleEndian(
+        searchInput.toLowerCase()
+      );
+
       data = await client.execute(client.GetRedemptionQueryByUserDocument, {
         user: searchInput.toLowerCase(),
-        id : searchInput.toLowerCase()
+        id: searchInput.toLowerCase(),
+        completedTxHash: completedTxHashHex,
       });
     }
     if (data.data.redemptions !== undefined) {
