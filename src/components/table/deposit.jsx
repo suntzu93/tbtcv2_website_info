@@ -187,9 +187,10 @@ export const DepositTable = ({ columns, data, isLoading, network }) => {
               />
             </Tooltip>
           </TableCell>
-          <TableCell align="left">{Data.formatSatoshi(row.amount)}</TableCell>
           <TableCell align="left">
-            {Data.formatGwei(row.actualAmountReceived)}
+          <span className={styles.numbers} >{Data.formatSatoshi(row.amount)}</span></TableCell>
+          <TableCell align="left">
+            <span className={styles.numbers}>{Data.formatGwei(row.actualAmountReceived)}</span>
           </TableCell>
           <TableCell align="left" sx={{color:getColorByStatus(row.status)}}>{row.status}</TableCell>
         </TableRow>

@@ -43,6 +43,7 @@
 .link{
   color: "#7850cd";
   underline: none;
+  font-family: monospace, monospace;
 }
 
 .table .proportion{
@@ -113,4 +114,7 @@
   border-bottom: 0px;
   font-size: 0.875rem;
   font-weight: 500;
+}
+.numbers{
+  font-family: monospace, monospace;
 }

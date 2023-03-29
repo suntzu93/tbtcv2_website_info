@@ -179,6 +179,7 @@
 .link {
     color: "#7850cd";
     underline: none;
+    font-family: monospace, monospace;
 }
 
 .div_bottom {
@@ -472,6 +473,10 @@
     border-bottom: 1px solid rgb(245, 245, 245);
     text-align: left;
     min-width: 100px;
+}
+
+.numbers{
+    font-family: monospace, monospace;
 }
 
 .span_t_token{

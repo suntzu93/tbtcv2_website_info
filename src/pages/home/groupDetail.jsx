@@ -102,8 +102,8 @@ function MembersGroup(group) {
                             </Link></td>
                             <td>{count}</td>
                             <td style={{wordBreak: "break-word"}}>{seats.toString()}</td>
-                            <td>{Data.formatWeiDecimal(tBTCAuthorizedAmount)}</td>
-                            <td>{Data.formatWeiDecimal(randomBeaconAuthorizedAmount)}</td>
+                            <td className={styles.numbers}>{Data.formatWeiDecimal(tBTCAuthorizedAmount)}</td>
+                            <td className={styles.numbers}>{Data.formatWeiDecimal(randomBeaconAuthorizedAmount)}</td>
                             <td>{Data.formatWeiDecimal(availableReward)}</td>
                             <td>{misbehavedCount}</td>
                         </tr>
