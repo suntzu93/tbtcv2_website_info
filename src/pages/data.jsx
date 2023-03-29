@@ -193,9 +193,15 @@ export const formatGwei = (value) => {
   return parseFloat(value / Const.DECIMAL_ETH).toFixed(7);
 };
 
-export const formatWeiDecimal = (value) => {
-  return new Intl.NumberFormat().format(formatGwei(value));
+export const formatGweiFixedZero = (value) => {
+  return parseFloat(value / Const.DECIMAL_ETH).toFixed(0);
 };
+
+export const formatWeiDecimal = (value) => {
+  return new Intl.NumberFormat().format(formatGweiFixedZero(value));
+};
+
+
 
 export const formatWeiDecimalNoSurplus = (value) => {
   return new Intl.NumberFormat().format(
