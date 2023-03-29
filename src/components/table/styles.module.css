@@ -43,7 +43,7 @@
 .link{
   color: "#7850cd";
   underline: none;
-  font-family: monospace, monospace;
+  font-family: Helvetica Neue;
 }
 
 .table .proportion{
@@ -116,5 +116,5 @@
   font-weight: 500;
 }
 .numbers{
-  font-family: monospace, monospace;
+  font-family: Helvetica Neue;
 }
