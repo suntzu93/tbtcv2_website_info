@@ -16,14 +16,14 @@ export function getColorByStatus(status) {
   ) {
     return "#e74c3c";
   } else if (
-    status == "COMPLETED" ||
+    status == "MINTING FINALIZED" ||
     status == "Active" ||
     status == "Minting Finalized" ||
     status == "Redemption success" ||
     status == "Swept deposit processed successfully."
   ) {
-    return "#2ecc71";
+    return "#6050DC";
   } else {
-    return "#95a5a6";
+    return "#2ecc71";
   }
 }
