@@ -331,12 +331,12 @@ export const calculateTimeMoment = (timestamp) => {
   );
 };
 
-const calculateTreasuryFee = (treasuryFee) => (1 / treasuryFee) * 100;
-const calculateTxMaxFee = (txMaxFee) => txMaxFee / Const.SATOSHI_BITCOIN;
+// const calculateTreasuryFee = (treasuryFee) => (1 / treasuryFee) * 100;
+// const calculateTxMaxFee = (txMaxFee) => txMaxFee / Const.SATOSHI_BITCOIN;
 
 function convertFromLittleEndian(hex) {
   try {
-    if (hex == null) return "Can't detect !";
+    if (hex == null) return "...";
     hex = hex.replace("0x", "");
     hex = hex.padStart(8, "0");
     let littleEndianHex = "";
@@ -397,8 +397,8 @@ export const formatRedeems = (rawData) =>
     walletPubKeyHash: item.walletPubKeyHash,
     redeemerOutputScript: item.redeemerOutputScript,
     redemptionTxHash: item.redemptionTxHash,
-    treasuryFee: calculateTreasuryFee(item.treasuryFee),
-    txMaxFee: calculateTxMaxFee(item.txMaxFee),
+    treasuryFee: formatSatoshi(item.treasuryFee),
+    txMaxFee: formatSatoshi(item.txMaxFee),
     completedTxHash: convertFromLittleEndian(item.completedTxHash),
     redemptionTimestamp: item.redemptionTimestamp * 1000,
     updateTime: item.updateTimestamp * 1000,
@@ -442,7 +442,7 @@ export const getDeposits = async (network, isSearch, searchInput) => {
         fundingTxHash: fundingTxHashHex,
       });
     }
-    if (data.data != undefined) {
+    if (data.data !== undefined) {
       return data.data;
     }
   } catch (e) {
@@ -468,8 +468,8 @@ export const getRedeems = async (network, isSearch, searchInput) => {
         completedTxHash: completedTxHashHex,
       });
     }
-    if (data.data.redemptions !== undefined) {
-      return formatRedeems(data.data.redemptions);
+    if (data.data !== undefined) {
+      return data.data;
     }
   } catch (e) {
     console.log("error to fetch redeem data " + e);
