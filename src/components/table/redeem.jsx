@@ -113,7 +113,7 @@ export const RedeemTable = ({ columns, data, isLoading }) => {
     rowCount: PropTypes.number.isRequired,
   };
 
-  const [order, setOrder] = React.useState("asc");
+  const [order, setOrder] = React.useState("desc");
   const [orderBy, setOrderBy] = React.useState("updateTime");
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(100);
