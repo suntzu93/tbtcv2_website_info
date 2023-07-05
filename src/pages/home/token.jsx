@@ -38,7 +38,7 @@ const TokenPage = ({network}) => {
                             <div className={styles.div_token_info_supply_title}>tBTC Supply</div>
                             <div className={styles.div_token_info_supply_data}>
                                 <div
-                                    className={styles.div_token_info_supply_value}>{Data.formatWeiDecimal(token.tokenData.totalSupply)}</div>
+                                    className={styles.div_token_info_supply_value}>{Data.formatGwei(token.tokenData.totalSupply)}</div>
                                 <div className={styles.div_token_info_supply_sub_title}>tBTC</div>
                             </div>
 
@@ -71,7 +71,7 @@ const TokenPage = ({network}) => {
                             <div className={styles.div_token_info_stats_item_title}>tBTC Minted</div>
                             <div className={styles.div_token_info_stats_item_data}>
                                 <div
-                                    className={styles.div_token_info_stats_item_data_value}>{Data.formatWeiDecimal(token.tokenData.totalMint)}</div>
+                                    className={styles.div_token_info_stats_item_data_value}>{Data.formatGwei(token.tokenData.totalMint)}</div>
                                 <div className={styles.div_underlined}></div>
                             </div>
                         </div>
@@ -79,7 +79,7 @@ const TokenPage = ({network}) => {
                             <div className={styles.div_token_info_stats_item_title}>tBTC Burned</div>
                             <div className={styles.div_token_info_stats_item_data}>
                                 <div
-                                    className={styles.div_token_info_stats_item_data_value}>{Data.formatWeiDecimal(token.tokenData.totalBurn)}</div>
+                                    className={styles.div_token_info_stats_item_data_value}>{Data.formatGwei(token.tokenData.totalBurn)}</div>
                                 <div className={styles.div_underlined}></div>
                             </div>
                         </div>
