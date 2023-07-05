@@ -399,7 +399,7 @@ export const formatRedeems = (rawData) =>
     redemptionTxHash: item.redemptionTxHash,
     treasuryFee: formatSatoshi(item.treasuryFee),
     txMaxFee: formatSatoshi(item.txMaxFee),
-    completedTxHash: convertFromLittleEndian(item.completedTxHash),
+    completedTxHash: convertFromLittleEndian(item.completedTxHash).replace("0x",""),
     redemptionTimestamp: item.redemptionTimestamp * 1000,
     updateTime: item.updateTimestamp * 1000,
     transactions: item.transactions,
