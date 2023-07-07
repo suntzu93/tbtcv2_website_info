@@ -22,7 +22,7 @@ export function getColorByStatus(status) {
   ) {
     return "#6050DC";
   } else if (
-    status === "SWEPT COMPLETED" ||
+    status === "SWEPT" ||
     status === "COMPLETED" ||
     status === "Redemption success" ||
     status === "Swept deposit processed successfully." ||
