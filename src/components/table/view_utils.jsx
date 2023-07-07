@@ -10,7 +10,6 @@ export function getColorByStatus(status) {
   } else if (status === "MINTING REQUESTED" || status === "Minting Requested") {
     return "#f1c40f";
   } else if (
-    status === "SWEPT" ||
     status === "TIMEDOUT" ||
     status === "Redemption TimedOut"
   ) {
