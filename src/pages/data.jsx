@@ -48,7 +48,7 @@ export const redeem_columns = [
     numeric: false,
   },
   {
-    header: "Amount to receive",
+    header: "Amount received",
     accessor: "actualAmountReceived",
     numeric: false,
   },
