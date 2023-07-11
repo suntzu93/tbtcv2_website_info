@@ -80,7 +80,40 @@ query GetAllDepositsQuery{
     }
 }
 
-query GetRedemptionQueryByUser($user: String, $id: Bytes,$completedTxHash: Bytes){
+
+query SearchRedemptionQueryById($id: String!){
+    searchRedemption(text:$id) {
+        id,
+        status,
+        user{
+            id
+        },
+        amount,
+        walletPubKeyHash,
+        redeemerOutputScript,
+        redemptionTxHash,
+        treasuryFee,
+        txMaxFee,
+        completedTxHash
+        redemptionTimestamp
+        updateTimestamp
+        transactions(orderBy: timestamp,orderDirection:desc){
+            timestamp
+            txHash
+            from
+            to
+            description
+        }
+    }
+    tbtctoken(id:"TBTCToken"){
+        totalMint
+        totalBurn
+        totalSupply
+    }
+}
+
+
+query GetRedemptionQueryByUser($user: String, $id: ID,$completedTxHash: Bytes){
     redemptions (first: 1000,where:{
         or:[
             {user : $user},

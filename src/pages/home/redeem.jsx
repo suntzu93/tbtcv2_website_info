@@ -18,7 +18,10 @@ const RedeemsPage = ({ network, isSearch, searchInput }) => {
 
     Data.getRedeems(network, isSearch, searchInput).then((info) => {
       const totalPassengers = info?.length;
-      if (info?.redemptions === undefined) {
+      if (
+        info?.redemptions === undefined &&
+        info?.searchRedemption === undefined
+      ) {
         setPageData({
           isLoading: false,
           rowData: [],
@@ -28,7 +31,9 @@ const RedeemsPage = ({ network, isSearch, searchInput }) => {
       } else {
         setPageData({
           isLoading: false,
-          rowData: Data.formatRedeems(info.redemptions),
+          rowData: info.hasOwnProperty("searchRedemption")
+            ? Data.formatRedeems(info.searchRedemption)
+            : Data.formatRedeems(info.redemptions),
           tbtctoken: info.tbtctoken,
           totalPassengers: totalPassengers,
         });
