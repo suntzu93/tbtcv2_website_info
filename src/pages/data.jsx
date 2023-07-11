@@ -48,7 +48,7 @@ export const redeem_columns = [
     numeric: false,
   },
   {
-    header: "Amount received",
+    header: "Amount to receive",
     accessor: "actualAmountReceived",
     numeric: false,
   },
@@ -186,7 +186,7 @@ export const formatStringEnd = (data) => {
 };
 
 export const formatSatoshi = (data) => {
-  return data / Const.SATOSHI_BITCOIN;
+  return (data / Const.SATOSHI_BITCOIN).toFixed(7);
 };
 
 export const formatGwei = (value) => {

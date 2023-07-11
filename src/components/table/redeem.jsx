@@ -22,7 +22,7 @@ import { ReactComponent as ShareLink } from "../../assets/link.svg";
 import * as Data from "../../pages/data";
 import TransactionTimeline from "./timeline";
 import * as Utils from "../../utils/utils";
-import {getColorByStatus} from "./view_utils"
+import { getColorByStatus } from "./view_utils";
 import { ReactComponent as Copy } from "../../assets/copy.svg";
 
 export const RedeemTable = ({ columns, data, isLoading }) => {
@@ -174,9 +174,15 @@ export const RedeemTable = ({ columns, data, isLoading }) => {
             <ShareLink />
           </TableCell>
           <TableCell align="left">{Data.formatSatoshi(row.amount)}</TableCell>
-          <TableCell align="left">{Data.formatSatoshi(row.actualAmountReceived)}</TableCell>
+          <TableCell align="left">
+            {row.status !== "COMPLETED"
+              ? "0.000000"
+              : Data.formatSatoshi(row.actualAmountReceived)}
+          </TableCell>
 
-          <TableCell align="left" sx={{color:getColorByStatus(row.status)}}>{row.status}</TableCell>
+          <TableCell align="left" sx={{ color: getColorByStatus(row.status) }}>
+            {row.status}
+          </TableCell>
         </TableRow>
         <TableRow className={styles.container_detail}>
           <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -197,57 +203,64 @@ export const RedeemTable = ({ columns, data, isLoading }) => {
                       <TableBody>
                         <TableRow>
                           <TableCell>Redeem key</TableCell>
-                          <TableCell>{Data.formatString(row.id)}
+                          <TableCell>
+                            {Data.formatString(row.id)}
                             <Copy
-                                style={{ cursor: "pointer" }}
-                                onClick={(e) => copyToClipBoard(row.id)}
-                            /></TableCell>
+                              style={{ cursor: "pointer" }}
+                              onClick={(e) => copyToClipBoard(row.id)}
+                            />
+                          </TableCell>
                         </TableRow>
                         <TableRow>
                           <TableCell>Wallet Pub KeyHash</TableCell>
-                          <TableCell>{Data.formatString(row.walletPubKeyHash)}
+                          <TableCell>
+                            {Data.formatString(row.walletPubKeyHash)}
                             <Copy
-                                style={{ cursor: "pointer" }}
-                                onClick={(e) => copyToClipBoard(row.walletPubKeyHash)}
-                            /></TableCell>
+                              style={{ cursor: "pointer" }}
+                              onClick={(e) =>
+                                copyToClipBoard(row.walletPubKeyHash)
+                              }
+                            />
+                          </TableCell>
                         </TableRow>
                         <TableRow>
                           <TableCell>Output Script </TableCell>
                           <TableCell>
                             {Data.formatString(row.redeemerOutputScript)}
                             <Copy
-                                style={{ cursor: "pointer" }}
-                                onClick={(e) => copyToClipBoard(row.redeemerOutputScript)}
+                              style={{ cursor: "pointer" }}
+                              onClick={(e) =>
+                                copyToClipBoard(row.redeemerOutputScript)
+                              }
                             />
                           </TableCell>
                         </TableRow>
                         <TableRow>
                           <TableCell>Redemption txHash </TableCell>
                           <TableCell>
-                            {
-                              row.completedTxHash?.length > 0 ? (
-                                  <>
-                                    <Link
-                                        target="_blank"
-                                        underline="hover"
-                                        href={Utils.getBlockStreamInfo() + row.completedTxHash}
-                                        className={styles.link}
-                                    >
-                                      {Data.formatString(row.completedTxHash)}
-                                    </Link>
-                                    <ShareLink />
-                                  </>
-                              ) : (
-                                  "..."
-                              )
-                            }
+                            {row.completedTxHash?.length > 0 ? (
+                              <>
+                                <Link
+                                  target="_blank"
+                                  underline="hover"
+                                  href={
+                                    Utils.getBlockStreamInfo() +
+                                    row.completedTxHash
+                                  }
+                                  className={styles.link}
+                                >
+                                  {Data.formatString(row.completedTxHash)}
+                                </Link>
+                                <ShareLink />
+                              </>
+                            ) : (
+                              "..."
+                            )}
                           </TableCell>
                         </TableRow>
                         <TableRow>
                           <TableCell>TreasuryFee</TableCell>
-                          <TableCell>
-                            {row.treasuryFee}{" "}
-                          </TableCell>
+                          <TableCell>{row.treasuryFee} </TableCell>
                         </TableRow>
                         <TableRow>
                           <TableCell>TxMaxFee</TableCell>
