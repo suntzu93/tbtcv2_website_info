@@ -201,8 +201,6 @@ export const formatWeiDecimal = (value) => {
   return new Intl.NumberFormat().format(formatGweiFixedZero(value));
 };
 
-
-
 export const formatWeiDecimalNoSurplus = (value) => {
   return new Intl.NumberFormat().format(
     parseFloat(value / Const.DECIMAL_ETH).toFixed(0)
@@ -388,8 +386,8 @@ export const formatDepositsData = (rawData) =>
     transactions: item.transactions,
   }));
 
-export const formatRedeems = (rawData) =>
-  rawData.map((item) => ({
+export const formatRedeems = (rawData) => {
+  return rawData.map((item) => ({
     id: item.id,
     status: item.status.replace("_", " "),
     redeemer: item.user.id,
@@ -399,11 +397,15 @@ export const formatRedeems = (rawData) =>
     redemptionTxHash: item.redemptionTxHash,
     treasuryFee: formatSatoshi(item.treasuryFee),
     txMaxFee: formatSatoshi(item.txMaxFee),
-    completedTxHash: convertFromLittleEndian(item.completedTxHash).replace("0x",""),
+    completedTxHash: convertFromLittleEndian(item.completedTxHash).replace(
+      "0x",
+      ""
+    ),
     redemptionTimestamp: item.redemptionTimestamp * 1000,
     updateTime: item.updateTimestamp * 1000,
     transactions: item.transactions,
   }));
+};
 
 export const formatOperators = (rawData) =>
   rawData.map((item) => ({
@@ -461,12 +463,18 @@ export const getRedeems = async (network, isSearch, searchInput) => {
       const completedTxHashHex = convertToLittleEndian(
         searchInput.toLowerCase()
       );
-
-      data = await client.execute(client.GetRedemptionQueryByUserDocument, {
-        user: searchInput.toLowerCase(),
-        id: searchInput.toLowerCase(),
-        completedTxHash: completedTxHashHex,
-      });
+      //search redemptionId
+      if (searchInput.startsWith("0x") && searchInput.length > 42) {
+        data = await client.execute(client.SearchRedemptionQueryByIdDocument, {
+          id: searchInput.toLowerCase(),
+        });
+      } else {
+        data = await client.execute(client.GetRedemptionQueryByUserDocument, {
+          user: searchInput.toLowerCase(),
+          id: searchInput.toLowerCase(),
+          completedTxHash: completedTxHashHex,
+        });
+      }
     }
     if (data.data !== undefined) {
       return data.data;
