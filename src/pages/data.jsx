@@ -43,20 +43,20 @@ export const redeem_columns = [
     numeric: false,
   },
   {
-    header: "Amount",
+    header: "Amount Request",
     accessor: "amount",
+    numeric: false,
+  },
+  {
+    header: "Amount received",
+    accessor: "actualAmountReceived",
     numeric: false,
   },
   {
     header: "Current State",
     accessor: "status",
     numeric: false,
-  },
-  {
-    header: "Completed TxHash",
-    accessor: "completedTxHash",
-    numeric: false,
-  },
+  }
 ];
 
 export const operator_columns = [
@@ -392,6 +392,7 @@ export const formatRedeems = (rawData) => {
     status: item.status.replace("_", " "),
     redeemer: item.user.id,
     amount: parseFloat(item.amount),
+    actualAmountReceived: parseFloat(item.amount) - item.treasuryFee,
     walletPubKeyHash: item.walletPubKeyHash,
     redeemerOutputScript: item.redeemerOutputScript,
     redemptionTxHash: item.redemptionTxHash,

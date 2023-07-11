@@ -174,26 +174,9 @@ export const RedeemTable = ({ columns, data, isLoading }) => {
             <ShareLink />
           </TableCell>
           <TableCell align="left">{Data.formatSatoshi(row.amount)}</TableCell>
+          <TableCell align="left">{Data.formatSatoshi(row.actualAmountReceived)}</TableCell>
+
           <TableCell align="left" sx={{color:getColorByStatus(row.status)}}>{row.status}</TableCell>
-          <TableCell align="left">
-            {
-              row.completedTxHash?.length > 0 ? (
-                  <>
-                    <Link
-                        target="_blank"
-                        underline="hover"
-                        href={Utils.getBlockStreamInfo() + row.completedTxHash}
-                        className={styles.link}
-                    >
-                      {Data.formatString(row.completedTxHash)}
-                    </Link>
-                    <ShareLink />
-                  </>
-              ) : (
-                  "..."
-              )
-            }
-          </TableCell>
         </TableRow>
         <TableRow className={styles.container_detail}>
           <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -236,6 +219,28 @@ export const RedeemTable = ({ columns, data, isLoading }) => {
                                 style={{ cursor: "pointer" }}
                                 onClick={(e) => copyToClipBoard(row.redeemerOutputScript)}
                             />
+                          </TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell>Redemption txHash </TableCell>
+                          <TableCell>
+                            {
+                              row.completedTxHash?.length > 0 ? (
+                                  <>
+                                    <Link
+                                        target="_blank"
+                                        underline="hover"
+                                        href={Utils.getBlockStreamInfo() + row.completedTxHash}
+                                        className={styles.link}
+                                    >
+                                      {Data.formatString(row.completedTxHash)}
+                                    </Link>
+                                    <ShareLink />
+                                  </>
+                              ) : (
+                                  "..."
+                              )
+                            }
                           </TableCell>
                         </TableRow>
                         <TableRow>
