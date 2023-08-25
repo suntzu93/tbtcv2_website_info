@@ -1,10 +1,34 @@
 ::-webkit-scrollbar {
-    width: 0;  /* Remove scrollbar space */
-    background: transparent;  /* Optional: just make scrollbar invisible */
+    width: 0; /* Remove scrollbar space */
+    background: transparent; /* Optional: just make scrollbar invisible */
 }
+
 /* Optional: show position indicator in red */
 ::-webkit-scrollbar-thumb {
 }
+
+.top_banner {
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    position: relative;
+    -webkit-box-align: center;
+    width: 100%;
+    padding-inline-start: 1rem;
+    padding-top: 0.75rem;
+    background: #7C47EE;
+}
+
+.top_banner p, a {
+    color: white;
+    font-weight: bold;
+}
+
+.top_banner a {
+    text-decoration: underline !important;
+    text-decoration: none;
+}
+
 
 .table_content {
     box-shadow: rgb(20 20 20 / 20%) 0px 4px 8px;
@@ -475,10 +499,10 @@
     min-width: 100px;
 }
 
-.numbers{
+.numbers {
     font-family: Helvetica Neue;
 }
 
-.span_t_token{
+.span_t_token {
     font-size: 20px;
 }
