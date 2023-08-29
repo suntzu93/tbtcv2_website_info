@@ -12,6 +12,8 @@ import styles from "./styles.module.css";
 import RedeemsPage from "./redeem";
 import DepositPage from "./deposit";
 import { ReactComponent as Logo } from "../../logo.svg";
+import { ReactComponent as PowerThreshold} from '../../assets/power-threshold.svg';
+
 import * as Const from "../../utils/Cons";
 import IconButton from "@mui/material/IconButton";
 import SettingsIcon from "@mui/icons-material/Settings";
@@ -188,6 +190,11 @@ const HomePage = () => {
       <Box sx={{ width: "100%", typography: "body" }}>
         <div>
           <div className={styles.top_banner}>
+            <div style={{paddingRight:"20px" , fill:"white"}}>
+              <a href="https://threshold.network/" target="_blank" rel="noopener noreferrer">
+                <PowerThreshold/>
+              </a>
+            </div>
             <p>
               Powered by Threshold Network!
               <a href="https://threshold.network/" target="_blank" rel="noopener noreferrer">

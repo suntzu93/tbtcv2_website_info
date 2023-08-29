@@ -15,13 +15,14 @@
     -webkit-box-align: center;
     width: 100%;
     padding-inline-start: 1rem;
-    padding-top: 0.75rem;
+    padding-top: 0.5rem;
     background: #7C47EE;
 }
 
 .top_banner p, a {
     color: white;
     font-weight: bold;
+    padding-top: 5px;
 }
 
 .top_banner a {
